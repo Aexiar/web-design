@@ -4,7 +4,9 @@ import sidebar from './sidebar'
 import dayjs from 'dayjs'
 
 import { loadEnv } from 'vitepress'
-const { VITE_BASE_URL } = loadEnv(process.env.Node_ENV, process.cwd())
+const { VITE_BASE_URL } = loadEnv(process.env.NODE_ENV, process.cwd())
+
+console.log('VITE_BASE_URL', VITE_BASE_URL)
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
