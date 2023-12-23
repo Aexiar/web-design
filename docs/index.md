@@ -28,7 +28,7 @@ hero:
       link: "https://aexiar.github.io"  
     - theme: alt
       text: "前端"
-      link: "/web-design/"
+      link: "/notes/"
     - theme: alt
       text: "Java"
       link: "https://aexiar.github.io/java/"

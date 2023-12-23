@@ -152,7 +152,7 @@ npx create-react-app react-app-demo
 
 ![image-20231216231518823](./assets/5.png)
 
-> 注意：源码在[这里](/assets/web-design/07_React18/02_xdx/react-app-demo.zip)。
+> 注意：源码在[这里](/assets/notes/07_React18/02_xdx/react-app-demo.zip)。
 
 * 解释下其中的含义：
 
