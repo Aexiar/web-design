@@ -28,13 +28,13 @@ hero:
       link: "/web-design/"
     - theme: alt
       text: "Java"
-      link: "/subject/java/"
+      link: "https://aexiar.github.io/java/"
     - theme: alt
       text: "大数据"
-      link: "/subject/big-data/"
+      link: "https://aexiar.github.io/big-data/"
     - theme: alt
       text: "云原生"
-      link: "/subject/linux/"             
+      link: "https://aexiar.github.io/linux/"             
 
 # 按钮下方的描述
 features:
