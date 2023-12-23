@@ -24,6 +24,9 @@ hero:
   # 按钮相关
   actions:
     - theme: brand
+      text: "首页"
+      link: "https://aexiar.github.io"  
+    - theme: alt
       text: "前端"
       link: "/web-design/"
     - theme: alt
