@@ -4,7 +4,7 @@
 
 ### 1.1.1 概述
 
-* 之前，我们已经学习过 React 的[渲染机制](https://aurorxa.github.io/subject/front-end/07_React18/01_xdx/#_3-7-jsx-%E6%9C%AC%E8%B4%A8)：
+* 之前，我们已经学习过 React 的[渲染机制](https://aexiar.github.io/web-design/notes/07_React18/01_xdx/#_3-7-jsx-%E6%9C%AC%E8%B4%A8)：
 
 ![image-20231221143951065](./assets/1.png)
 
@@ -44,7 +44,7 @@
 
 ## 1.2 render 函数的调用
 
-* 借用[组件嵌套](https://aurorxa.github.io/subject/front-end/07_React18/03_xdx/#_3-1-%E7%BB%84%E4%BB%B6%E7%9A%84%E5%B5%8C%E5%A5%97)案例，如果我们在 App 组件中，增加计数器的功能，render 函数会调用几次？
+* 借用[组件嵌套](https://aexiar.github.io/web-design/notes/07_React18/03_xdx/#_3-1-%E7%BB%84%E4%BB%B6%E7%9A%84%E5%B5%8C%E5%A5%97)案例，如果我们在 App 组件中，增加计数器的功能，render 函数会调用几次？
 
 
 
@@ -789,7 +789,7 @@ export default Footer
 
 * 我们知道，PureComponent 类使用的是 shallowEqual 方法来进行比较的，是浅层比较的，难道有什么问题？
 
-* 之前，我们实现过[购物车](https://aurorxa.github.io/subject/front-end/07_React18/01_xdx/#_3-10-%E8%B4%AD%E7%89%A9%E8%BD%A6%E6%A1%88%E4%BE%8B)的案例；但是，我们当时是在 `html` 中完成的；现在，我们将复制到工程中。
+* 之前，我们实现过[购物车](https://aexiar.github.io/web-design/notes/07_React18/01_xdx/#_3-10-%E8%B4%AD%E7%89%A9%E8%BD%A6%E6%A1%88%E4%BE%8B)的案例；但是，我们当时是在 `html` 中完成的；现在，我们将复制到工程中。
 * 项目结构：
 
 ![image-20231221164005826](./assets/11.png)
