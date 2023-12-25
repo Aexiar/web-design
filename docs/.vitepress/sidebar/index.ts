@@ -89,6 +89,7 @@ export const sidebar: DefaultTheme.Sidebar = {
         { text: 'React组件化开发（一）', link: `/notes/07_React18/03_${commonDirectoryName}/` },
         { text: 'React组件化开发（二）', link: `/notes/07_React18/04_${commonDirectoryName}/` },
         { text: 'React组件化开发（三）', link: `/notes/07_React18/05_${commonDirectoryName}/` },
+        { text: 'React组件化开发（四）', link: `/notes/07_React18/06_${commonDirectoryName}/` },
       ]
     }
   ],
