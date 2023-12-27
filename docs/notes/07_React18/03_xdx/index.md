@@ -48,7 +48,7 @@
   * `this.state` 中维护的就是组件内部的数据。
   * `render()` 方法是类组件中`唯一必须实现的方法`。
 
-```jsx
+```jsx {5,7,12}
 import React from 'react'
 
 class App extends React.Component{
@@ -75,7 +75,7 @@ export default App
 * 当 `render()` 方法被调用的时候，它会检查 `this.props` 和 `this.state` 中的变化并返回以下的任意一种类型：
 * ① React 元素：通常是通过 JSX 创建的。如：`<div></div>` 会被 React 渲染为 DOM 节点，而 `<HelloWorld />` 会被 React 渲染为自定义的组件。并且，`<div></div>` 和 `<HelloWorld />`都是 React 元素。
 
-```jsx
+```jsx {11}
 import React from 'react'
 
 class App extends React.Component{
@@ -95,7 +95,7 @@ export default App
 
 * ② 数组或 fragments，这样可以返回多个元素。
 
-```jsx
+```jsx {11}
 import React from 'react'
 
 class App extends React.Component{
@@ -116,7 +116,7 @@ export default App
 * ③ Portals：可以渲染子节点到不同的 DOM 子树中（后续讲解）。
 * ④ 字符串或数值类型：它们在 DOM 中会被渲染为文本节点。
 
-```jsx
+```jsx {15}
 import React from 'react'
 
 class App extends React.Component{
@@ -267,7 +267,7 @@ class Person  {
 
 * 其实，我们通过 TS 代码也是可以查看到的：
 
-```ts
+```ts {4,6,8,9}
 // 生命周期的接口
 interface ComponentLifecycle<P, S, SS = any> extends NewLifecycle<P, S, SS>, DeprecatedLifecycle<P, S> {
    // 组件已经挂载到DOM上时，就会回调
@@ -295,7 +295,7 @@ class Component<P, S> {
 
 * 很多时候，我们在讨论组件的时候，会谈及`组件`和`组件实例`的概念；甚至，你可能会听到别人谈及：`定义组件`、`使用组件`的概念，如下所示：
 
-```jsx
+```jsx {2-4,25-26}
 // Demo 组件
 class Demo extends React.Component {
     render() {}
@@ -358,7 +358,7 @@ createElement(type, props, ...children)
 
 * 示例：
 
-```jsx
+```jsx {5,13,23}
 import React from 'react'
 
 class App extends React.Component {
@@ -399,7 +399,7 @@ export default App
 
 * 示例：
 
-```jsx
+```jsx {20,38}
 import React from 'react'
 
 class App extends React.Component {
@@ -461,7 +461,7 @@ export default App
 * 示例：
 * HelloWorld.jsx
 
-```jsx
+```jsx {18}
 import React from "react"
 
 class HelloWorld extends React.Component {
@@ -552,7 +552,7 @@ export default App
 * 示例：
 * Clock.jsx
 
-```jsx
+```jsx {7-9,16,20-26,28-30}
 import React from "react"
 
 class Clock extends React.Component {
@@ -710,7 +710,7 @@ export default App
 * 对应的代码如下：
 * App.jsx
 
-```jsx
+```jsx {20-22}
 import React from 'react'
 import Header from "@/components/Header"
 import Main from "@/components/Main"
@@ -898,7 +898,7 @@ export default ProductList
 
 * `注意`：在 JavaScript 中，如果一个父类有构造函数，子类可以选择不写构造函数。当子类没有显式定义构造函数时，它会继承父类的构造函数。
 
-```js
+```js {8}
 class Person {
   constructor(name) {
     this.name = name;
@@ -1003,7 +1003,7 @@ export default ProductList
 
 * 又因为在 JavaScript 中，如果一个父类有构造函数，子类可以选择不写构造函数。当子类没有显式定义构造函数时，它会继承父类的构造函数，所以简化写法应该是这样的：
 
-```jsx
+```jsx 
 import React from 'react'
 
 class ProductList extends React.Component {
@@ -1027,7 +1027,7 @@ export default ProductList
 
 * 此时，我们就可以改造下自己各个组件的代码了：
 
-```jsx
+```jsx {8-10}
 import React from 'react'
 import Header from "@/components/Header"
 import Main from "@/components/Main"
@@ -1060,7 +1060,7 @@ export default App
 * 此时，又有疑惑？根据 JavaScript 的规则，我们将 `constructor` 省略了，也没有地方在组件去接收 `props` 参数了，咋办？
 * 可以在 `render` 函数中，打印下 `this` 看看：
 
-```jsx
+```jsx {13}
 import React from 'react'
 import Header from "@/components/Header"
 import Main from "@/components/Main"
@@ -1101,7 +1101,7 @@ export default App
 
 * 示例：Main.jsx
 
-```jsx
+```jsx {25,27}
 import React from 'react'
 import Banner from "@/components/Banner"
 import ProductList from "@/components/ProductList"
@@ -1139,7 +1139,7 @@ export default Main
 
 * 示例：Banner.jsx
 
-```js
+```js {13}
 import React from 'react'
 
 class Banner extends React.Component {
@@ -1172,7 +1172,7 @@ export default Banner
 
 * 示例：ProductList.jsx
 
-```jsx
+```jsx {16}
 import React from 'react'
 
 class ProductList extends React.Component {
@@ -1211,7 +1211,7 @@ export default ProductList
 
 * 我们也说了，React 支持`类组件`和`函数式组件`；那么，在函数式组件中怎么写？函数式组件可没有 this 的，其实就是在函数式组件的方式中声明即可，改造下 `ProductList.jsx` ，如下所示：
 
-```jsx
+```jsx {9}
 import {useState} from "react";
 
 function ProductList(props) {
@@ -1269,7 +1269,7 @@ npm i prop-types
 * 如果要在组件上的 props 上进行类型检查，我们只需要配置 `propTypes` 属性即可。
 * 对于函数式组件而言，直接在函数身上添加 `propTypes` 属性即可：
 
-```jsx
+```jsx {3,29-32}
 import {useState} from "react"
 // 引入 PropTypes
 import PropTypes from "prop-types"
@@ -1309,7 +1309,7 @@ export default ProductList
 
 * 我们也知道，ES6 中的类本质上就是为了取代 ES5 中函数作为构造函数的；换言之，本质上 ES6 中的类就是构造函数；构造函数是可以在身上添加属性和方法的；所以，`类式组件`和`函数式组件`的`用法相同`：
 
-```jsx
+```jsx {3,31-34}
 import React from 'react'
 // 引入 PropTypes
 import PropTypes from "prop-types"
@@ -1350,7 +1350,7 @@ export default Banner
 
 * 有的时候，为了程序的严谨，在父组件没有传递 props 的时候，我们希望组件内部可以提供默认的 props 值，只需要配置 `defaultProps` 属性即可，`类式组件`和`函数式组件`的`用法相同`：
 
-```jsx
+```jsx {3,32-35,38-40}
 import React from 'react'
 // 引入 PropTypes
 import PropTypes from "prop-types"
@@ -1395,7 +1395,7 @@ Banner.defaultProps = {
 export default Banner
 ```
 
-```jsx
+```jsx {3,30-33,36-38}
 import {useState} from "react"
 // 引入 PropTypes
 import PropTypes from "prop-types"
@@ -1445,7 +1445,7 @@ export default ProductList
 
 * 仅仅到这里，好像结束了；但是，不觉得下面的类组件，没有很好的体验类的封装性？
 
-```jsx
+```jsx {3,33-36,39-41}
 import React from 'react'
 // 引入 PropTypes
 import PropTypes from "prop-types"
@@ -1494,7 +1494,7 @@ export default Banner
 * 根据面向对象的设计原则，一切都要以类为模板，为啥需要在类身上添加一些其他东西；换一种说法，这些的写法，在 Java、C++ 等语言上不支持。
 * 从 ES2022 开始，ES 中的类也支持`静态属性（static）`；那么，我们就可以利用`静态属性`来优化代码：
 
-```jsx
+```jsx {3,7-9,11-13}
 import React from 'react'
 // 引入 PropTypes
 import PropTypes from "prop-types"
@@ -1702,7 +1702,7 @@ export default Counter
 * ② 在 React 中，props 非常灵活：
 * 既可以传递普通数据，如：字符串、数值等：
 
-```jsx
+```jsx {18}
 import React from 'react'
 import Counter from "@/components/Counter"
 
@@ -1729,7 +1729,7 @@ class App extends React.Component {
 export default App
 ```
 
-```jsx
+```jsx {12}
 import React from 'react'
 
 
@@ -1763,7 +1763,7 @@ export default Counter
 
 * 也可以传递函数：
 
-```jsx
+```jsx {18}
 import React from 'react'
 import Counter from "@/components/Counter"
 
@@ -1790,7 +1790,7 @@ class App extends React.Component {
 export default App
 ```
 
-```jsx
+```jsx {12}
 import React from 'react'
 
 
@@ -1828,7 +1828,7 @@ export default Counter
 
 * ③ 父组件传递的 props 的 eating 不够见名知意，我们修改下：
 
-```jsx
+```jsx {18}
 import React from 'react'
 import Counter from "@/components/Counter"
 
@@ -1857,7 +1857,7 @@ export default App
 
 * 此时，我们就可以在子组件中，给按钮绑定事件：
 
-```jsx
+```jsx {16}
 import React from 'react'
 
 
@@ -1896,7 +1896,7 @@ export default Counter
 
 * ④ 我们知道，父组件是将回调函数通过 props 传递给子元素，子组件就可以通过回调函数来传递数值了：
 
-```jsx
+```jsx {12-13}
 import React from 'react'
 
 
@@ -1937,7 +1937,7 @@ export default Counter
 
 * ④ 父组件，就可以修改代码，来获取子组件传递过来的数据了：
 
-```jsx
+```jsx {18-20}
 import React from 'react'
 import Counter from "@/components/Counter"
 
@@ -1972,7 +1972,7 @@ export default App
 
 * ⑤ 修改父组件，让其在子组件传递数据的时候，修改 state 中的数据：
 
-```jsx
+```jsx {11-15,24}
 import React from 'react'
 import Counter from "@/components/Counter"
 
@@ -2025,7 +2025,7 @@ export default App
 * 示例：
 * App.jsx
 
-```jsx
+```jsx {6-9,11-15,21,22}
 import React from 'react'
 import Tabs from "@/components/Tabs";
 
@@ -2058,7 +2058,7 @@ export default App
 
 * Tabs.jsx
 
-```jsx
+```jsx {6-8,10-17,26-27}
 import React from 'react'
 import '@/components/Tabs.css'
 
@@ -2266,7 +2266,7 @@ export default Navbar
 * 示例：
 * 在 App.jsx 中，使用 NavBar 组件的时候传入内容：
 
-```jsx
+```jsx {15-19}
 import React from 'react'
 import Navbar from "@/components/NavBar";
 
@@ -2296,7 +2296,7 @@ export default App
 
 * 在 NavBar 组件中，通过 this.props 查看是否有 children 属性，并且 children 属性对应的类型是什么？
 
-```jsx
+```jsx {11}
 import React from 'react'
 import '@/components/NavBar.css'
 
@@ -2327,7 +2327,7 @@ export default Navbar
 
 * 可以看到是数组类型，既然是数组类型，那么解构出来，插入到指定位置就可以了：
 
-```jsx
+```jsx {13,16-18}
 import React from 'react'
 import '@/components/NavBar.css'
 
@@ -2360,7 +2360,7 @@ export default Navbar
 
 * 到这里似乎就结束了；但是，如果在 App 组件中就传递一个 React 元素，那么实际情况会咋样？
 
-```jsx
+```jsx {16}
 import React from 'react'
 import Navbar from "@/components/NavBar";
 
@@ -2397,7 +2397,7 @@ export default App
 
 * 那么，只需要将其不当做数组来解构，就可以了：
 
-```jsx
+```jsx {14}
 import React from 'react'
 import '@/components/NavBar.css'
 
@@ -2439,7 +2439,7 @@ export default Navbar
 
 * 此时，我们可以在 App.jsx 中，使用 NavBar 组件的时候通过 props 传入 React 元素：
 
-```jsx
+```jsx {15}
 import React from 'react'
 import Navbar from "@/components/NavBar";
 
@@ -2465,7 +2465,7 @@ export default App
 
 * 我们就可以查看 NavBar 组件中的 props 了：
 
-```jsx
+```jsx {11}
 import React from 'react'
 import '@/components/NavBar.css'
 
@@ -2496,7 +2496,7 @@ export default Navbar
 
 * 此时，就可以在 NavBar 组件中精确的获取每个组件了：
 
-```jsx
+```jsx {12,15-17}
 import React from 'react'
 import '@/components/NavBar.css'
 
@@ -2557,7 +2557,7 @@ export default Navbar
 * 示例：
 * App.jsx
 
-```jsx
+```jsx {17}
 import React from 'react'
 import Navbar from "@/components/NavBar";
 
@@ -2585,7 +2585,7 @@ export default App
 
 * NavBar.jsx
 
-```jsx
+```jsx {15-17}
 import React from 'react'
 import '@/components/NavBar.css'
 
