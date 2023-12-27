@@ -81,7 +81,7 @@
 
 * 示例：
 
-```html
+```html {9-14}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -111,7 +111,7 @@
 
 * 示例：
 
-```html
+```html {6-11,16,18-26}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -151,7 +151,7 @@
 * ④ 在 React 18 之前的语法是：`ReactDOM.render(vDOM, document.querySelector('.root'))`；不过，现在该 API 已经过时。
 * ⑤ 我们可以使用 `{}` 在 jsx 中引入外部的变量或表达式。
 
-```html
+```html {24}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -189,7 +189,7 @@
 
 * ⑥ React 18 之后，为什么要 `ReactDOM.createRoot(document.querySelector('.root'))` 这样创建根元素？是因为，React 18 之后可以创建多个根元素：
 
-```jsx
+```jsx {2,4}
 const root = ReactDOM.createRoot(document.querySelector('.root'))
 root.render(vDOM)
 const app = ReactDOM.createRoot(document.querySelector('.app'))
@@ -208,7 +208,7 @@ app.render(vDOM)
 
 * 示例：
 
-```html 
+```html {22,24-29,32,34-48}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -289,7 +289,7 @@ app.render(vDOM)
 
 * 示例：
 
-```html
+```html {16,20-33}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -342,7 +342,7 @@ app.render(vDOM)
 
 * 示例：
 
-```html
+```html {25-27,35-37,45-46}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -416,7 +416,7 @@ app.render(vDOM)
 
 * 那么，我们可以修改下程序：
 
-```html
+```html {28,42-44}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -482,7 +482,7 @@ app.render(vDOM)
 
 * 为什么要这么写？我们可以通过如下的代码，来模拟一下：
 
-```html
+```html {25-26}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -522,7 +522,7 @@ app.render(vDOM)
 
 * 如果，我们将代码修改一下：
 
-```html
+```html {25,27,29}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -571,7 +571,7 @@ app.render(vDOM)
 
 * 修改下代码：
 
-```html
+```html {30}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -621,7 +621,7 @@ app.render(vDOM)
 
 * 当然，你也可以这么写，原理是一样的：
 
-```html
+```html {47}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -701,7 +701,7 @@ app.render(vDOM)
 
 * 示例：实现方式一（通过数组的索引，不推荐）
 
-```html
+```html {40-43}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -765,7 +765,7 @@ app.render(vDOM)
 
 * 示例：实现方式二（通过手动拼接数组）
 
-```html
+```html {36-39,46}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -832,7 +832,7 @@ app.render(vDOM)
 
 * 示例：实现方式三（通过数组的 map 方法，用于对数组中的每个元素进行操作，并返回一个新的数组）
 
-```html
+```html {41-43}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -902,7 +902,7 @@ app.render(vDOM)
 
 * 示例：
 
-```html
+```html {25,27,32-34,39-41,51,52}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -1020,7 +1020,7 @@ const element = <h1>Hello, world!</h1>
 
 * 示例：
 
-```html
+```html {36}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -1078,7 +1078,7 @@ const element = <h1>Hello, world!</h1>
 
 * 示例：
 
-```html
+```html {33}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -1137,7 +1137,7 @@ const element = <h1>Hello, world!</h1>
 
 * 示例：插入变量作为文本
 
-```html
+```html {36}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -1191,7 +1191,7 @@ const element = <h1>Hello, world!</h1>
 
 * 示例：插入变量作为子元素
 
-```html
+```html {36-38}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -1257,7 +1257,7 @@ const element = <h1>Hello, world!</h1>
 
 * 示例：情况①
 
-```html
+```html {39-43,44}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -1319,7 +1319,7 @@ const element = <h1>Hello, world!</h1>
 
 * 示例：情况②
 
-```html
+```html {37-40,41}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -1378,7 +1378,7 @@ const element = <h1>Hello, world!</h1>
 
 * 示例：情况③
 
-```html
+```html {36}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -1437,7 +1437,7 @@ const element = <h1>Hello, world!</h1>
 
 * 示例：
 
-```html
+```html {41-41,43,45}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -1502,7 +1502,7 @@ const element = <h1>Hello, world!</h1>
 
 * 在 Vue 中，对于元素身上的基本属性是通过 `v-bind` 指令或 `:` 语法糖来实现的：
 
-```vue
+```vue {2}
 <template>
 	<h2 :title="title">我是h2元素</h2>
 </template>
@@ -1513,7 +1513,7 @@ const element = <h1>Hello, world!</h1>
 </script>
 ```
 
-```vue
+```vue {2}
 <template>
 	<img :src="imgUrl" alt='' width='200px' />
 </template>
@@ -1524,7 +1524,7 @@ const element = <h1>Hello, world!</h1>
 </script>
 ```
 
-```vue
+```vue {2}
 <template>
 	<a :href="href" target='_blank'>百度一下，你就知道</a>
 </template>
@@ -1541,7 +1541,7 @@ const element = <h1>Hello, world!</h1>
 
 * 示例：
 
-```html
+```html {27-29,38-40}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -1599,7 +1599,7 @@ const element = <h1>Hello, world!</h1>
 
 * 在 Vue 中，对于 style 属性，是通过绑定 JavaScript 的`对象值`来实现的：
 
-```vue
+```vue {2}
 <template>
 	<div :style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
 </template>
@@ -1623,7 +1623,7 @@ const element = <h1>Hello, world!</h1>
 
 * 示例：
 
-```html 
+```html {27-30,35,40-41}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -1696,7 +1696,7 @@ const element = <h1>Hello, world!</h1>
 
 * 在 Vue 中，对于 class 类，还可以传递一个`数组`来渲染多个 `class` ：
 
-```vue
+```vue {2}
 <template>
 	<div :class="[activeClass, errorClass]"></div>
 </template>
@@ -1716,7 +1716,7 @@ const element = <h1>Hello, world!</h1>
 
 * 示例：class 属性的直接绑定
 
-```html
+```html {31}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -1765,7 +1765,7 @@ const element = <h1>Hello, world!</h1>
 
 * 示例：通过字符串的拼接
 
-```html
+```html {44,49-50}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -1833,7 +1833,7 @@ const element = <h1>Hello, world!</h1>
 
 * 示例：通过数组的拼接
 
-```html
+```html {45-48,53}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -1913,7 +1913,7 @@ const element = <h1>Hello, world!</h1>
 
 * 示例：
 
-```html
+```html {11,17-18,21-23,26-28}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1958,7 +1958,7 @@ const element = <h1>Hello, world!</h1>
 
 * 示例：
 
-```html
+```html {43}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -2027,7 +2027,7 @@ const element = <h1>Hello, world!</h1>
 
 * 示例：
 
-```html
+```html {31,45}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -2090,7 +2090,7 @@ const element = <h1>Hello, world!</h1>
 
 * 示例：
 
-```html
+```html {44}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -2189,7 +2189,7 @@ sayName();  // this 为 undefined，会报错
 
 * 示例：
 
-```html
+```html {25-27,29-33,39,41}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -2254,7 +2254,7 @@ sayName();  // this 为 undefined，会报错
 
 * 示例：在事件监听中传入箭头函数
 
-```html
+```html {25-27,41}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -2313,7 +2313,7 @@ sayName();  // this 为 undefined，会报错
 
 * 示例：在事件监听中传入箭头函数，并通过 this 调用类中的方法
 
-```html
+```html {25-27,29-33,51}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -2392,7 +2392,7 @@ boxEl.addEventListener('click',function(event){
 
 * 在 React 中，我们也可以通过在`类方法`中通过参数 `event` 来得到`事件对象`。
 
-```html
+```html {30-32,38}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -2446,7 +2446,7 @@ boxEl.addEventListener('click',function(event){
 
 * 但是，对于在`事件监听`中传入`箭头函数`的方式而言，需要手动传递 `event` 事件对象参数：
 
-```html
+```html {30-32,38}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -2508,7 +2508,7 @@ boxEl.addEventListener('click',function(event){
 
 * 示例：
 
-```html
+```html {30-32,39}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -2577,7 +2577,7 @@ boxEl.addEventListener('click',function(event){
 
 * 示例：
 
-```html
+```html {31-32,36-40,48-56}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -2664,7 +2664,7 @@ boxEl.addEventListener('click',function(event){
 
 * 示例：
 
-```html
+```html {32,33,38,39}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -2729,7 +2729,7 @@ boxEl.addEventListener('click',function(event){
 
 * 示例：
 
-```html
+```html {32,47}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -2799,7 +2799,7 @@ boxEl.addEventListener('click',function(event){
 
 * 示例：
 
-```html
+```html {36-38}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -2861,7 +2861,7 @@ boxEl.addEventListener('click',function(event){
 
 * 示例：
 
-```html
+```html {38-40}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -2927,7 +2927,7 @@ boxEl.addEventListener('click',function(event){
 
 * 示例：
 
-```html
+```html {35-37}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -2989,7 +2989,7 @@ boxEl.addEventListener('click',function(event){
 
 * 示例：
 
-```html
+```html {27,30-35,41,43}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
@@ -3077,7 +3077,7 @@ boxEl.addEventListener('click',function(event){
 * 其实，React 就是通过 `createElement` 创建出来的对象，组成了一个 `JavaScript 对象树`，并且这个 `JavaScript 对象树`就是`虚拟 DOM`（Virtual DOM）。
 * 以下面的代码为例：
 
-```html
+```html {47}
 <!DOCTYPE html>
 <html lang='en'>
 <head>
