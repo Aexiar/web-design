@@ -7,7 +7,7 @@
   * ② 输出一个函数。
 
 ```js
-function foo(callback){
+function foo(callback) {  
     if(callback){
         callback()
     }
@@ -46,11 +46,11 @@ const EnhancedComponent = higherOrderComponent(WrappedComponent);
 
 * 示例：
 
-```jsx
+```jsx {3-18}
 import React, {PureComponent} from 'react'
 
 // 定义一个高阶组件
-function hoc(WrappedComponent) {
+function hoc(WrappedComponent) { 
   // ① 定义组件：类组件
   class HocComponent extends PureComponent {
     render() {
@@ -64,7 +64,7 @@ function hoc(WrappedComponent) {
   HocComponent.displayName = `Hoc(${WrappedComponent.displayName || WrappedComponent.name})`
   // ③ 返回组件
   return HocComponent
-}
+} 
 
 class App extends PureComponent{
   
@@ -108,7 +108,7 @@ export default hoc(App)
 * 示例：
 * App.jsx
 
-```jsx
+```jsx {17-19}
 import React, {PureComponent} from 'react'
 import Profile from "@/components/Profile"
 import Home from "@/components/Home"
@@ -139,10 +139,10 @@ export default App
 
 * withConfig.js
 
-```js
+```js {3-15}
 import {PureComponent} from "react"
 
-// 给一些需要特殊数据的组件，注入 props
+// 给一些需要特殊数据的组件，注入 props // [!code highlight]
 export function withConfig(WrappedComponent, config) {
   class HocComponent extends PureComponent {
     render() {
@@ -159,7 +159,7 @@ export function withConfig(WrappedComponent, config) {
 
 * Home.jsx
 
-```jsx
+```jsx {18}
 import {useState} from "react";
 import {withConfig} from "@/hoc/withConfig";
 
@@ -182,7 +182,7 @@ export default withConfig(Home, {age: 18})
 
 * Profile.jsx
 
-```jsx
+```jsx {17}
 import {useState} from "react";
 import {withConfig} from "@/hoc/withConfig";
 
@@ -204,7 +204,7 @@ export default withConfig(Profile, { age: 18})
 
 * About.jsx
 
-```jsx
+```jsx {12}
 import {useState} from "react";
 
 function About() {
@@ -242,7 +242,7 @@ export default About
 * 示例：
 * App.jsx
 
-```jsx
+```jsx {8,12,19,26,30-31}
 import React, {PureComponent} from 'react'
 import Cart from "@/components/Cart"
 
@@ -286,12 +286,12 @@ export default App
 
 * withLogin.js
 
-```js
+```js {5-8}
 import Login from "@/components/Login"
 
 export function withLogin(WrappedComponent){
   const HocComponent = (props) => {
-    // 从 localStorage 中获取 token
+    // 从 localStorage 中获取 token 
     const token = localStorage.getItem("token")
     if(token){
       return <WrappedComponent {...props}/>
@@ -309,7 +309,7 @@ export function withLogin(WrappedComponent){
 
 * Cart.jsx
 
-```jsx
+```jsx {19}
 import React, {Component} from 'react'
 import {withLogin} from "@/hoc/withLogin"
 
@@ -431,7 +431,7 @@ export function withComputeTime(WrappedComponent) {
 
 * Cart.jsx
 
-```jsx
+```jsx {27}
 import React, {PureComponent} from 'react'
 import {withComputeTime} from "@/hoc/withComputeTime"
 
@@ -480,27 +480,27 @@ export default withComputeTime(Cart)
 * 示例：
 * ThemeContext.js
 
-```js
+```js {2,4,7,11,14}
 import {createContext} from "react"
 // 主题
 export const themes = {
-  light: { // 明亮
+  light: { // 明亮 
     background: 'white',
   },
   dark: { // 暗黑
     background: 'gray',
   },
 };
-// 创建主题 Context
+// 创建主题 Context 
 const ThemeContext = createContext(themes.light)
 ThemeContext.displayName = "ThemeContext"
-// 导出主题 Context
+// 导出主题 Context 
 export default ThemeContext
 ```
 
 * App.jsx
 
-```jsx
+```jsx {12-16,23-25}
 import React, {PureComponent} from 'react'
 import Home from "@/components/Home"
 import ThemeContext, {themes} from "@/context/themeContext"
@@ -522,10 +522,10 @@ class App extends PureComponent {
     return (
       <div style={{backgroundColor: 'pink', padding: '10px', width: '500px'}}>
         <h2>{this.state.message}</h2>
-        <button onClick={() => this.changeTheme()}>切换主题</button>
-        <ThemeContext.Provider value={this.state.theme}>
-          <Home/>
-        </ThemeContext.Provider>
+        <button onClick={() => this.changeTheme()}>切换主题</button> 
+        <ThemeContext.Provider value={this.state.theme}> 
+          <Home/> 
+        </ThemeContext.Provider> 
       </div>
     )
   }
@@ -537,24 +537,24 @@ export default App
 
 * Home.jsx
 
-```jsx
+```jsx {7-17}
 import {useState} from "react"
 import ThemeContext from "@/context/themeContext"
 
 function Home() {
   const [state] = useState("我是 Home 组件");
   return (
-    <ThemeContext.Consumer>
-      {
-        value => {
-          return (
-            <div style={{backgroundColor: value.background, padding: '5px'}}>
-              <h2>{state}</h2>
-            </div>
-          )
-        }
-      }
-    </ThemeContext.Consumer>
+    <ThemeContext.Consumer> 
+      { 
+        value => { 
+          return ( 
+            <div style={{backgroundColor: value.background, padding: '5px'}}> 
+              <h2>{state}</h2> 
+            </div> 
+          ) 
+        } 
+      } 
+    </ThemeContext.Consumer> 
   
   )
 }
@@ -573,7 +573,7 @@ export default Home
 
 * withTheme.js
 
-```js
+```js {8-10}
 import {PureComponent} from "react"
 import ThemeContext from "@/context/themeContext"
 
@@ -581,9 +581,9 @@ export function withTheme(WrappedComponent) {
   class HocComponent extends PureComponent {
     render() {
       return (
-        <ThemeContext.Consumer >
-          {value => <WrappedComponent {...this.props} {...value}/>}
-        </ThemeContext.Consumer>
+        <ThemeContext.Consumer > 
+          {value => <WrappedComponent {...this.props} {...value}/>} 
+        </ThemeContext.Consumer> 
       )
     }
   }
@@ -597,7 +597,7 @@ export function withTheme(WrappedComponent) {
 
 * Home.jsx
 
-```jsx
+```jsx {13}
 import {useState} from "react"
 import {withTheme} from "@/hoc/withTheme"
 
@@ -621,7 +621,7 @@ export default withTheme(Home)
 
 * 示例：withTheme.js
 
-```js
+```js {4-10}
 import ThemeContext from "@/context/themeContext"
 
 export function withTheme(WrappedComponent) {
@@ -648,7 +648,7 @@ export function withTheme(WrappedComponent) {
 
 * 示例：withTheme.js
 
-```js
+```js {4-10}
 import ThemeContext from "@/context/themeContext"
 
 export function withTheme(WrappedComponent) {
@@ -707,7 +707,7 @@ ReactDOM.createPortal(child, container)
 * 示例：
 * App.jsx
 
-```jsx
+```jsx {9,12-16,18-22,29-50}
 import React, {PureComponent} from 'react'
 import Modal from "@/components/Modal"
 import '@/App.css'
@@ -803,7 +803,7 @@ body {
 
 * Modal.jsx
 
-```jsx
+```jsx {7-11}
 import {PureComponent} from "react"
 import {createPortal} from "react-dom";
 
@@ -833,11 +833,11 @@ export default Modal
 ```jsx
 render() {
   return (
-    <div>
+    <div> // [!code highlight]
       <ChildA />
       <ChildB />
       <ChildC />
-    </div>
+    </div> // [!code highlight]
   );
 }
 ```
@@ -847,11 +847,11 @@ render() {
 ```jsx
 render() {
   return (
-    <React.Fragment>
+    <React.Fragment> // [!code highlight]
       <ChildA />
       <ChildB />
       <ChildC />
-    </React.Fragment>
+    </React.Fragment> // [!code highlight]
   );
 }
 ```
@@ -861,11 +861,11 @@ render() {
 ```jsx
 render() {
   return (
-    <>
+    <> // [!code highlight]
       <ChildA />
       <ChildB />
       <ChildC />
-    </>
+    </> // [!code highlight]
   );
 }
 ```
@@ -884,7 +884,7 @@ render() {
 
 * 示例：App.jsx
 
-```jsx
+```jsx {12,21}
 import React from 'react'
 
 class App extends React.PureComponent {
@@ -896,7 +896,7 @@ class App extends React.PureComponent {
   
   render() {
     return (
-      <>
+      <> 
         <h2>电影列表</h2>
         <ul>
           {
@@ -905,7 +905,7 @@ class App extends React.PureComponent {
             ))
           }
         </ul>
-      </>
+      </> 
     )
   }
 }
@@ -915,13 +915,21 @@ export default App
 
 
 
+
+
+
+
+
+
+
+
 # 第四章：StrictMode
 
 ## 4.1 概述
 
 * 我们在使用 React 官方提供的脚手架的时候，会显示如下的代码：
 
-```js
+```js {7,9}
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from '@/App'
@@ -937,7 +945,7 @@ root.render(
 * `StrictMode` 表示严格模式，并且 `StrictMode` 是一个用来突出显示应用程序中潜在问题的工具。
 * `StrictMode` 与 `Fragment` 一样，`StrictMode` 不会渲染任何可见的 UI。它为其后代元素触发额外的检查和警告。
 
-> 注意：严格模式检查仅在开发模式下运行；*它们不会影响生产构建*。
+> 注意：严格模式检查仅在开发模式下运行；它们不会影响生产构建！！！
 
 ## 4.2 严格模式检查什么？
 
