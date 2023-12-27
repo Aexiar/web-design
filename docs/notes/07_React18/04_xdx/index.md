@@ -127,7 +127,7 @@ export default Counter
 * 示例：
 * ① 全局创建唯一的 Context 对象：
 
-```jsx
+```jsx {4}
 import React from "react";
 
 // 创建 Context 对象
@@ -141,7 +141,7 @@ export default CounterContext
 
 * ② 我们知道，App 组件是类式组件，并且 App 组件是生产者，那么就可以根据生产者的 API 提供数据：
 
-```jsx
+```jsx {20-22}
 import React from 'react'
 import Counter from "@/components/Counter"
 import CounterContext from "@/context/CounterContext";
@@ -175,7 +175,7 @@ export default App
 
 * ③ 我们知道，Counter 组件是消费者；但是，Counter 组件是类式组件，可以通过 this 来访问：
 
-```jsx
+```jsx {15}
 import React from 'react'
 
 class Counter extends React.Component {
@@ -212,7 +212,7 @@ export default Counter
 
 * 在 Counter 组件身上有 context 属性；但是，没有值，怎么办？可以给类式组件的 `contextType 静态属性`赋值 Context 对象。
 
-```jsx
+```jsx {7,24}
 import React from 'react'
 import CounterContext from "@/context/CounterContext";
 
@@ -254,7 +254,7 @@ export default Counter
 
 * ④ 如果是函数式组件，this 是 undefined ；这是 React 的机制决定的，我们就可以使用 `Context.Consumer`了；当然，在类式组件中也可以使用。
 
-```jsx
+```jsx {22-24}
 import React from 'react'
 import CounterContext from "@/context/CounterContext";
 
@@ -302,7 +302,7 @@ export default Counter
 
 * 并不是，所有消费者组件都会写在 `<CounterContext.Provider value={count}></CounterContext.Provider>` 中：
 
-```jsx
+```jsx {23}
 import React from 'react'
 import Counter from "@/components/Counter"
 import CounterContext from "@/context/CounterContext";
@@ -337,7 +337,7 @@ export default App
 
 * 此时，Counter 组件就会使用 `CounterContext` 对象的默认值；前提，是在初始化 `CounterContext` 对象的时候，设置了：
 
-```js
+```js {4}
 import React from "react";
 
 // 创建 Context 对象，并设置默认值
@@ -388,7 +388,7 @@ npm install mitt
 * 示例：
 * ① 初始化全局事件总线对象：
 
-```jsx
+```jsx {2}
 import mitt from 'mitt'
 const emitter =  mitt()
 export default emitter
@@ -396,7 +396,7 @@ export default emitter
 
 * ② 在 App 组件中监听事件，并更新 state 中的数据：
 
-```jsx
+```jsx {25-30,34}
 import React from 'react'
 import Counter from "@/components/Counter"
 import emitter from '@/utils/mitts'
@@ -439,7 +439,7 @@ export default App
 
 * ③ 在 Counter 组件中，发生事件和对应的数据：
 
-```jsx
+```jsx {12}
 import React from 'react'
 import emitter from '@/utils/mitts'
 
@@ -540,7 +540,7 @@ class Component<P, S> {
 
 * 示例：
 
-```jsx
+```jsx {10-12,13}
 import React from 'react'
 
 class App extends React.Component {
@@ -598,7 +598,7 @@ setState<K extends keyof S>(
 
 * 示例：基本使用
 
-```jsx
+```jsx {11-13}
 import React from 'react'
 
 class App extends React.Component {
@@ -632,7 +632,7 @@ export default App
 
 * 示例：传入一个回调函数
 
-```ts
+```ts {11-18}
 import React from 'react'
 
 class App extends React.Component {
@@ -671,7 +671,7 @@ export default App
 
 * 示例：第二个参数，传入回调函数；可以获取异步回调的结果
 
-```jsx
+```jsx {11-14}
 import React from 'react'
 
 class App extends React.Component {
@@ -710,7 +710,7 @@ export default App
 
 * 如果希望可以同步获取，则需要执行特殊的 flushSync 操作（了解）。
 
-```jsx
+```jsx {12-18}
 import React from 'react'
 import {flushSync} from "react-dom";
 

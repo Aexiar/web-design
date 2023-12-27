@@ -50,7 +50,7 @@
 
 * 示例：
 
-```jsx
+```jsx {22}
 import React from 'react'
 import Header from "@/components/Header"
 import Main from "@/components/Main"
@@ -89,7 +89,7 @@ class App extends React.Component {
 export default App
 ```
 
-```jsx
+```jsx {14}
 import React from 'react'
 
 class Header extends React.Component {
@@ -115,7 +115,7 @@ class Header extends React.Component {
 export default Header
 ```
 
-```jsx
+```jsx {16}
 import React from 'react'
 import Banner from "@/components/Banner"
 import ProductList from "@/components/ProductList"
@@ -145,7 +145,7 @@ class Main extends React.Component {
 export default Main
 ```
 
-```jsx
+```jsx {14}
 import React from 'react'
 
 class Footer extends React.Component {
@@ -171,7 +171,7 @@ class Footer extends React.Component {
 export default Footer
 ```
 
-```jsx
+```jsx {14}
 import React from 'react'
 
 class Banner extends React.Component {
@@ -197,7 +197,7 @@ class Banner extends React.Component {
 export default Banner
 ```
 
-```jsx
+```jsx {14}
 import React from 'react'
 
 class ProductList extends React.Component {
@@ -263,7 +263,7 @@ shouldComponentUpdate?(nextProps: Readonly<P>, nextState: Readonly<S>, nextConte
 
 * 那么，我们就可以使用 `shouldComponentUpdate` 生命周期方法来改造代码：
 
-```jsx
+```jsx {23-30}
 import React from 'react'
 
 class Header extends React.Component {
@@ -298,7 +298,7 @@ class Header extends React.Component {
 export default Header
 ```
 
-```jsx
+```jsx {27-32}
 import React from 'react'
 import Banner from "@/components/Banner"
 import ProductList from "@/components/ProductList"
@@ -336,7 +336,7 @@ class Main extends React.Component {
 export default Main
 ```
 
-```jsx
+```jsx {23-29}
 import React from 'react'
 
 class Footer extends React.Component {
@@ -371,7 +371,7 @@ class Footer extends React.Component {
 export default Footer
 ```
 
-```jsx
+```jsx {23-28}
 import React from 'react'
 
 class Banner extends React.Component {
@@ -405,7 +405,7 @@ class Banner extends React.Component {
 export default Banner
 ```
 
-```jsx
+```jsx {23-28}
 import React from 'react'
 
 class ProductList extends React.Component {
@@ -458,7 +458,7 @@ class PureComponent<P = {}, S = {}, SS = any> extends Component<P, S, SS> {}
 * 那么，我们只需要继承该类就可以了，这就是继承的好处。
 * 其中，PureComponent 类中的  shouldComponentUpdate 方法的相关实现如下：
 
-```js
+```js {12,48}
 function checkShouldComponentUpdate(
   workInProgress: Fiber,
   ctor: any,
@@ -565,7 +565,7 @@ function shallowEqual(objA: mixed, objB: mixed): boolean {
 
 * 那么，我们就可以使用 PureComponent 类来改造我们的代码：
 
-```jsx
+```jsx {6}
 import React, {PureComponent} from 'react'
 import Header from "@/components/Header"
 import Main from "@/components/Main"
@@ -605,7 +605,7 @@ class App extends PureComponent {
 export default App
 ```
 
-```jsx
+```jsx {3}
 import React, {PureComponent} from 'react'
 
 class Header extends PureComponent {
@@ -632,7 +632,7 @@ class Header extends PureComponent {
 export default Header
 ```
 
-```jsx
+```jsx {5}
 import React, {PureComponent} from 'react'
 import Banner from "@/components/Banner"
 import ProductList from "@/components/ProductList"
@@ -669,7 +669,7 @@ class Main extends PureComponent {
 export default Main
 ```
 
-```jsx
+```jsx {3}
 import React, {PureComponent} from 'react'
 
 class Footer extends PureComponent {
@@ -697,7 +697,7 @@ class Footer extends PureComponent {
 export default Footer
 ```
 
-```jsx
+```jsx {3}
 import React, {PureComponent} from 'react'
 
 class Banner extends PureComponent {
@@ -723,7 +723,7 @@ class Banner extends PureComponent {
 export default Banner
 ```
 
-```jsx
+``` jsx {3}
 import React, {PureComponent} from 'react'
 
 class ProductList extends PureComponent {
@@ -758,7 +758,7 @@ export default ProductList
 
 * 改造其中一个子组件，是其变为函数式组件，并使用 `React.memo()`高阶组件包装使其进行浅层比较：
 
-```jsx
+```jsx {4}
 import React, {memo, useState} from 'react'
 
 
@@ -820,7 +820,7 @@ table thead {
 
 * App.jsx
 
-```jsx
+```jsx {51,68}
 import React, {Component} from 'react'
 import '@/App.css'
 
@@ -962,7 +962,7 @@ export default App
 
 * 功能很正常，之前我们是继承 Component 类的；现在，改为 PureComponent 类：
 
-```jsx
+```jsx {4,51,68}
 import React, {PureComponent} from 'react'
 import '@/App.css'
 
@@ -1104,7 +1104,7 @@ export default App
 
 * 其实，之前我们就已经下意识的规避了一个问题：我们在更新 `数组` 数据的时候，是创建一个新的 `数组` ，在调用 setState() 方法的：
 
-```jsx
+```jsx {51,70}
 import React, {PureComponent} from 'react'
 import '@/App.css'
 
@@ -1246,7 +1246,7 @@ export default App
 
 * 如果不这么做，直接在原来数组上修改呢？
 
-```jsx
+```jsx {79}
 import React, {PureComponent} from 'react'
 import '@/App.css'
 
@@ -1406,7 +1406,7 @@ export default App
 
 * ES6 中的数组支持扩展运算符，在 Create React App 也支持该语法：
 
-```jsx
+```jsx {3}
 handleClick() {
   this.setState(state => ({
     books: [...state.books, {id: 1,name: 'xxx',price: 22.00}],
@@ -1416,7 +1416,7 @@ handleClick() {
 
 * 对于对象，ES 提供了 Object.assign 方法，在 Create React App 也支持该语法：
 
-```jsx
+```jsx {3}
 handleClick() {
   this.setState(state => ({
     book: Object.assign(state,{name: xxx})
@@ -1426,7 +1426,7 @@ handleClick() {
 
 * ES2018 也支持对象扩展属性，在 Create React App 也支持该语法：
 
-```jsx
+```jsx {3}
 handleClick() {
   this.setState(state => ({
     book: {...state,{name: xxx}}
@@ -1483,7 +1483,7 @@ handleClick() {
 
 * 示例：
 
-```jsx
+```jsx {11,19}
 import React from 'react'
 
 class App extends React.Component {
@@ -1524,7 +1524,7 @@ export default App
 
 * 示例：
 
-```jsx
+```jsx {10,15,23}
 import React from 'react'
 
 class App extends React.Component {
@@ -1569,7 +1569,7 @@ export default App
 
 * 示例：
 
-```jsx
+```jsx {9,21,14}
 import React from 'react'
 
 class App extends React.Component {
@@ -1610,7 +1610,7 @@ export default App
 
 * 示例：
 
-```jsx
+```jsx {9,43,40}
 import React from 'react'
 
 class HelloWorld extends React.PureComponent {
@@ -1666,7 +1666,7 @@ export default App
 
 * 我们知道，函数式组件是不能使用 ref 属性的，因为它们并没有实例。
 
-```jsx
+```jsx {13}
 function MyFunctionComponent() {
   return <input />;
 }
@@ -1687,7 +1687,7 @@ class Parent extends React.Component {
 
 * 如果要在函数式组件中使用 ref ，就可以使用 forwardRef 高阶函数。
 
-```jsx
+```jsx {3,9,20,27,31}
 import React, {forwardRef} from 'react'
 
 const HelloWorld = forwardRef(function HelloWorld(props, ref) {
@@ -1759,7 +1759,7 @@ export default App
 
 * 对于，原生的 HTML 而言，是通过浏览器保存状态的；因为，我们可以通过事件对象 `event` 来获取：
 
-```html
+```html {17}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -1816,7 +1816,7 @@ export default App
 
 * 对应的原生 HTML 代码，如下所示：
 
-```html
+```html {1}
 <form action="#" method="post">
   <div>
     <label for="username">
@@ -1834,7 +1834,7 @@ export default App
 
 * 同理，在 React 中，如果采取这样的逻辑，也是支持的；即这样的表单具有默认的 HTML 表单行为，在用户提交后，浏览器会跳转到新页面：
 
-```jsx
+```jsx {12}
 import React from 'react'
 
 class App extends React.PureComponent {
@@ -1906,7 +1906,7 @@ export default App
 
 * 示例：
 
-```jsx
+```jsx {5-8,12,18,25,36,41,46}
 import React from 'react'
 
 class App extends React.PureComponent {
@@ -1973,7 +1973,7 @@ export default App
 
 * 示例：
 
-```jsx
+```jsx {18-25,37,42}
 import React from 'react'
 
 class App extends React.PureComponent {
@@ -2036,7 +2036,7 @@ export default App
 
 * 示例：
 
-```jsx
+```jsx {8,27-29,52-53}
 import React from 'react'
 
 class App extends React.PureComponent {
@@ -2110,7 +2110,7 @@ export default App
 
 * 示例：
 
-```jsx
+```jsx {9-13,38-44,66-74}
 import React from 'react'
 
 class App extends React.PureComponent {
@@ -2211,7 +2211,7 @@ export default App
 
 * 示例：
 
-```jsx
+```jsx {14,47-51,87-92}
 import React from 'react'
 
 class App extends React.PureComponent {
@@ -2331,7 +2331,7 @@ export default App
 
 * 示例：
 
-```jsx
+```jsx {15,55-59,107-112}
 import React from 'react'
 
 class App extends React.PureComponent {
@@ -2479,7 +2479,7 @@ export default App
 
 * 示例：
 
-```jsx
+```jsx {5-6,21-22}
 import React from 'react'
 
 class App extends React.PureComponent {
