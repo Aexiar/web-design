@@ -372,14 +372,15 @@ export default App
 
 * 但是，React 官方一直没有给出在 React 中统一的 CSS 风格；导致，在 React 中就 CSS 方案就有太多太多种。
 
-## 2.3 解决方案 --- 内联样式
+## 2.3 解决方案
 
-### 2.3.1 概述
+### 2.3.1 内联样式
+
+#### 2.3.1.1 概述
 
 * `内联样式`是官方内置的一种 CSS 解决方案：
   * `style` 属性接收一个采用小驼峰命名属性的 JavaScript 对象，而不是 CSS 字符串。
   * 可以在 `style` 属性中引用 `state` 中的状态来设置相关的样式。
-
 * 内联样式的`优点`：
   * ① 内联样式，不会产生冲突。
   * ② 可以动态获取当前 state 中的状态。
@@ -388,7 +389,7 @@ export default App
   * ② 大量的样式，会造成代码混乱。
   * ③ 某些样式无法编写，如：伪类、伪元素等。
 
-### 2.3.2 案例
+#### 2.3.1.2 案例
 
 * 需求：实现下面的效果。
 
@@ -435,9 +436,9 @@ class App extends PureComponent {
 export default App
 ```
 
-## 2.4 解决方案 --- 普通的 CSS
+### 2.3.2 普通的 CSS
 
-### 2.4.1 概述
+#### 2.3.2.1 概述
 
 * 有的时候，我们会将 css 代码写到 CSS 文件中，然后再导入。
 
@@ -448,7 +449,7 @@ export default App
   * 但是，普通的 CSS 都属于全局 CSS，样式之间会相互影响。
 * 最大的`问题`就是：样式之间会互相影响。
 
-### 2.4.2 案例
+#### 2.3.2.2 案例
 
 * 示例：演示样式冲突
 
@@ -531,9 +532,9 @@ export default Home
 }
 ```
 
-## 2.5 解决方案 --- CSS modules
+### 2.3.3 解决方案 --- CSS modules
 
-### 2.5.1 概述
+#### 2.3.3.1 概述
 
 * CSS modules 不是 React 的特有解决方案；我们知道，webpack 就默认支持 css 的 module，只需要在 webpack.config.js 中配置即可：
 
@@ -567,7 +568,7 @@ module.exports = {
   * ④ 所有的 `className` 都需要使用 `{xxx.className}` 或 `{xxx["className"]}`的形式来编写。
   * ⑤ ……
 
-### 2.5.2 案例
+#### 2.3.3.2 案例
 
 * 示例：解决样式冲突
 
@@ -650,16 +651,16 @@ export default Home
 }
 ```
 
-## 2.6 CSS In JS
+## 2.4 CSS In JS
 
-### 2.6.1 概述
+### 2.4.1 概述
 
 * 在传统的前端开发中，我们通常会将 `结构（HTML）`、`表现（CSS）`、`行为（JavaScript）`进行分离。并且，Vue 也是这么做的。
 * 但是，React 认为`逻辑本身和 UI 是无法分离`的，所以才有了 JSX 语法。并且，`样式也是 UI 的一部分`，所以也有`将 CSS 写入到 JavaScript 中的方式`，并且可以很方便的使用 JavaScript 的状态。
 
 > 注意：React 也被人称为 `All In JS`，是因为 `HTML`、`CSS`、`JS` 都可以写到 `JavaScript` 中。
 
-### 2.6.2 CSS In JS 方案的实现
+### 2.4.2 CSS In JS 方案的实现
 
 * CSS In JS 的优点：
   * ① 这种方案可以`通过 JavaScript 为 CSS 赋予一些能力`，包括类似于 CSS 预处理器一样的`样式嵌套`、`函数定义`、`逻辑复用`、`动态修改状态`等等；
@@ -677,7 +678,7 @@ export default Home
 npm install styled-components
 ```
 
-### 2.6.3 补充概念
+### 2.4.3 补充概念
 
 * ES6 推出了`模板字面量`和`模板字符串`；但是，很多时候，很多人还是喜欢将`模板字面量`和`模板字符串`混为一谈，这边做一个区分。
 * MDN 对`模板字面量`的定义：`模板字面量`是用`反引号`分隔的字面量，允许`多行字符串`、带`嵌入表达式`的`字符串插值`和一种`带标签的模板`的特殊结构。
@@ -736,9 +737,9 @@ console.log(str)
 > * `styled-components` 库就使用了类似的原理，只不过其返回的是 React 中的`组件`而已。
 > *  WebStorm 内置了 `styled-components` 插件；如果使用 VSCode ，需要手动安装 `vscode-styled-components` 插件。
 
-## 2.7 解决方案 --- styled-components
+## 2.5 解决方案 --- styled-components
 
-### 2.7.0 前言
+### 2.5.0 前言
 
 * 因为需要演示效果，所以需要安装生成随机颜色的库。
 
@@ -746,7 +747,7 @@ console.log(str)
 npm install randomcolor
 ```
 
-### 2.7.1 概述
+### 2.5.1 概述
 
 * `styled-components` 的本质是通过函数的调用，最终创建出一个组件：
   * 该组件会被自动添加一个不重复的 class 。
@@ -757,15 +758,15 @@ npm install randomcolor
   * ③ 可以写`伪类选择器`或`伪元素`等。
   * ④ ……
 
-### 2.7.2 快速入门
+### 2.5.2 快速入门
 
-#### 2.7.2.1 概述
+#### 2.5.2.1 概述
 
 * 需求：实现下面的效果。
 
 ![image-20231228154510842](./assets/14.png)
 
-#### 2.7.2.2 原生 React 实现
+#### 2.5.2.2 原生 React 实现
 
 * 项目结构：
 
@@ -813,7 +814,7 @@ export default App
 }
 ```
 
-#### 2.7.2.3 styled-components 实现
+#### 2.5.2.3 styled-components 实现
 
 * 项目结构：
 
@@ -863,7 +864,7 @@ export const Title = styled.h1`
 `
 ```
 
-#### 2.7.2.4 解析 styled-components 实现
+#### 2.5.2.4 解析 styled-components 实现
 
 * App.style.jsx 的代码如下：
 
@@ -923,15 +924,15 @@ export default App
 
 ![image-20231228155518296](./assets/17.png)
 
-### 2.7.3 props 属性
+### 2.5.3 props 属性
 
-#### 2.7.3.1  概述
+#### 2.5.3.1  概述
 
 * 有的时候，我们需要根据 React 中 state 的状态，来动态改变样式，该库的使用方式：
   * ① 在组件上，通过 props 传递 state 中的状态。
   * ② 在该库创建的组件中，通过 props 获取，并通过 `${xxx}` 传入一个插值函数，props 会作为该函数的参数。
 
-#### 3.7.3.2 案例
+#### 2.5.3.2 案例
 
 * 需求：实现下面的效果。
 
@@ -1006,7 +1007,7 @@ export const Button = styled.button`
 `
 ```
 
-#### 3.7.3.3 案例
+#### 2.5.3.3 案例
 
 * 需求：实现下面的效果。
 
@@ -1085,13 +1086,13 @@ export const Button = styled.button`
 `
 ```
 
-### 2.7.4 样式继承
+### 2.5.4 样式继承
 
-#### 2.7.4.1 概述
+#### 2.5.4.1 概述
 
 * 有的时候，我们已经定义好了一个组件，但是需要根据单个情况，进行修改。此时，就可以使用 `styled(xxx)` 构造函数了，其中 `xxx` 就是之前的组件。
 
-#### 2.7.4.2 案例
+#### 2.5.4.2 案例
 
 * 需求：实现下面的效果。
 
@@ -1157,13 +1158,13 @@ export const NewButton = styled(Button)`
 `
 ```
 
-### 2.7.5 锚链接和按钮
+### 2.5.5 锚链接和按钮
 
-#### 2.7.5.1 概述
+#### 2.5.5.1 概述
 
 * 有的时候，我们希望更改样式化组件呈现的标记或组件。如：在构建导航栏的时候，就混合了锚链接和按钮，此时就可以使用 `as` 这个 props 来动态定义接收样式的元素。
 
-#### 2.7.5.2 案例
+#### 2.5.5.2 案例
 
 * 需求：实现如下的效果。
 
@@ -1232,13 +1233,13 @@ export const NewButton = styled(Button)`
 `
 ```
 
-### 2.7.6 伪类或伪元素
+### 2.5.6 伪类或伪元素
 
-#### 2.7.6.1 概述
+#### 2.5.6.1 概述
 
 * 该库也支持伪类和伪元素。
 
-#### 2.7.6.2 案例
+#### 2.5.6.2 案例
 
 * 需求：实现如下的效果。
 
@@ -1308,9 +1309,9 @@ export const NewButton = styled(Button)`
 `
 ```
 
-### 2.7.7 attrs() 函数
+### 2.5.7 attrs() 函数
 
-#### 2.7.7.1 概述
+#### 2.5.7.1 概述
 
 * attrs() 是一个函数，用于给组件添加额外属性，如：HTML 属性、自定义属性或其它属性，并且该函数要求传入回调函数，且返回对象。
 
@@ -1320,7 +1321,7 @@ const PasswordInput = styled.input.attrs(props => ({
 }))``
 ```
 
-#### 2.7.7.2 案例
+#### 2.5.7.2 案例
 
 * 需求：实现如下的效果。
 
@@ -1392,5 +1393,190 @@ export const NewButton = styled(Button).attrs(props => ({
 }))`
     background: ${props => props.background};
 `
+```
+
+### 2.5.8 主题
+
+#### 2.5.8.1 概述
+
+* 之前，我们通过 React 中的 Context 实现过主题；现在，`styled-components` 库已经内置支持了。
+
+#### 2.5.8.2 案例
+
+* 需求：实现如下的效果。
+
+![](./assets/30.gif)
+
+* 项目结构：
+
+![image-20231229094858378](./assets/31.png)
+
+* 示例：
+* App.jsx
+
+```jsx {2-4,24-26}
+import React, {PureComponent} from 'react'
+import {AppWrapper, Button} from "@/App.style"
+import {ThemeProvider} from "styled-components"
+import {themes} from "@/theme"
+
+
+class App extends PureComponent {
+  
+  state = {
+    currentTheme: 'light'
+  }
+  
+  changeTheme() {
+    this.setState({
+      currentTheme: this.state.currentTheme === 'light' ? 'dark' : 'light'
+    })
+  }
+  
+  render() {
+    const {currentTheme} = this.state
+    console.log(themes[currentTheme])
+    return (
+      <AppWrapper>
+        <ThemeProvider theme={themes[currentTheme]}>
+          <Button onClick={() => this.changeTheme()}>我是按钮</Button>
+        </ThemeProvider>
+      </AppWrapper>
+    )
+  }
+}
+
+export default App
+```
+
+* App.style.jsx
+
+```jsx
+import styled from "styled-components";
+
+export const AppWrapper = styled.div.attrs(props => ({
+  className: 'appWrapper'
+}))`
+    padding: 20px;
+    width: 500px;
+    background: papayawhip;
+`
+
+export const Button = styled.button`
+    display: block;
+    font-size: 1em;
+    margin: 0 auto;
+    padding: 0.25em 1em;
+    border-radius: 3px;
+    color: ${props => props.theme.color};
+    border: 2px solid ${props => props.theme.color};
+`
+```
+
+* theme/index.js
+
+```js {3,6}
+// 主题相关
+export const themes = {
+  light: {
+    color: '#BF4F74',
+  },
+  dark: {
+    color: '#60c18b',
+  }
+}
+```
+
+## 2.8 React 中添加 class
+
+### 2.8.1 概述
+
+* 在 Vue 中添加 class 是一件非常简单的事情，可以传入一个对象：
+
+```vue
+<div :class="{ active: isActive }"></div>
+```
+
+* 在 Vue 中添加 class 也可以传入数组：
+
+```vue
+<div :class="[activeClass, errorClass]"></div>
+```
+
+* 在 Vue 中添加 class 还可以对象和数组混合使用：
+
+```vue
+<div :class="[{ active: isActive }, errorClass]"></div>
+```
+
+* 但是，React 在 JSX 中给了我们足够多的灵活，我们可以通过逻辑来决定是否添加某些 class ：
+
+```jsx
+<div className={"title " + (isActive ? "active" : "") }></div>
+```
+
+```jsx
+<div className={ ["title", (isActive ? "active" : "").join(" ")] }></div>
+```
+
+* 当然，和 Vue 相比，感觉很麻烦，我们可以使用第三方库 `classnames` 来实现类似 Vue 中的效果，其安装命令如下：
+
+```shell
+npm install classnames
+```
+
+* 官方给出的示例如下：
+
+```js
+classNames('foo', 'bar'); // => 'foo bar'
+classNames('foo', { bar: true }); // => 'foo bar'
+classNames({ 'foo-bar': true }); // => 'foo-bar'
+classNames({ 'foo-bar': false }); // => ''
+classNames({ foo: true }, { bar: true }); // => 'foo bar'
+classNames({ foo: true, bar: true }); // => 'foo bar'
+
+// lots of arguments of various types
+classNames('foo', { bar: true, duck: false }, 'baz', { quux: true }); // => 'foo bar baz quux'
+
+// other falsy values are just ignored
+classNames(null, false, 'bar', undefined, 0, 1, { baz: null }, ''); // => 'bar 1'
+```
+
+```js
+const arr = ['b', { c: true, d: false }];
+classNames('a', arr); // => 'a b c'
+```
+
+### 2.8.2 案例
+
+* 示例：
+
+```jsx {2,12-20}
+import React, {PureComponent} from 'react'
+import classNames from "classnames";
+
+
+class App extends PureComponent {
+  
+  state = {}
+  
+  render() {
+    return (
+      <div>
+        <div className={classNames('foo', 'bar')}>'foo bar'</div>
+        <div className={classNames('foo', {bar: true})}>'foo bar'</div>
+        <div className={classNames({'foo-bar': true})}>'foo-bar'</div>
+        <div className={classNames({'foo-bar': false})}>''</div>
+        <div className={classNames({foo: true}, {bar: true})}>'foo bar'</div>
+        <div className={classNames({foo: true, bar: true})}>'foo bar'</div>
+        <div className={classNames('foo', {bar: true, duck: false}, 'baz', {qux: true})}>'foo bar baz qux'</div>
+        <div className={classNames(null, false, 'bar', undefined, 0, 1, {baz: null}, '')}>'bar 1'</div>
+        <div className={classNames('a', ['b', {c: true, d: false}])}>'a b c'</div>
+      </div>
+    )
+  }
+}
+
+export default App
 ```
 
