@@ -532,7 +532,7 @@ export default Home
 }
 ```
 
-### 2.3.3 解决方案 --- CSS modules
+### 2.3.3 CSS modules
 
 #### 2.3.3.1 概述
 
