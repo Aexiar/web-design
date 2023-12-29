@@ -75,7 +75,7 @@
 > * 其中，umd 全称是 Universal Module Definition，可以在前端和后端通用。
 > * 其中，cjs 全称 CommonJS ，不能在浏览器中运行，通常会在 Node.js 中运行。
 > * ~~其中，amd 的全称是 Asynchronous Module Definition，已经被淘汰~~。
-> * 其中，esm 的全称是ES Modules，可以在很多现代浏览器中使用；但是，一般配合打包工具，如：webpack、vite 等使用，以便在所有浏览器都能使用。
+> * 其中，esm 的全称是 ES Modules，可以在很多现代浏览器中使用；但是，一般配合打包工具，如：webpack、vite 等使用，以便在所有浏览器都能使用。
 
 
 
