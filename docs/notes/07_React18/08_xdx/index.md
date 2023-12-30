@@ -339,7 +339,7 @@ const addAction = {
 
 ```js {2}
 const addAction = {
-    type: 'todos/INCREMENT', // 看个人喜好，不请求，只要在项目中保持唯一即可
+    type: 'todos/INCREMENT', // 看个人喜好，不强求，只要在项目中保持唯一即可
     payload: '1'
 }
 ```
@@ -432,7 +432,7 @@ const result = arr.reduce((pre, cur) => pre + cur, 0)
 console.log(result) // 45
 ```
 
-* 上述案例中数组的 `reduce()` 方法中插入了一个`回调函数`和一个`初始化值`。这个回调函数接收`之前的结果`和`当前的结果`，并`返回一个新的结果`。
+* 上述案例中数组的 `reduce()` 方法中传入了一个`回调函数`和一个`初始化值`。这个回调函数接收`之前的结果`和`当前的结果`，并`返回一个新的结果`。
 * Redux 中的 `reducer()` 函数和数组中的 `reduce()` 方法的想法是完全一样的，它接收`上一个结果的 state` 和 `当前的 action` ，并`返回一个新的 state`。
 
 ```js {14,29-31}
@@ -547,5 +547,136 @@ export default App
 
 ![数据流更新动画](./assets/5.gif)
 
-## 2.7 快速入门
+## 2.7 Redux 使用的三大原则
+
+* ① 单一数据源：
+  * 整个应用程序的 `state` 被存储到一颗 `Object Tree` 中，并且`这个 Object Tree 只存储在一个 store 中`。
+  * Redux `并没有强制我们不能创建多个 store` ，但是那样`不利于数据的维护`。
+  * `单一数据源`可以`让`整个应用程序的 `state` 方便`维护`、`追踪`和`修改`。
+* ② state 是只读的：
+  * 唯一修改 State 的方法就是在组件中通过 store 对象 `触发（Dispatch）` Action，不要试图通过其他的任何方式来修改 State。
+  * 这样确保了视图（View）或网络请求都`不能直接修改 State`，它们只能`通过 action 来描述自己想要如何去修改 State`。
+  * 这样可以`保证所有的修改都被集中化处理`，并且`按照严格的顺序来执行`，所以`不需要担心race condition（竟态）的问题`。
+* ③ 使用纯函数来执行修改：
+  * 通过 `reducer`将 `旧state`和 `actions` 联系在一起，并且返回一个`新`的 `State`：
+  * 随着应用程序的复杂度增加，我们可以将 `reducer` 拆分成`多个`小的 `reducers`，分别操作不同 state tree 的一部分；
+  * 但是所有的 `reducer` 都应该是`纯函数`，不能产生任何的副作用。
+
+## 2.8 Redux 的快速入门
+
+* 案例：实现下面的效果。
+
+![](./assets/6.gif)
+
+* 安装 redux ：
+
+```shell
+npm install redux
+```
+
+* 项目结构：
+
+![image-20231230152906851](./assets/7.png)
+
+* 示例：
+* App.jsx
+
+```jsx {2,12,17,21,37-42}
+import React, {PureComponent} from 'react'
+import store from "@/store"
+
+class App extends PureComponent {
+  
+  state = {
+    count: store.getState().count
+  }
+  
+  add(num) {
+    // 通过 store 触发 Action
+    store.dispatch({type: 'INCREMENT', payload: num})
+  }
+  
+  sub(num) {
+    // 通过 store 触发 Action
+    store.dispatch({type: 'DECREMENT', payload: num})
+  }
+  
+  componentDidMount() {
+    this.unSubscribe = store.subscribe(() => {
+      console.log('订阅数据的变化', store.getState())
+      const {count} = store.getState()
+      this.setState({...this.state, count})
+    })
+  }
+  
+  componentWillUnmount() {
+    this.unSubscribe()
+  }
+  
+  render() {
+    const {count} = this.state
+    return (
+      <div>
+        <h2>当前计数为：{count}</h2>
+        <button onClick={() => this.add(1)}>点我+1</button>
+        <button onClick={() => this.add(5)}>点我+5</button>
+        <button onClick={() => this.add(10)}>点我+10</button>
+        <button onClick={() => this.sub(1)}>点我-1</button>
+        <button onClick={() => this.sub(5)}>点我-5</button>
+        <button onClick={() => this.sub(10)}>点我-10</button>
+      </div>
+    )
+  }
+}
+
+export default App
+```
+
+> 注意：
+>
+> * 目前，只能通过 `store.subscribe` 来监听 redux 中 state 的变化，后期会使用 [HOC](https://aexiar.github.io/web-design/notes/07_React18/06_xdx/) 来进行优化。
+> * 目前，为了实现 redux 中 state 变化，页面跟着刷新，还是使用的是，将数据放到组件内部的 state 中，后期也会使用 [HOC](https://aexiar.github.io/web-design/notes/07_React18/06_xdx/) 来进行优化。
+
+* store/index.js
+
+```js {4,14,36}
+import {createStore} from "redux"
+
+// 初始化的 state
+const initialState = {
+  count: 0
+}
+
+/**
+ * 定义 reducer 纯函数
+ * @param state 当前的 state
+ * @param action 本次需要更新的 action
+ * @return store 中存储的 state
+ */
+const reducer = (state = initialState, action) => {
+  console.log('reducer', state, action)
+  switch (action.type) {
+    case 'INCREMENT':
+      const newRes = {
+        ...state,
+        count: state.count + action.payload
+      }
+      console.log('newRes', newRes)
+      return newRes
+    case 'DECREMENT':
+      return {
+        ...state,
+        count: state.count - action.payload
+      }
+    default: {
+      return state
+    }
+  }
+}
+
+// 创建 Store 对象
+const store = createStore(reducer)
+
+export default store
+```
 
