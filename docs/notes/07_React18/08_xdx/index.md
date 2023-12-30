@@ -1075,13 +1075,16 @@ npm install react-redux
 * 使用步骤如下：
   * ① 安装 react-redux：使用 npm 或 yarn 安装 react-redux 库。
   * ② 创建 Redux Store：可以使用 Redux 的 createStore 函数来创建一个全局的 store，并传入 rootReducer（根 reducer）和可选的中间件。
-  * ③ 创建 React 组件：创建需要连接到 Redux 的 React 组件。可以使用 React 的函数组件或类组件。
-  * ④ 使用 connect 函数连接组件：使用 react-redux 提供的 connect 函数，将 React 组件与 Redux 的 store 进行连接。在组件中使用 connect 函数，传入 mapStateToProps 和 mapDispatchToProps 函数，将 Redux 的 state 和 action 与组件进行绑定。
-  * ⑤ 定义 mapStateToProps 函数：在 mapStateToProps 函数中，指定需要从 Redux 的 state 中获取的数据，并将其映射到组件的 props 上。
-  * ⑥ 定义 mapDispatchToProps 函数：在 mapDispatchToProps 函数中，指定需要将哪些 action 创建函数绑定到组件的 props 上，以便在组件中触发相应的 action。
-  * ⑦ 在组件中使用 Redux 数据和触发 action：通过组件的 props，可以访问 Redux 的 state 数据和触发相应的 action。
+  * ③ 在应用入口传递 store：在应用入口（index.js）中通过 Provider 传递 store 对象。
+  * ④ 创建 React 组件：创建需要连接到 Redux 的 React 组件。可以使用 React 的函数组件或类组件。
+  * ⑤ 使用 connect 函数连接组件：使用 react-redux 提供的 connect 函数，将 React 组件与 Redux 的 store 进行连接。在组件中使用 connect 函数，传入 mapStateToProps 和 mapDispatchToProps 函数，将 Redux 的 state 和 action 与组件进行绑定。
+  * ⑥ 定义 mapStateToProps 函数：在 mapStateToProps 函数中，指定需要从 Redux 的 state 中获取的数据，并将其映射到组件的 props 上。
+  * ⑦ 定义 mapDispatchToProps 函数：在 mapDispatchToProps 函数中，指定需要将哪些 action 创建函数绑定到组件的 props 上，以便在组件中触发相应的 action。
+  * ⑧ 在组件中使用 Redux 数据和触发 action：通过组件的 props，可以访问 Redux 的 state 数据和触发相应的 action。
 
-## 4.2 案例
+## 4.2 基本使用
+
+### 4.2.1 需求、项目结构、基础环境搭建
 
 * 需求：实现 Home 组件中也共享 Counter 组件的状态和操作。
 
@@ -1091,4 +1094,343 @@ npm install react-redux
 
 ![image-20231230230140875](./assets/12.png)
 
-* 基础环境搭建：略。
+* 基础环境搭建：Counter 组件的搭建，[略](https://aexiar.github.io/web-design/notes/07_React18/08_xdx/#_3-3-%E4%BC%98%E5%8C%96%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8)。
+
+### 4.2.2 功能实现
+
+* `React-Redux` 最主要就是在全局传递 store 对象；所以，我们需要在 index.js 中，这样写：
+
+```js {4-5,9,13}
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from '@/App'
+import store from "@/store"
+import {Provider} from "react-redux"
+
+const root = ReactDOM.createRoot(document.getElementById('root'))
+root.render(
+  <Provider store={store}>
+    <React.StrictMode>
+      <App/>
+    </React.StrictMode>
+  </Provider>
+)
+```
+
+* 看到这样的代码，难道不觉得很熟悉吗？很像 React 中的内置 Context ，如下所示：
+
+```jsx {1,3}
+<CounterContext.Provider value={count}>
+    <Counter/>
+</CounterContext.Provider>
+```
+
+* 其实，`React-Redux` 提供了 connect() 函数供我们在组件中使用；需要注意的是，`connect() 函数的返回值才是高阶组件`，所以 Home 组件，就应该这么写：
+
+```jsx {2,22-23}
+import React, {PureComponent} from 'react'
+import {connect} from 'react-redux'
+import {addCountAction, subCountAction} from "@/store/actionCreators"
+
+class Home extends PureComponent {
+  
+  state = {
+    message: '我是 Home 组件',
+  }
+  
+  
+  render() {
+    
+    return (
+      <div>
+        <h2>{message}</h2>
+        <h3>当前计数为：0</h3>
+      </div>
+    )
+  }
+}
+// connect() 函数的返回值是高阶组件，不是 connect() 函数是高阶组件，所以只能 connect()(Home) 这么写
+export default connect()(Home)
+```
+
+* connect() 函数有两个参数，并且都是函数，所以我们可以这么写：
+
+```jsx {22-25}
+import React, {PureComponent} from 'react'
+import {connect} from 'react-redux'
+import {addCountAction, subCountAction} from "@/store/actionCreators"
+
+class Home extends PureComponent {
+  
+  state = {
+    message: '我是 Home 组件',
+  }
+  
+  
+  render() {
+    
+    return (
+      <div>
+        <h2>{message}</h2>
+        <h3>当前计数为：0</h3>
+      </div>
+    )
+  }
+}
+// connect(fn1,fn2) 函数的返回值是高阶组件，不是 connect() 函数是高阶组件，所以只能 connect()(Home) 这么写
+function fn1(){}
+function fn2(){}
+export default connect(fn1,fn2)(Home)
+```
+
+* 其中，第一个参数 fn1，即函数 fn1 是将 state 映射到 props 上，所以我们通常命名为 `mapStateToProps`，并且 `mapStateToProps` 函数的`参数`是 Redux 中的 `state`，而`返回值`就一个`对象`，即：
+
+```jsx {22-28}
+import React, {PureComponent} from 'react'
+import {connect} from 'react-redux'
+import {addCountAction, subCountAction} from "@/store/actionCreators"
+
+class Home extends PureComponent {
+  
+  state = {
+    message: '我是 Home 组件',
+  }
+  
+  
+  render() {
+    
+    return (
+      <div>
+        <h2>{message}</h2>
+        <h3>当前计数为：0</h3>
+      </div>
+    )
+  }
+}
+// connect(fn1,fn2) 函数的返回值是高阶组件，不是 connect() 函数是高阶组件，所以只能 connect()(Home) 这么写
+// 其中，第一个参数 fn1，即函数 fn1 是将 state 映射到 props 上，所以我们通常命名为 `mapStateToProps`，并且 `mapStateToProps` 函数的`参数`是 Redux 中的 `state`，而`返回值`就一个`对象`
+function mapStateToProps(state){
+    return {
+        count: state.count
+    }
+}
+function fn2(){}
+export default connect(mapStateToProps,fn2)(Home)
+```
+
+* 其实，看到这边，我们都应该能猜到其内部是怎么实现的，其伪代码类似：
+
+```jsx {27-28}
+function connect(mapStateToProps, fn2) {
+  // 返回一个高阶组件
+  return function(WrappedComponent) {
+    // 返回一个新的组件
+     class ConnectedComponent extends React.Component {
+         
+      state = {
+         reduxState: store.getState();
+      }
+         
+      componentDidMount() {
+        // 订阅 Redux 的状态变化
+        this.unsubscribe = store.subscribe(()=>{
+            this.setState({
+                reduxState:  store.getState()
+            })
+        });
+      }
+         
+      componentWillUnmount() {
+        // 取消订阅 Redux 的状态变化
+        this.unsubscribe();
+      }
+      
+      render() {
+        
+        // 执行 mapStateToProps 回调函数将 Redux 中的 state 传入，然后获取返回的对象，再通过 props 传递给被包裹的组件   
+        const mappedState = mapStateToProps(this.state.reduxState);
+
+        // 将映射后的 props 传递给被包裹的组件
+        return <WrappedComponent {...mappedState} {...this.props} />;
+      }
+    };
+      
+    return ConnectedComponent;
+  };
+}
+```
+
+* 其中，第二个参数 fn2，即函数 fn2 是将 dispatch映射到 props 上，所以我们通常命名为 `mapDispatchToProps`，并且 `mapDispatchToProps` 函数的`参数`是 Redux 中的 `dispatch`，而`返回值`就一个`对象`，即：
+
+```jsx {34-39}
+import React, {PureComponent} from 'react'
+import {connect} from 'react-redux'
+import {addCountAction, subCountAction} from "@/store/actionCreators"
+
+class Home extends PureComponent {
+  
+  state = {
+    message: '我是 Home 组件',
+  }
+  
+  
+  render() {
+    const {message} = this.state
+    console.log('Home props', this.props)
+    return (
+      <div>
+        <h2>{message}</h2>
+        <h3>当前计数为：0</h3>
+      </div>
+    )
+  }
+}
+
+// connect(fn1,fn2) 函数的返回值是高阶组件
+// 其中，fn1 是将 state 映射到 props 上，通常命名为 mapStateToProps
+// 其中，fn2 是将 dispatch 映射到 props 上，通常命名为 mapDispatchToProps
+
+function mapStateToProps(state) {
+  return { // 该对象会通过 props 传递给子组件
+    count: state.count
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return { // 该对象会通过 props 传递给子组件
+    add: (num) => dispatch(addCountAction(num)),
+    sub: (num) => dispatch(subCountAction(num))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
+```
+
+* `Home` 组件是`类`组件，拥有封装性，而 `mapStateToProps` 回调函数和 `mapDispatchToProps` 回调函数，是 `connect()` 函数为了实现功能而提供的，和 Home 组件没有任何关系，可以使用`箭头函数`来简化，即：
+
+```jsx {27-29,31-34}
+import React, {PureComponent} from 'react'
+import {connect} from 'react-redux'
+import {addCountAction, subCountAction} from "@/store/actionCreators"
+
+class Home extends PureComponent {
+  
+  state = {
+    message: '我是 Home 组件',
+  }
+  
+  render() {
+    const {message} = this.state
+    console.log('Home props', this.props)
+    return (
+      <div>
+        <h2>{message}</h2>
+        <h3>当前计数为：0</h3>
+      </div>
+    )
+  }
+}
+
+// connect(fn1,fn2) 函数的返回值是高阶组件
+// 其中， fn1 是将 state 映射到 props 上，通常命名为 mapStateToProps
+// 其中，fn2 是将 dispatch 映射到 props 上，通常命名为 mapDispatchToProps
+
+const mapStateToProps = (state) => ({
+  count: state.count
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  add: (num) => dispatch(addCountAction(num)),
+  sub: (num) => dispatch(subCountAction(num))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
+```
+
+* 那么，我们就可以从 props 中获取我们所想要的 `state` 和 `action(通过 dispatch 分发)`，即：
+
+```jsx {14}
+import React, {PureComponent} from 'react'
+import {connect} from 'react-redux'
+import {addCountAction, subCountAction} from "@/store/actionCreators"
+
+class Home extends PureComponent {
+  
+  state = {
+    message: '我是 Home 组件',
+  }
+  
+  render() {
+    const {message} = this.state
+    console.log('Home props', this.props)
+    const {count, add, sub} = this.props
+    return (
+      <div>
+        <h2>{message}</h2>
+        <h3>当前计数为：{count}</h3>
+        <button onClick={() => add(1)}>点我+1</button>
+        <button onClick={() => add(5)}>点我+5</button>
+        <button onClick={() => add(10)}>点我+10</button>
+        <button onClick={() => sub(1)}>点我-1</button>
+        <button onClick={() => sub(5)}>点我-5</button>
+        <button onClick={() => sub(10)}>点我-10</button>
+      </div>
+    )
+  }
+}
+
+// connect(fn1,fn2) 函数的返回值是高阶组件
+// 其中， fn1 是将 state 映射到 props 上，通常命名为 mapStateToProps
+// 其中，fn2 是将 dispatch 映射到 props 上，通常命名为 mapDispatchToProps
+
+const mapStateToProps = (state) => ({
+  count: state.count
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  add: (num) => dispatch(addCountAction(num)),
+  sub: (num) => dispatch(subCountAction(num))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home)
+```
+
+* 可能，很多人不是很理解，下面的代码：
+
+```jsx
+const mapDispatchToProps = (dispatch) => ({
+  add: (num) => dispatch(addCountAction(num)),
+  sub: (num) => dispatch(subCountAction(num))
+})
+```
+
+* 其代码的`演化过程`，如下所示：
+
+![image-20231231001620530](./assets/13.png)
+
+* 那么，App.jsx 的代码，如下所示：
+
+```jsx
+import React, {PureComponent} from 'react'
+import Counter from "@/components/Counter"
+import Home from "@/components/Home"
+
+class App extends PureComponent {
+  
+  render() {
+    return (
+      <div>
+        <div style={{background: "pink", padding: '10px', width: '500px'}}>
+          <Counter/>
+        </div>
+        <div style={{background: "skyblue", padding: '10px', width: '500px'}}>
+          <Home/>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default App
+```
+
