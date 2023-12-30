@@ -549,20 +549,24 @@ export default App
 
 ## 2.7 Redux 使用的三大原则
 
-* ① 单一数据源：
+* ① `单一数据源`：
   * 整个应用程序的 `state` 被存储到一颗 `Object Tree` 中，并且`这个 Object Tree 只存储在一个 store 中`。
   * Redux `并没有强制我们不能创建多个 store` ，但是那样`不利于数据的维护`。
   * `单一数据源`可以`让`整个应用程序的 `state` 方便`维护`、`追踪`和`修改`。
-* ② state 是只读的：
+* ② `state 是只读的`：
   * 唯一修改 State 的方法就是在组件中通过 store 对象 `触发（Dispatch）` Action，不要试图通过其他的任何方式来修改 State。
   * 这样确保了视图（View）或网络请求都`不能直接修改 State`，它们只能`通过 action 来描述自己想要如何去修改 State`。
   * 这样可以`保证所有的修改都被集中化处理`，并且`按照严格的顺序来执行`，所以`不需要担心race condition（竟态）的问题`。
-* ③ 使用纯函数来执行修改：
+* ③ `使用纯函数来执行修改`：
   * 通过 `reducer`将 `旧state`和 `actions` 联系在一起，并且返回一个`新`的 `State`：
   * 随着应用程序的复杂度增加，我们可以将 `reducer` 拆分成`多个`小的 `reducers`，分别操作不同 state tree 的一部分；
   * 但是所有的 `reducer` 都应该是`纯函数`，不能产生任何的副作用。
 
-## 2.8 Redux 的快速入门
+
+
+# 第三章：Redux 的快速入门
+
+## 3.1 Redux 的快速入门
 
 * 案例：实现下面的效果。
 
@@ -581,7 +585,7 @@ npm install redux
 * 示例：
 * App.jsx
 
-```jsx {2,12,17,21,37-42}
+```jsx {2,7,12,17,21,37-42}
 import React, {PureComponent} from 'react'
 import store from "@/store"
 
@@ -635,7 +639,7 @@ export default App
 > 注意：
 >
 > * 目前，只能通过 `store.subscribe` 来监听 redux 中 state 的变化，后期会使用 [HOC](https://aexiar.github.io/web-design/notes/07_React18/06_xdx/) 来进行优化。
-> * 目前，为了实现 redux 中 state 变化，页面跟着刷新，还是使用的是，将数据放到组件内部的 state 中，后期也会使用 [HOC](https://aexiar.github.io/web-design/notes/07_React18/06_xdx/) 来进行优化。
+> * 目前，为了实现 redux 中 state 变化，页面跟着刷新，当前的临时解决方案是：将数据放到组件内部的 state 中；后期也会使用 [HOC](https://aexiar.github.io/web-design/notes/07_React18/06_xdx/) 来进行优化。
 
 * store/index.js
 
@@ -680,3 +684,411 @@ const store = createStore(reducer)
 export default store
 ```
 
+## 3.2 优化快速入门
+
+* 在实际开发中，如果我们将所有的逻辑代码都写到一起，会让 redux 变得非常复杂且难以维护，通过我们会将代码拆分为如下的文件：
+  * `store/index.js` ：用于创建 Store 对象的。
+  * `store/reducer.js`：用于创建 reducer 函数的。
+  * `store/actionCreateor.js`：用于创建 action 对象的。
+  * `store/constants.js` ：用于保存 Action 中的 type 字符串的。
+
+* 项目结构：
+
+![image-20231230163021902](./assets/8.png)
+
+* 示例：
+* store/constant.js
+
+```jsx {3,12,16}
+/* 该文件主要维护 Action 中 type 的名称 */
+export const ADD_COUNTER = 'INCREMENT'
+
+export const SUB_COUNTER = 'DECREMENT'
+```
+
+* store/actionCreator.js
+
+```js {8,18}
+import * as ActionTypes from './constant'
+
+/**
+ * 添加计数器函数，用来生成 action 对象
+ * @param payload
+ * @returns {{payload, type: string}} 返回 Action
+ */
+export const addCountAction = (payload) => ({
+  type: ActionTypes.ADD_COUNTER,
+  payload
+})
+
+/**
+ * 减少计数器函数，用来生成 action 对象
+ * @param payload
+ * @returns {{payload, type: string}} 返回 Action
+ * */
+export const subCountAction = (payload) => ({
+  type: ActionTypes.SUB_COUNTER,
+  payload
+})
+```
+
+* store/reducers.js
+
+```js
+import * as ActionTypes from './constant'
+// 初始化的 state
+const initialState = {
+  count: 0
+}
+/**
+ * 定义 reducer 纯函数
+ * @param state 当前的 state
+ * @param action 本次需要更新的 action
+ * @return store 中存储的 state
+ */
+export const reducer = (state = initialState, action) => {
+  console.log('reducer', state, action)
+  switch (action.type) {
+    case ActionTypes.ADD_COUNTER:
+      const newRes = {
+        ...state,
+        count: state.count + action.payload
+      }
+      console.log('newRes', newRes)
+      return newRes
+    case ActionTypes.SUB_COUNTER:
+      return {
+        ...state,
+        count: state.count - action.payload
+      }
+    default: {
+      return state
+    }
+  }
+}
+```
+
+* store/index.js
+
+```js
+import {createStore} from "redux"
+import {reducer} from "@/store/reducers"
+
+// 创建 Store 对象
+const store = createStore(reducer)
+
+export default store
+```
+
+* App.jsx
+
+```jsx {2-3,8,12,16}
+import React, {PureComponent} from 'react'
+import store from "@/store"
+import {addCountAction, subCountAction} from "@/store/actionCreateor"
+
+class App extends PureComponent {
+  
+  state = {
+    count: store.getState().count
+  }
+  
+  add(num) {
+    store.dispatch(addCountAction(num))
+  }
+  
+  sub(num) {
+    store.dispatch(subCountAction(num))
+  }
+  
+  componentDidMount() {
+    this.unSubscribe = store.subscribe(() => {
+      console.log('订阅数据的变化', store.getState())
+      const {count} = store.getState()
+      this.setState({...this.state, count})
+    })
+  }
+  
+  componentWillUnmount() {
+    this.unSubscribe()
+  }
+  
+  render() {
+    const {count} = this.state
+    return (
+      <div>
+        <h2>当前计数为：{count}</h2>
+        <button onClick={() => this.add(1)}>点我+1</button>
+        <button onClick={() => this.add(5)}>点我+5</button>
+        <button onClick={() => this.add(10)}>点我+10</button>
+        <button onClick={() => this.sub(1)}>点我-1</button>
+        <button onClick={() => this.sub(5)}>点我-5</button>
+        <button onClick={() => this.sub(10)}>点我-10</button>
+      </div>
+    )
+  }
+}
+
+export default App
+```
+
+## 3.3 优化快速入门
+
+* 为了方便后续的操作，我们需要将 `App.jsx` 中的代码抽取到一个名为 `Counter` 的组件中，并实现如下的效果。
+
+![](./assets/9.gif)
+
+* 项目结构：
+
+![image-20231230222534974](./assets/10.png)
+
+* 示例：
+* components/Counter.jsx
+
+```jsx
+import React, {PureComponent} from 'react'
+import store from "@/store"
+import {addCountAction, subCountAction} from "@/store/actionCreators"
+
+class Counter extends PureComponent {
+  
+  state = {
+    message: '我是 Counter 组件',
+    count: store.getState().count
+  }
+  
+  add(num) {
+    store.dispatch(addCountAction(num))
+  }
+  
+  sub(num) {
+    store.dispatch(subCountAction(num))
+  }
+  
+  componentDidMount() {
+    this.unSubscribe = store.subscribe(() => {
+      console.log('订阅数据的变化', store.getState())
+      const {count} = store.getState()
+      this.setState({...this.state, count})
+    })
+  }
+  
+  componentWillUnmount() {
+    this.unSubscribe()
+  }
+  
+  render() {
+    const {count, message} = this.state
+    return (
+      <div>
+        <h2>{message}</h2>
+        <h3>当前计数为：{count}</h3>
+        <button onClick={() => this.add(1)}>点我+1</button>
+        <button onClick={() => this.add(5)}>点我+5</button>
+        <button onClick={() => this.add(10)}>点我+10</button>
+        <button onClick={() => this.sub(1)}>点我-1</button>
+        <button onClick={() => this.sub(5)}>点我-5</button>
+        <button onClick={() => this.sub(10)}>点我-10</button>
+      </div>
+    )
+  }
+}
+
+export default Counter
+```
+
+* store/constant.js
+
+```js
+/* 该文件主要维护 Action 中 type 的名称 */
+export const ADD_COUNTER = 'INCREMENT'
+
+export const SUB_COUNTER = 'DECREMENT'
+```
+
+* store/actionCreators.js
+
+```js
+import * as ActionTypes from './constant'
+
+/**
+ * 添加计数器
+ * @param payload
+ * @returns {{payload, type: string}} 返回 Action
+ */
+export const addCountAction = (payload) => ({
+  type: ActionTypes.ADD_COUNTER,
+  payload
+})
+
+/**
+ * 减少计数器
+ * @param payload
+ * @returns {{payload, type: string}} 返回 Action
+ * */
+export const subCountAction = (payload) => ({
+  type: ActionTypes.SUB_COUNTER,
+  payload
+})
+```
+
+* store/reducers.js
+
+```js
+import * as ActionTypes from './constant'
+// 初始化的 state
+const initialState = {
+  count: 0
+}
+/**
+ * 定义 reducer 纯函数
+ * @param state 当前的 state
+ * @param action 本次需要更新的 action
+ * @return store 中存储的 state
+ */
+export const reducer = (state = initialState, action) => {
+  console.log('reducer', state, action)
+  switch (action.type) {
+    case ActionTypes.ADD_COUNTER:
+      const newRes = {
+        ...state,
+        count: state.count + action.payload
+      }
+      console.log('newRes', newRes)
+      return newRes
+    case ActionTypes.SUB_COUNTER:
+      return {
+        ...state,
+        count: state.count - action.payload
+      }
+    default: {
+      return state
+    }
+  }
+}
+```
+
+* store/index.js
+
+```js
+import {createStore} from "redux"
+import {reducer} from "@/store/reducers"
+
+// 创建 Store 对象
+const store = createStore(reducer)
+
+export default store
+```
+
+* App.jsx
+
+```jsx
+import React, {PureComponent} from 'react'
+import Counter from "@/components/Counter";
+
+class App extends PureComponent {
+  
+  render() {
+    return (
+      <div>
+        <div style={{background: "pink", padding: '10px', width: '500px'}}>
+          <Counter/>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default App
+```
+
+
+
+# 第四章：React-Redux 的使用
+
+## 4.1 概述
+
+* 之前，我们在使用 Counter 组件的时候；会发现很多代码，如果在其他组件中，也这么使用，会显得很重复：
+
+```jsx {9,20-26,28-30}
+import React, {PureComponent} from 'react'
+import store from "@/store"
+import {addCountAction, subCountAction} from "@/store/actionCreators"
+
+class Counter extends PureComponent {
+  
+  state = {
+    message: '我是 Counter 组件',
+    count: store.getState().count
+  }
+  
+  add(num) {
+    store.dispatch(addCountAction(num))
+  }
+  
+  sub(num) {
+    store.dispatch(subCountAction(num))
+  }
+  
+  componentDidMount() {
+    this.unSubscribe = store.subscribe(() => {
+      console.log('订阅数据的变化', store.getState())
+      const {count} = store.getState()
+      this.setState({...this.state, count})
+    })
+  }
+  
+  componentWillUnmount() {
+    this.unSubscribe()
+  }
+  
+  render() {
+    const {count, message} = this.state
+    return (
+      <div>
+        <h2>{message}</h2>
+        <h3>当前计数为：{count}</h3>
+        <button onClick={() => this.add(1)}>点我+1</button>
+        <button onClick={() => this.add(5)}>点我+5</button>
+        <button onClick={() => this.add(10)}>点我+10</button>
+        <button onClick={() => this.sub(1)}>点我-1</button>
+        <button onClick={() => this.sub(5)}>点我-5</button>
+        <button onClick={() => this.sub(10)}>点我-10</button>
+      </div>
+    )
+  }
+}
+
+export default Counter
+```
+
+* 那么，我们可以使用 `HOC（高阶组件）`和 `React 内置的 Context` 来解决这个问题；但是，在实际开发中，我们会使用 redux 官方提供的 `react-redux` 库，其实现更为严谨和高效。
+
+> 注意：react-redux 库的原理还是通过 `HOC（高阶组件）`和 `React 内置的 Context` 来解决上述的问题。
+
+* 安装 react-redux ：
+
+```shell
+npm install react-redux
+```
+
+* 使用步骤如下：
+  * ① 安装 react-redux：使用 npm 或 yarn 安装 react-redux 库。
+  * ② 创建 Redux Store：可以使用 Redux 的 createStore 函数来创建一个全局的 store，并传入 rootReducer（根 reducer）和可选的中间件。
+  * ③ 创建 React 组件：创建需要连接到 Redux 的 React 组件。可以使用 React 的函数组件或类组件。
+  * ④ 使用 connect 函数连接组件：使用 react-redux 提供的 connect 函数，将 React 组件与 Redux 的 store 进行连接。在组件中使用 connect 函数，传入 mapStateToProps 和 mapDispatchToProps 函数，将 Redux 的 state 和 action 与组件进行绑定。
+  * ⑤ 定义 mapStateToProps 函数：在 mapStateToProps 函数中，指定需要从 Redux 的 state 中获取的数据，并将其映射到组件的 props 上。
+  * ⑥ 定义 mapDispatchToProps 函数：在 mapDispatchToProps 函数中，指定需要将哪些 action 创建函数绑定到组件的 props 上，以便在组件中触发相应的 action。
+  * ⑦ 在组件中使用 Redux 数据和触发 action：通过组件的 props，可以访问 Redux 的 state 数据和触发相应的 action。
+
+## 4.2 案例
+
+* 需求：实现 Home 组件中也共享 Counter 组件的状态和操作。
+
+![](./assets/11.gif)
+
+* 项目结构：
+
+![image-20231230230140875](./assets/12.png)
+
+* 基础环境搭建：略。
