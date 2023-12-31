@@ -1183,7 +1183,7 @@ function fn2(){}
 export default connect(fn1,fn2)(Home)
 ```
 
-* 其中，第一个参数 fn1，即函数 fn1 是将 state 映射到 props 上，所以我们通常命名为 `mapStateToProps`，并且 `mapStateToProps` 函数的`参数`是 Redux 中的 `state`，而`返回值`就一个`对象`，即：
+* 其中，第一个参数 fn1 函数是将 state 映射到 props 上，所以我们通常命名为 `mapStateToProps`，并且 `mapStateToProps` 函数的`参数`是 Redux 中的 `state`，而`返回值`就一个`对象`，即：
 
 ```jsx {22-28}
 import React, {PureComponent} from 'react'
@@ -1260,7 +1260,7 @@ function connect(mapStateToProps, fn2) {
 }
 ```
 
-* 其中，第二个参数 fn2，即函数 fn2 是将 dispatch映射到 props 上，所以我们通常命名为 `mapDispatchToProps`，并且 `mapDispatchToProps` 函数的`参数`是 Redux 中的 `dispatch`，而`返回值`就一个`对象`，即：
+* 其中，第二个参数 fn2 函数是将 dispatch 映射到 props 上，所以我们通常命名为 `mapDispatchToProps`，并且 `mapDispatchToProps` 函数的`参数`是 Redux 中的 `dispatch`，而`返回值`就一个`对象`，即：
 
 ```jsx {34-39}
 import React, {PureComponent} from 'react'
@@ -1406,7 +1406,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 * 其代码的`演化过程`，如下所示：
 
-![image-20231231001620530](./assets/13.png)
+![image-20231231204323647](./assets/13.png)
 
 * 那么，App.jsx 的代码，如下所示：
 
@@ -1432,5 +1432,1150 @@ class App extends PureComponent {
 }
 
 export default App
+```
+
+### 4.2.3 功能优化
+
+* 既然，功能已经实现完毕了，就可以将之前 Counter 组件删除了，因为其没有使用 react-redux ；之后，我们再将 Home 组件改名为 Counter 组件。
+* 项目结构：
+
+![image-20231231064947034](./assets/14.png)
+
+* 那么，此时的 Counter 组件的代码如下：
+
+```jsx
+import React, {PureComponent} from 'react'
+import {connect} from 'react-redux'
+import {addCountAction, subCountAction} from "@/store/actionCreators"
+
+class Counter extends PureComponent {
+  
+  state = {
+    message: '我是 Counter 组件',
+  }
+  
+  render() {
+    const {message} = this.state
+    console.log('Counter props', this.props)
+    const {count, add, sub} = this.props
+    return (
+      <div>
+        <h2>{message}</h2>
+        <h3>当前计数为：{count}</h3>
+        <button onClick={() => add(1)}>点我+1</button>
+        <button onClick={() => add(5)}>点我+5</button>
+        <button onClick={() => add(10)}>点我+10</button>
+        <button onClick={() => sub(1)}>点我-1</button>
+        <button onClick={() => sub(5)}>点我-5</button>
+        <button onClick={() => sub(10)}>点我-10</button>
+      </div>
+    )
+  }
+}
+
+// connect(fn1,fn2) 函数的返回值是高阶组件
+// 其中， fn1 是将 state 映射到 props 上，通常命名为 mapStateToProps
+// 其中，fn2 是将 dispatch 映射到 props 上，通常命名为 mapDispatchToProps
+
+const mapStateToProps = (state) => ({
+  count: state.count
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  add: (num) => dispatch(addCountAction(num)),
+  sub: (num) => dispatch(subCountAction(num))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Counter)
+```
+
+* App.jsx 的代码如下：
+
+```jsx
+import React, {PureComponent} from 'react'
+import Counter from "@/components/Counter"
+
+class App extends PureComponent {
+  
+  render() {
+    return (
+      <div>
+        <div style={{background: "pink", padding: '10px', width: '500px'}}>
+          <Counter/>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default App
+```
+
+## 4.3 组件中的异步操作
+
+### 4.3.1 概述
+
+* 在上面的案例中，redux 中保存的数据是一个本地的数据；所以，我们可以通过 `dispatch` 分发一个 action，那么 redux 中 store 保存的 state 数据就会立即更新。
+
+* 但是，在实际开发中，很多时候 `redux` 中`保存的数据`往往`来自服务器`，我们需要进行`异步的请求`，再`将数据保存到 redux` 中。
+* 需要`注意`的是:`dispatch action 是一个同步操作`，即 redux 中的 reducer 默认是不能处理异步的请求的，那咋办？其实，对于 React 中的类式组件而言，我们可以通过 `componentDidMount` 发送异步请求，然后将数据保存到 redux 中不就可以了。
+* 对应的流程图如下：
+
+![image-20231231075040691](./assets/15.png)
+
+### 4.3.2 案例
+
+* 需求：异步获取轮播图的数据。
+
+![](./assets/16.gif)
+
+* 项目结构：
+
+![image-20231231142657818](./assets/17.png)
+
+* 示例：
+* store/constant.js
+
+```js {6}
+/* 该文件主要维护 Action 中 type 的名称 */
+export const ADD_COUNTER = 'INCREMENT'
+
+export const SUB_COUNTER = 'DECREMENT'
+
+export const ADD_BANNER = 'ADD_BANNER'
+```
+
+* store/actionCreators.js
+
+```js {28-31}
+import * as ActionTypes from './constant'
+
+/**
+ * 添加计数器
+ * @param payload
+ * @returns {{payload, type: string}} 返回 Action
+ */
+export const addCountAction = (payload) => ({
+  type: ActionTypes.ADD_COUNTER,
+  payload
+})
+
+/**
+ * 减少计数器
+ * @param payload
+ * @returns {{payload, type: string}} 返回 Action
+ * */
+export const subCountAction = (payload) => ({
+  type: ActionTypes.SUB_COUNTER,
+  payload
+})
+
+/**
+ * 添加轮播图
+ * @param payload
+ * @returns {{payload, type: string}}
+ */
+export const addBannerAction = (payload) => ({
+  type: ActionTypes.ADD_BANNER,
+  payload
+})
+```
+
+* store/reducers.js
+
+```js {5,27-31}
+import * as ActionTypes from './constant'
+// 初始化的 state
+const initialState = {
+  count: 0,
+  banners: []
+}
+/**
+ * 定义 reducer 纯函数
+ * @param state 当前的 state
+ * @param action 本次需要更新的 action
+ * @return store 中存储的 state
+ */
+export const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case ActionTypes.ADD_COUNTER:
+      const newRes = {
+        ...state,
+        count: state.count + action.payload
+      }
+      console.log('newRes', newRes)
+      return newRes
+    case ActionTypes.SUB_COUNTER:
+      return {
+        ...state,
+        count: state.count - action.payload
+      }
+    case ActionTypes.ADD_BANNER:
+      return {
+        ...state,
+        banners: action.payload
+      }
+    default: {
+      return state
+    }
+  }
+}
+```
+
+* store/index.js
+
+```js
+import {createStore} from "redux"
+import {reducer} from "@/store/reducers"
+
+// 创建 Store 对象
+const store = createStore(reducer)
+
+export default store
+```
+
+* index.js
+
+```js {4-5,9,13}
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from '@/App'
+import store from "@/store"
+import {Provider} from "react-redux"
+
+const root = ReactDOM.createRoot(document.getElementById('root'))
+root.render(
+  <Provider store={store}>
+    <React.StrictMode>
+      <App/>
+    </React.StrictMode>
+  </Provider>
+)
+```
+
+> 注意：上述的代码很简单，就是用来定义 redux 中的 store、action、reducer 等。
+
+* components/Counter.jsx
+
+```jsx
+import React, {PureComponent} from 'react'
+import {connect} from 'react-redux'
+import {addCountAction, subCountAction} from "@/store/actionCreators"
+
+class Counter extends PureComponent {
+  
+  state = {
+    message: '我是 Counter 组件',
+  }
+  
+  render() {
+    const {message} = this.state
+    console.log('Counter props', this.props)
+    const {count, add, sub} = this.props
+    return (
+      <div>
+        <div className={"counter"}>
+          <h2>{message}</h2>
+          <h3>当前计数为：{count}</h3>
+          <button onClick={() => add(1)}>点我+1</button>
+          <button onClick={() => sub(1)}>点我-1</button>
+        </div>
+      </div>
+    )
+  }
+}
+
+// connect(fn1,fn2) 函数的返回值是高阶组件
+// 其中， fn1 是将 state 映射到 props 上，通常命名为 mapStateToProps
+// 其中，fn2 是将 dispatch 映射到 props 上，通常命名为 mapDispatchToProps
+
+const mapStateToProps = (state) => ({
+  count: state.count
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  add: (num) => dispatch(addCountAction(num)),
+  sub: (num) => dispatch(subCountAction(num))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Counter)
+```
+
+* components/Banner.jsx
+
+```jsx {2-3,14,32-37,44-46,48-50}
+import React, {PureComponent} from 'react'
+import {connect} from 'react-redux'
+import {addBannerAction} from "@/store/actionCreators"
+
+class Banner extends PureComponent {
+  
+  state = {
+    message: '我是 Banner 组件',
+  }
+  
+  render() {
+    const {message} = this.state
+    console.log('Banner props', this.props)
+    const {banners} = this.props
+    return (
+      <div>
+        <div className={"banner"}>
+          <h2>{message}</h2>
+          <h3>轮播图的数据：</h3>
+          <ul>
+            {
+              banners.map((item, index) => {
+                return (<li key={index}>{item}</li>)
+              })
+            }
+          </ul>
+        </div>
+      </div>
+    )
+  }
+  
+  componentDidMount() {
+    setTimeout(() => {
+      const {add} = this.props
+      add(["banner1", "banner2", "banner3", "banner4"])
+    }, 2000)
+  }
+}
+
+// connect(fn1,fn2) 函数的返回值是高阶组件
+// 其中， fn1 是将 state 映射到 props 上，通常命名为 mapStateToProps
+// 其中，fn2 是将 dispatch 映射到 props 上，通常命名为 mapDispatchToProps
+
+const mapStateToProps = (state) => ({
+  banners: state.banners
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  add: (banners) => dispatch(addBannerAction(banners)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Banner)
+```
+
+> 注意：
+>
+> * 代码实现很简单，但是不觉得，发送请求获取数据等操作还是在组件内部做的？
+> * 难道，不能让 redux 帮助我们完成；毕竟，Vue 中的 Pinia 是可以的。
+
+* App.jsx
+
+```jsx {3,14}
+import React, {PureComponent} from 'react'
+import Counter from "@/components/Counter"
+import Banner from "@/components/Banner"
+
+class App extends PureComponent {
+  
+  render() {
+    return (
+      <div>
+        <div style={{background: "pink", padding: '10px', width: '500px'}}>
+          <Counter/>
+        </div>
+        <div style={{background: "skyblue", padding: '10px', width: '500px'}}>
+          <Banner/>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default App
+```
+
+## 4.4 redux 中的异步操作
+
+### 4.4.1 概述
+
+* Redux store 本身无法处理异步逻辑。它只会同步地 dispatch action，并通过调用根 reducer 函数来更新 state，然后通知视图更新，任何异步都必须在 store 之外发生；所以，上述的案例中，我们是将`异步操作`放在组件内部的`生命周期函数 componentDidMount`中完成的。
+* 之前提过 Redux reducer 绝对不能包含`“副作用”`。`“副作用”是指除函数返回值之外的任何变更，包括 state 的更改或者其他行为`。一些常见的副作用是：
+  - 在控制台打印日志
+  - 保存文件
+  - 设置异步定时器
+  - 发送 AJAX HTTP 请求
+  - 修改存在于函数之外的某些 state，或改变函数的参数
+  - 生成随机数或唯一随机 ID（例如 `Math.random()` 或 `Date.now()`）
+* 但是事实上应用程序都需要在 `某处` 做这些事情。所以如果不能把副作用放在 reducer 中，那可以放在哪里呢？
+* `Redux middleware` 就是用来放这些副作用逻辑代码的地方。
+* 当 Redux middleware 执行 dispatch action 时，它可以做 `任何事情`：记录某些内容、修改 action、延迟 action，进行异步调用等。此外，由于 middleware 围绕真正的 `store.dispatch` 函数形成了一个管道，这也意味着我们实际上可以将一些 *不是* 普通 action 对象的东西传递给 `dispatch`，只要 middleware 截获该值并且不让它到达 reducer。
+* Middleware 也可以访问 `dispatch` 和 `getState`。这意味着我们可以在 middleware 中编写一些异步逻辑，并且仍然能够通过 dispatch action 与 Redux store 进行交互。
+
+> 总结：
+>
+> * 如果没有 Redux middleware 的话，dispatch(action) 的时候，action 一定是一个包含 type 属性的普通 JavaScript 对象。
+> * 但是，当有了 Redux middleware 之后，dispatch(action) 的时候，action 可以是一个函数，并且该函数会被调用，并传递给这个函数一个 dispatch 函数和一个 getState 函数的参数，以便我们编写异步操作。
+
+* 安装 Redux middleware ：
+
+```shell
+npm install redux-thunk
+```
+
+* 值得注意的是：`thunk` 在英文中的含义是 `PC 计算机中典型的形实转换程序`。但是，在 redux-thunk 中，它是函数的另一种说法，即一种特殊的名称，用于由另外一个函数返回：
+
+```js
+function wrapper_function() {
+  // this one is a "thunk" because it defers work for later:
+  return function thunk() {   // it can be named, or anonymous
+    console.log('do stuff now');
+  };
+}
+```
+
+* 之前，我们看到了 Redux 的`同步数据流程图`，如下所示：
+
+![Redux data flow diagram](./assets/18.gif)
+
+* 但是，当我们向 Redux 应用程序添加异步逻辑的时候，额外添加了 middleware（中间件）步骤，可以在其中执行 Ajax 请求等逻辑，然后 dispath action，其对应的 `异步数据流程图`，如下所示：
+
+![Redux 异步数据流程图](./assets/19.gif)
+
+### 4.4.2 使用步骤
+
+* ① 安装 redux-thunk ：略。
+
+* ② 在创建 store 对象的时候，通过 createStore() 的第二个参数传入 middleware ：
+  * createStore() 函数的 TS 定义如下：
+  
+  ```js
+  declare function createStore<S, A extends Action, Ext extends {} = {}, StateExt extends {} = {}>(reducer: Reducer<S, A>, enhancer?: StoreEnhancer<Ext, StateExt>): Store<S, A, UnknownIfNonSpecific<StateExt>> & Ext;
+  ```
+  
+  > 注意：enhancer 就是通过 applyMiddleware 结合多个 Middleware 的返回值。
+  
+  * 应用 redux-thunk 的示例：
+  
+  ```js {1,2,6}
+  import {applyMiddleware, createStore} from "redux"
+  import {thunk} from "redux-thunk"
+  import {reducer} from "@/store/reducers"
+  
+  // 创建 Store 对象
+  const store = createStore(reducer, applyMiddleware(thunk))
+  
+  export default store
+  ```
+
+* ③ 我们就可以定义返回一个函数的 action 了。
+
+
+### 4.4.3 案例
+
+* 需求：异步获取轮播图的数据。
+
+![16](./assets/20.gif)
+
+* 项目结构：
+
+![image-20231231210332180](./assets/21.png)
+
+* 示例：
+* index.js
+
+```js {4-5,9,13}
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from '@/App'
+import store from "@/store"
+import {Provider} from "react-redux"
+
+const root = ReactDOM.createRoot(document.getElementById('root'))
+root.render(
+  <Provider store={store}>
+    <React.StrictMode>
+      <App/>
+    </React.StrictMode>
+  </Provider>
+)
+```
+
+* store/constant.js
+
+```js {6}
+/* 该文件主要维护 Action 中 type 的名称 */
+export const ADD_COUNTER = 'INCREMENT'
+
+export const SUB_COUNTER = 'DECREMENT'
+
+export const ADD_BANNER = 'ADD_BANNER'
+```
+
+* store/actionCreators.js
+
+```js {28-31,36-44}
+import * as ActionTypes from './constant'
+
+/**
+ * 添加计数器
+ * @param payload
+ * @returns {{payload, type: string}} 返回 Action
+ */
+export const addCountAction = (payload) => ({
+  type: ActionTypes.ADD_COUNTER,
+  payload
+})
+
+/**
+ * 减少计数器
+ * @param payload
+ * @returns {{payload, type: string}} 返回 Action
+ * */
+export const subCountAction = (payload) => ({
+  type: ActionTypes.SUB_COUNTER,
+  payload
+})
+
+/**
+ * 添加轮播图
+ * @param payload
+ * @returns {{payload, type: string}}
+ */
+export const addBannerAction = (payload) => ({
+  type: ActionTypes.ADD_BANNER,
+  payload
+})
+
+/**
+ * 异步添加轮播图
+ */
+export const addAsyncBannerAction = () => {
+  return (dispatch, getState) => {
+    // 执行异步逻辑操作
+    console.log('addAsyncBannerAction', getState())
+    setTimeout(() => {
+      dispatch(addBannerAction(["banner1", "banner2", "banner3", "banner4"]))
+    }, 2000)
+  }
+}
+```
+
+* store/reducers.js
+
+```js {27-31}
+import * as ActionTypes from './constant'
+// 初始化的 state
+const initialState = {
+  count: 0,
+  banners: []
+}
+/**
+ * 定义 reducer 纯函数
+ * @param state 当前的 state
+ * @param action 本次需要更新的 action
+ * @return store 中存储的 state
+ */
+export const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case ActionTypes.ADD_COUNTER:
+      const newRes = {
+        ...state,
+        count: state.count + action.payload
+      }
+      console.log('newRes', newRes)
+      return newRes
+    case ActionTypes.SUB_COUNTER:
+      return {
+        ...state,
+        count: state.count - action.payload
+      }
+    case ActionTypes.ADD_BANNER:
+      return {
+        ...state,
+        banners: action.payload
+      }
+    default: {
+      return state
+    }
+  }
+}
+```
+
+* store/index.js
+
+```js {2,6}
+import {applyMiddleware, createStore} from "redux"
+import {thunk} from "redux-thunk"
+import {reducer} from "@/store/reducers"
+
+// 创建 Store 对象
+const store = createStore(reducer, applyMiddleware(thunk))
+
+export default store
+```
+
+* components/Counter.jsx
+
+```jsx
+import React, {PureComponent} from 'react'
+import {connect} from 'react-redux'
+import {addCountAction, subCountAction} from "@/store/actionCreators"
+
+class Counter extends PureComponent {
+  
+  state = {
+    message: '我是 Counter 组件',
+  }
+  
+  render() {
+    const {message} = this.state
+    console.log('Counter props', this.props)
+    const {count, add, sub} = this.props
+    return (
+      <div>
+        <div className={"counter"}>
+          <h2>{message}</h2>
+          <h3>当前计数为：{count}</h3>
+          <button onClick={() => add(1)}>点我+1</button>
+          <button onClick={() => sub(1)}>点我-1</button>
+        </div>
+      </div>
+    )
+  }
+}
+
+// connect(fn1,fn2) 函数的返回值是高阶组件
+// 其中， fn1 是将 state 映射到 props 上，通常命名为 mapStateToProps
+// 其中，fn2 是将 dispatch 映射到 props 上，通常命名为 mapDispatchToProps
+
+const mapStateToProps = (state) => ({
+  count: state.count
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  add: (num) => dispatch(addCountAction(num)),
+  sub: (num) => dispatch(subCountAction(num))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Counter)
+```
+
+* components/Banner.jsx
+
+```jsx {32-35,46-48}
+import React, {PureComponent} from 'react'
+import {connect} from 'react-redux'
+import {addAsyncBannerAction,} from "@/store/actionCreators"
+
+class Banner extends PureComponent {
+  
+  state = {
+    message: '我是 Banner 组件',
+  }
+  
+  render() {
+    const {message} = this.state
+    console.log('Banner props', this.props)
+    const {banners} = this.props
+    return (
+      <div>
+        <div className={"banner"}>
+          <h2>{message}</h2>
+          <h3>轮播图的数据：</h3>
+          <ul>
+            {
+              banners.map((item, index) => {
+                return (<li key={index}>{item}</li>)
+              })
+            }
+          </ul>
+        </div>
+      </div>
+    )
+  }
+  
+  componentDidMount() {
+    const {addAsync} = this.props
+    addAsync()
+  }
+}
+
+// connect(fn1,fn2) 函数的返回值是高阶组件
+// 其中， fn1 是将 state 映射到 props 上，通常命名为 mapStateToProps
+// 其中，fn2 是将 dispatch 映射到 props 上，通常命名为 mapDispatchToProps
+
+const mapStateToProps = (state) => ({
+  banners: state.banners
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  addAsync: () => dispatch(addAsyncBannerAction())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Banner)
+```
+
+* App.jsx
+
+```jsx {14}
+import React, {PureComponent} from 'react'
+import Counter from "@/components/Counter"
+import Banner from "@/components/Banner"
+
+class App extends PureComponent {
+  
+  render() {
+    return (
+      <div>
+        <div style={{background: "pink", padding: '10px', width: '500px'}}>
+          <Counter/>
+        </div>
+        <div style={{background: "skyblue", padding: '10px', width: '500px'}}>
+          <Banner/>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default App
+```
+
+### 4.4.4 调试 Redux
+
+* 在实际开发中，我们可以使用 `Redux DevTools 拓展`来帮助我们调试 Redux ，`Redux DevTools 拓展`可以显示 Redux 存储中状态随时间变化的历史记录。
+* 安装：
+
+```shell
+npm install @redux-devtools/extension
+```
+
+> 注意：需要配合浏览器插件，可以去 `Chrome 应用商店`安装 `redux-devtools` 、`React Developer Tools`、`React Context DevTool` 插件。
+
+* 配置：
+
+```js {3,6-8,11}
+import {applyMiddleware, createStore} from "redux"
+import {thunk} from "redux-thunk"
+import {composeWithDevTools } from '@redux-devtools/extension'
+import {reducer} from "@/store/reducers"
+
+const composeEnhancers = composeWithDevTools({
+    trace: true // 跟踪（堆栈）源码
+});
+
+// 创建 Store 对象
+const store = createStore(reducer, composeEnhancers (applyMiddleware(thunk)))
+
+export default store
+```
+
+* 演示：
+
+![](./assets/22.gif)
+
+* 但是，在`生产环境`中是`禁止`使用这个工具的，只需要这么配置：
+
+```js {3,6-8,11}
+import {applyMiddleware, createStore} from "redux"
+import {thunk} from "redux-thunk"
+import {composeWithDevToolsDevelopmentOnly } from '@redux-devtools/extension'
+import {reducer} from "@/store/reducers"
+
+const composeEnhancers = composeWithDevToolsDevelopmentOnly({
+    trace: true // 跟踪（堆栈）源码
+});
+
+// 创建 Store 对象
+const store = createStore(reducer, composeEnhancers (applyMiddleware(thunk)))
+
+export default store
+```
+
+## 4.5 redux 模块的拆分
+
+### 4.5.1 概述
+
+* 之前，我们将所有对于 redux 操作相关的代码都保存在 store 文件夹中：
+
+![image-20231231221500951](./assets/23.png)
+
+* 对于之前的案例而言，我们仅仅使用了两个组件，所有的对于 redux 的操作都保存在这些文件中没什么关系；但是，一旦项目中，组件越来越多，还是这么管理，就会显得非常臃肿，并且会难以维护，所以必须进行拆分。
+* 那么，该怎么进行拆分呢？当然，是根据`组件`或`功能`等进行拆分。
+
+> 注意：本人目前是按照`组件`进行拆分的。
+
+* 其实，`redux` 给我们提供了 `combineReducers()` 函数可以很方便的让我们对 reducer 进行合并：
+  * `combineReducers()` 需要我们插入一个对象，最终返回一个 `combination()` 函数；相当于之前我们的 reducer() 函数。
+  * 但是，`combineReducers()` 提供的`键名称`决定了我们的`状态对象的键名`是什么！！！
+
+* 解释下，原来在 store 中的值是：
+
+```js
+const initialState = {
+  count : 0,  
+  banners: []
+}
+```
+
+* 对应的内存示意图是：
+
+![image-20231231230657091](./assets/24.png)
+
+* 一旦，使用了 `combineReducers()` 函数合并，即：
+
+```js
+const combination = combineReducers({
+  counter: counterReducer,
+  banner: bannerReducer
+})
+```
+
+* 对应的内存示意图是：
+
+![image-20231231231028681](./assets/25.png)
+
+### 4.5.2 案例
+
+* 需求：进行 redux 模块拆分。
+
+![16](./assets/26.gif)
+
+* 项目结构：
+
+![image-20231231231129302](./assets/27.png)
+
+* 示例：
+* index.js
+
+```js {4-5,9-13}
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from '@/App'
+import store from "@/store"
+import {Provider} from "react-redux"
+
+const root = ReactDOM.createRoot(document.getElementById('root'))
+root.render(
+  <Provider store={store}>
+    <React.StrictMode>
+      <App/>
+    </React.StrictMode>
+  </Provider>
+)
+```
+
+* App.jsx
+
+```jsx {2-3,11,14}
+import React, {PureComponent} from 'react'
+import Counter from "@/components/Counter"
+import Banner from "@/components/Banner"
+
+class App extends PureComponent {
+  
+  render() {
+    return (
+      <div>
+        <div style={{background: "pink", padding: '10px', width: '500px'}}>
+          <Counter/>
+        </div>
+        <div style={{background: "skyblue", padding: '10px', width: '500px'}}>
+          <Banner/>
+        </div>
+      </div>
+    )
+  }
+}
+
+export default App
+```
+
+* store/banner/constant.js
+
+```js
+/* 该文件主要维护 Action 中 type 的名称 */
+export const ADD_BANNER = 'ADD_BANNER'
+```
+
+* store/banner/actionCreators.js
+
+```js
+import * as ActionTypes from './constant'
+
+/**
+ * 添加轮播图
+ * @param payload
+ * @returns {{payload, type: string}}
+ */
+export const addBannerAction = (payload) => ({
+  type: ActionTypes.ADD_BANNER,
+  payload
+})
+
+/**
+ * 异步添加轮播图
+ */
+export const addAsyncBannerAction = () => {
+  return (dispatch, getState) => {
+    // 执行异步逻辑操作
+    console.log('addAsyncBannerAction', getState())
+    setTimeout(() => {
+      dispatch(addBannerAction(["banner1", "banner2", "banner3", "banner4"]))
+    }, 2000)
+  }
+}
+```
+
+* store/banner/reducer.js
+
+```js {14}
+import * as ActionTypes from './constant'
+
+// 初始化的 state
+const initialState = {
+  banners: []
+}
+
+/**
+ * 定义 reducer 纯函数
+ * @param state 当前的 state.js
+ * @param action 本次需要更新的 action
+ * @return store 中存储的 state.js
+ */
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case ActionTypes.ADD_BANNER:
+      return {
+        ...state,
+        banners: action.payload
+      }
+    default: {
+      return state
+    }
+  }
+}
+
+export default reducer
+```
+
+* store/banner/index.js
+
+```js {1,4}
+import reducer from './reducer'
+
+export * from './actionCreators'
+export default reducer
+```
+
+* store/counter/constant.js
+
+```js
+/* 该文件主要维护 Action 中 type 的名称 */
+export const ADD_COUNTER = 'INCREMENT'
+
+export const SUB_COUNTER = 'DECREMENT'
+```
+
+* store/counter/actionCreators.js
+
+```js
+import * as ActionTypes from './constant'
+
+/**
+ * 添加计数器
+ * @param payload
+ * @returns {{payload, type: string}} 返回 Action
+ */
+export const addCountAction = (payload) => ({
+  type: ActionTypes.ADD_COUNTER,
+  payload
+})
+
+/**
+ * 减少计数器
+ * @param payload
+ * @returns {{payload, type: string}} 返回 Action
+ * */
+export const subCountAction = (payload) => ({
+  type: ActionTypes.SUB_COUNTER,
+  payload
+})
+```
+
+* store/counter/reducer.js
+
+```js {12}
+import * as ActionTypes from './constant'
+// 初始化的 state
+const initialState = {
+  count: 0
+}
+/**
+ * 定义 reducer 纯函数
+ * @param state 当前的 state.js
+ * @param action 本次需要更新的 action
+ * @return store 中存储的 state.js
+ */
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case ActionTypes.ADD_COUNTER:
+      const newRes = {
+        ...state,
+        count: state.count + action.payload
+      }
+      console.log('newRes', newRes)
+      return newRes
+    case ActionTypes.SUB_COUNTER:
+      return {
+        ...state,
+        count: state.count - action.payload
+      }
+    default: {
+      return state
+    }
+  }
+}
+
+export default reducer
+```
+
+* store/counter/index.js
+
+```js {1,4}
+import reducer from './reducer'
+
+export * from './actionCreators'
+export default reducer
+```
+
+* store/reducers.js
+
+```js {6-9}
+import bannerReducer from "@/store/banner"
+import counterReducer from "@/store/counter"
+import {combineReducers} from "redux";
+
+// 合并 reducer
+const combination = combineReducers({
+  counter: counterReducer,
+  banner: bannerReducer
+})
+
+export default combination
+```
+
+* store/index.js
+
+```js {4,11}
+import {applyMiddleware, createStore} from "redux"
+import {thunk} from "redux-thunk"
+import {composeWithDevToolsDevelopmentOnly} from '@redux-devtools/extension'
+import combination from "@/store/reducers"
+
+const composeEnhancers = composeWithDevToolsDevelopmentOnly({
+    trace: true // 跟踪源码
+});
+
+// 创建 Store 对象
+const store = createStore(combination, composeEnhancers(applyMiddleware(thunk)))
+
+export default store
+```
+
+* components/Banner.jsx
+
+```jsx {43}
+import React, {PureComponent} from 'react'
+import {connect} from 'react-redux'
+import {addAsyncBannerAction} from "@/store/banner"
+
+class Banner extends PureComponent {
+  
+  state = {
+    message: '我是 Banner 组件',
+  }
+  
+  render() {
+    const {message} = this.state
+    console.log('Banner props', this.props)
+    const {banners} = this.props
+    return (
+      <div>
+        <div className={"banner"}>
+          <h2>{message}</h2>
+          <h3>轮播图的数据：</h3>
+          <ul>
+            {
+              banners.map((item, index) => {
+                return (<li key={index}>{item}</li>)
+              })
+            }
+          </ul>
+        </div>
+      </div>
+    )
+  }
+  
+  componentDidMount() {
+    const {addAsync} = this.props
+    addAsync()
+  }
+}
+
+// connect(fn1,fn2) 函数的返回值是高阶组件
+// 其中，fn1 是将 state 映射到 props 上，通常命名为 mapStateToProps
+// 其中，fn2 是将 dispatch 映射到 props 上，通常命名为 mapDispatchToProps
+
+const mapStateToProps = (state) => ({
+  banners: state.banner.banners // 注意：此处是通过 state.banner.banners 获取数据了
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  addAsync: () => dispatch(addAsyncBannerAction())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Banner)
+```
+
+* components/Counter.jsx
+
+```jsx {33}
+import React, {PureComponent} from 'react'
+import {connect} from 'react-redux'
+import {addCountAction, subCountAction} from "@/store/counter"
+
+class Counter extends PureComponent {
+  
+  state = {
+    message: '我是 Counter 组件',
+  }
+  
+  render() {
+    const {message} = this.state
+    console.log('Counter props', this.props)
+    const {count, add, sub} = this.props
+    return (
+      <div>
+        <div className={"counter"}>
+          <h2>{message}</h2>
+          <h3>当前计数为：{count}</h3>
+          <button onClick={() => add(1)}>点我+1</button>
+          <button onClick={() => sub(1)}>点我-1</button>
+        </div>
+      </div>
+    )
+  }
+}
+
+// connect(fn1,fn2) 函数的返回值是高阶组件
+// 其中，fn1 是将 state 映射到 props 上，通常命名为 mapStateToProps
+// 其中，fn2 是将 dispatch 映射到 props 上，通常命名为 mapDispatchToProps
+
+const mapStateToProps = (state) => ({
+  count: state.counter.count // 注意：此处是通过 state.counter.count 获取数据了
+})
+
+const mapDispatchToProps = (dispatch) => ({
+  add: (num) => dispatch(addCountAction(num)),
+  sub: (num) => dispatch(subCountAction(num))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Counter)
 ```
 
