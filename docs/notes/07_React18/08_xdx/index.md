@@ -2230,6 +2230,33 @@ const combination = combineReducers({
 
 ![image-20231231231028681](./assets/25.png)
 
+* 当然，`combineReducers` 函数的模拟实现，如下所示：
+
+```js
+function combineReducers(reducers) {
+  // 返回一个新的 reducer 函数
+  return function(state = {}, action) {
+    // 创建一个新的状态对象
+    const nextState = {};
+    
+    // 遍历传入的 reducers 对象
+    for (let key in reducers) {
+      // 获取当前 reducer
+      const reducer = reducers[key];
+      // 获取当前 key 对应的旧状态
+      const prevStateForKey = state[key];
+      // 调用当前 reducer，传入旧状态和 action，得到新的状态
+      const nextStateForKey = reducer(prevStateForKey, action);
+      // 将新的状态保存到新的状态对象中
+      nextState[key] = nextStateForKey;
+    }
+    
+    // 返回新的状态对象
+    return nextState;
+  };
+}
+```
+
 ### 4.5.2 案例
 
 * 需求：进行 redux 模块拆分。
