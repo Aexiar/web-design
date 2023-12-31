@@ -2579,3 +2579,6 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(Counter)
 ```
 
+* 通过`Redux DevTools 拓展`进行验证：
+
+![image-20231231232339615](./assets/28.png)
