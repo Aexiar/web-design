@@ -1817,7 +1817,7 @@ export default App
 npm install redux-thunk
 ```
 
-* 值得注意的是：`thunk` 在英文中的含义是 `PC 计算机中典型的形实转换程序`。但是，在 redux-thunk 中，它是函数的另一种说法，即一种特殊的名称，用于由另外一个函数返回：
+* 值得注意的是：`thunk` 在英文中的含义是 `一段做延迟工作的代码`。但是，在 redux-thunk 中，它是函数的另一种说法，即一种特殊的名称，用于由另外一个函数返回：
 
 ```js
 function wrapper_function() {
