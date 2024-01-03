@@ -699,7 +699,7 @@ export default store
 * 示例：
 * store/constant.js
 
-```jsx {3,12,16}
+```js
 /* 该文件主要维护 Action 中 type 的名称 */
 export const ADD_COUNTER = 'INCREMENT'
 
