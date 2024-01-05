@@ -612,7 +612,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Banner)
 
 ## 1.6 疑惑？
 
-* 其实，上述的演示仅仅是 Redux Toolkit 中的`冰山一角`而已，如：Ajax 的请求通常会使用 Promise （Pending、Fulfilled、Rejected）来进行开发，那么如何在 Redux 获取异步的时候，直接获取到请求的状态？
+* 其实，上述的演示仅仅是 Redux Toolkit 中的`冰山一角`而已，如：Ajax 的请求通常会使用 Promise （Pending、Fulfilled、Rejected）来进行开发，那么如何在 Redux 获取异步数据的时候，直接获取到请求的状态？
 
 > 注意：对于 Redux Toolkit 的其它知识，将会在 React Hooks 之后，统一讲解！！！
 
