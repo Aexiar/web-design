@@ -52,7 +52,7 @@ npx create-react-app my-app --template redux-typescript
   * `createEntityAdapter()`：生成一系列可复用的 reducer 和 selector，从而管理 store 中的规范化数据。
   * `createSelector`来源于 [Reselect](https://github.com/reduxjs/reselect) 库，重新 export 出来以方便使用。
 
-* Redux Toolkit 更是提供一个新的 [**RTK Query 数据请求 API**](https://redux-toolkit.js.org/rtk-query/overview)。RTK Query 是为 Redux 打造数据请求和缓存的强有力的工具。 它 设计出来就是为了 web 应用中加载数据的通用用例，免得手动去写数据请求和缓存的逻辑。
+* Redux Toolkit 更是提供一个新的 [**RTK Query 数据请求 API**](https://redux-toolkit.js.org/rtk-query/overview)。RTK Query 是为 Redux 打造数据请求和缓存的强有力的工具。 它设计出来就是为了 web 应用中加载数据的通用用例，免得手动去写数据请求和缓存的逻辑。
 
 ## 1.3 扫清概念
 
