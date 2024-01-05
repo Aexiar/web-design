@@ -1127,7 +1127,66 @@ export default connect(mapStateToProps, mapDispatchToProps)(Banner)
 
 
 
-# 第四章：状态组件库如何选择
+# 第四章：模拟 redux-thunk
+
+## 4.1 概述
+
+* 猴补丁（Monkey Patch）是一种在运行时修改或扩展现有代码的技术。它通常用于在不修改原始代码的情况下，动态地修改或增强现有的类、函数或对象的行为。
+
+* 猴补丁的概念源自`动态语言`的特性，特别是在像 Python 和 `JavaScript` 这样的语言中，可以在运行时修改对象的属性和方法。通过猴补丁，开发者可以在不改变原始代码的情况下，对现有的类、函数或对象进行修改，添加新的功能或改变其行为。
+
+* 猴补丁的应用场景包括但不限于：
+
+  - 修复第三方库或框架的 bug，而无需等待官方发布修复版本。
+  - 动态地修改现有的类或对象的行为，以满足特定需求。
+  - 在测试环境中模拟或替换某些功能，以方便测试。
+
+> 注意：
+>
+> * 猴补丁虽然可以灵活地修改现有代码，但也可能引入一些潜在的问题，如不可预测的行为、代码可读性降低、与其他代码的兼容性问题等。
+> * 因此，在使用猴补丁时，需要谨慎考虑其影响，并确保代码的可维护性和稳定性。
+
+## 4.2 案例
+
+* 借用 [此处](https://aexiar.github.io/web-design/notes/07_React18/08_xdx/#_4-5-redux-%E6%A8%A1%E5%9D%97%E7%9A%84%E6%8B%86%E5%88%86) 的案例，来实现 redux-thunk 的功能；其实很简单，就是在 store 中对 dispatch 进行拦截和增强：
+
+```js {13-25}
+import {applyMiddleware, createStore} from "redux"
+import {thunk} from "redux-thunk"
+import {composeWithDevToolsDevelopmentOnly} from '@redux-devtools/extension'
+import combination from "@/store/reducers"
+
+const composeEnhancers = composeWithDevToolsDevelopmentOnly({
+  trace: true // 跟踪源码
+});
+
+// 创建 Store 对象
+const store = createStore(combination, composeEnhancers(applyMiddleware(thunk)))
+
+function thunkMiddleware(store) {
+  const next = store.dispatch // 必须先提取存储起来
+  
+  function dispatchThunk(action) {
+    if (typeof action === 'function') {
+      action(store.dispatch, store.getState)
+    } else {
+      next(action)
+    }
+  }
+  
+  store.dispatch = dispatchThunk // 修改 dispatch 函数对应的内存地址，这就是 猴补丁（Monkey Patch）
+}
+
+thunkMiddleware(store)
+
+export default store
+```
+
+* 其实，代码很简单，就是通过调用 `thunkMiddleware(store)` 函数，对 store 中的 dispatch 进行拦截；并判断 action 是函数还是对象，如果是函数，调用函数，并将 dispatch 和 getState 函数传递进去；如果是对象，直接调用即可。
+
+
+
+# 第五章：状态组件库如何选择
 
 * Redux Toolkit 等并不是唯一的选择，目前也有很多其他的状态管理方案：
   * ① 喜欢 Redux 单向数据流的，可以用 [zustand](https://github.com/pmndrs/zustand) 。
