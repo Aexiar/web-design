@@ -59,12 +59,12 @@ const ThemeContext = React.createContext(defaultValue);
 
 ![image-20231220164922296](./assets/3.png)
 
-* 项目结构如下：
+* 项目结构：
 
 ![image-20231220163508364](./assets/4.png)
 
 * 基本功能搭建：
-* App.jsx
+* 其中，App.jsx
 
 ```jsx
 import React from 'react'
@@ -92,7 +92,7 @@ class App extends React.Component {
 export default App
 ```
 
-* Counter.jsx
+* 其中，Counter.jsx
 
 ```jsx
 import React from 'react'
@@ -375,7 +375,7 @@ export default CounterContext
 
 ![](./assets/11.png)
 
-* 项目结构如下：
+* 项目结构：
 
 ![image-20231220171048273](./assets/12.png)
 
@@ -385,7 +385,6 @@ export default CounterContext
 npm install mitt
 ```
 
-* 示例：
 * ① 初始化全局事件总线对象：
 
 ```jsx {2}

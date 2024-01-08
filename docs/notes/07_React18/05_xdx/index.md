@@ -795,7 +795,7 @@ export default Footer
 ![image-20231221164005826](./assets/11.png)
 
 * 基本功能搭建：
-* App.css
+* 其中，App.css
 
 ```css
 table {
@@ -818,7 +818,7 @@ table thead {
 
 ```
 
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {51,68}
 import React, {Component} from 'react'
@@ -1567,7 +1567,7 @@ export default App
 
 ![image-20231222083527145](./assets/20.png)
 
-* 示例：
+* 示例 ：
 
 ```jsx {9,21,14}
 import React from 'react'

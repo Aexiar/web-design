@@ -247,14 +247,11 @@ export default App;
 
 > 注意：我们需要在 src 目录下，将 App.js 删除，并新建 App.jsx 文件，以便获取更好的 IDE 支持。
 
-
-
-* 示例：
-* 项目目录：
+* 项目结构：
 
 ![image-20231216233548198](./assets/6.png)
 
-* App.jsx
+* 示例：
 
 ```jsx
 import React from 'react'

@@ -465,7 +465,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Counter)
 ### 1.4.7 其余的代码
 
 * 示例：
-* components/Banner.jsx
+* 其中，components/Banner.jsx
 
 ```jsx
 import React, {PureComponent} from 'react'
@@ -489,7 +489,7 @@ class Banner extends PureComponent {
 export default Banner
 ```
 
-* App.jsx
+* 其中，App.jsx
 
 ```jsx
 import React, {PureComponent} from 'react'
@@ -529,7 +529,7 @@ export default App
 ### 1.5.2 案例
 
 * 示例：
-* store/banner.js
+* 其中，store/banner.js
 
 ```js {3-11}
 import {createSlice} from "@reduxjs/toolkit"
@@ -566,7 +566,7 @@ export default bannerSlice.reducer
 > * ① 和之前原生的 redux 逻辑一样，diapath(action) 中的 action 是一个函数，返回 action 可以是一个函数，并且该函数会被调用，并传递给这个函数一个 dispatch 函数和一个 getState 函数的参数，以便我们编写异步操作。
 > * ② createSlice() 中默认没有提供对异步的任何支持，所以我们应该将它们作为单独的函数编写在同一个 slice 文件中，这样我们就可以访问该 slice 中普通的 action 了。
 
-* components/Banner.jsx
+* 其中，components/Banner.jsx
 
 ```jsx
 import React, {PureComponent} from 'react'
@@ -917,7 +917,7 @@ export function connect(mapStateToProps, mapDispatchToProps) {
 ![image-20240105101929054](./assets/9.png)
 
 * ① 实现 connect 函数以及 Provider ：
-* hoc/createContext.js
+* 其中，hoc/createContext.js
 
 ```js
 import {createContext} from 'react'
@@ -931,7 +931,7 @@ export {
 }
 ```
 
-* hoc/connect.js
+* 其中，hoc/connect.js
 
 ```js {2,15,17-20,23-25,35,37}
 import {PureComponent} from "react"

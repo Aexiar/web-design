@@ -97,16 +97,12 @@ export default hoc(App)
 
 ![image-20231225100205181](./assets/2.png)
 
-
-
 * 项目结构：
 
 ![image-20231225100237173](./assets/3.png)
 
-
-
 * 示例：
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {17-19}
 import React, {PureComponent} from 'react'
@@ -137,7 +133,7 @@ class App extends PureComponent {
 export default App
 ```
 
-* withConfig.js
+* 其中，withConfig.js
 
 ```js {3-15}
 import {PureComponent} from "react"
@@ -157,7 +153,7 @@ export function withConfig(WrappedComponent, config) {
 }
 ```
 
-* Home.jsx
+* 其中，Home.jsx
 
 ```jsx {18}
 import {useState} from "react";
@@ -180,7 +176,7 @@ function Home(props) {
 export default withConfig(Home, {age: 18})
 ```
 
-* Profile.jsx
+* 其中，Profile.jsx
 
 ```jsx {17}
 import {useState} from "react";
@@ -202,7 +198,7 @@ function Profile(props) {
 export default withConfig(Profile, { age: 18})
 ```
 
-* About.jsx
+* 其中，About.jsx
 
 ```jsx {12}
 import {useState} from "react";
@@ -231,16 +227,12 @@ export default About
 
 > 注意：实际开发中，一般需要配合 localStorage 实现`登录鉴权`功能。
 
-
-
 * 项目结构：
 
 ![image-20231225131020014](./assets/5.png)
 
-
-
 * 示例：
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {8,12,19,26,30-31}
 import React, {PureComponent} from 'react'
@@ -284,7 +276,7 @@ class App extends PureComponent {
 export default App
 ```
 
-* withLogin.js
+* 其中，withLogin.js
 
 ```js {5-8}
 import Login from "@/components/Login"
@@ -307,7 +299,7 @@ export function withLogin(WrappedComponent){
 }
 ```
 
-* Cart.jsx
+* 其中，Cart.jsx
 
 ```jsx {19}
 import React, {Component} from 'react'
@@ -331,7 +323,7 @@ class Cart extends Component {
 export default withLogin(Cart)
 ```
 
-* Login.jsx
+* 其中，Login.jsx
 
 ```jsx
 import React, {Component} from 'react'
@@ -363,16 +355,12 @@ export default Login
 
 ![](./assets/6.gif)
 
-
-
 * 项目结构：
 
 ![image-20231225133332145](./assets/7.png)
 
-
-
 * 示例：
-* App.jsx
+* 其中，App.jsx
 
 ```jsx
 import React, {PureComponent} from 'react'
@@ -397,7 +385,7 @@ class App extends PureComponent {
 export default App
 ```
 
-* withComputeTime.js
+* 其中，withComputeTime.js
 
 ```js
 import {PureComponent} from "react"
@@ -429,7 +417,7 @@ export function withComputeTime(WrappedComponent) {
 }
 ```
 
-* Cart.jsx
+* 其中，Cart.jsx
 
 ```jsx {27}
 import React, {PureComponent} from 'react'
@@ -478,7 +466,7 @@ export default withComputeTime(Cart)
 ![image-20231225105337139](./assets/10.png)
 
 * 示例：
-* ThemeContext.js
+* 其中，ThemeContext.js
 
 ```js {2,4,7,11,14}
 import {createContext} from "react"
@@ -498,7 +486,7 @@ ThemeContext.displayName = "ThemeContext"
 export default ThemeContext
 ```
 
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {12-16,23-25}
 import React, {PureComponent} from 'react'
@@ -535,7 +523,7 @@ class App extends PureComponent {
 export default App
 ```
 
-* Home.jsx
+* 其中，Home.jsx
 
 ```jsx {7-17}
 import {useState} from "react"
@@ -571,7 +559,7 @@ export default Home
 
 * 示例：
 
-* withTheme.js
+* 其中，withTheme.js
 
 ```js {8-10}
 import {PureComponent} from "react"
@@ -595,7 +583,7 @@ export function withTheme(WrappedComponent) {
 }
 ```
 
-* Home.jsx
+* 其中，Home.jsx
 
 ```jsx {13}
 import {useState} from "react"
@@ -705,7 +693,7 @@ ReactDOM.createPortal(child, container)
 ![image-20231225150943335](./assets/12.png)
 
 * 示例：
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {9,12-16,18-22,29-50}
 import React, {PureComponent} from 'react'
@@ -767,7 +755,7 @@ class App extends PureComponent {
 export default App
 ```
 
-* App.css
+* 其中，App.css
 
 ```css
 body {
@@ -801,7 +789,7 @@ body {
 }
 ```
 
-* Modal.jsx
+* 其中，Modal.jsx
 
 ```jsx {7-11}
 import {PureComponent} from "react"
@@ -882,7 +870,7 @@ render() {
 
 ![image-20231225151838933](./assets/14.png)
 
-* 示例：App.jsx
+* 示例：
 
 ```jsx {12,21}
 import React from 'react'

@@ -583,7 +583,7 @@ npm install redux
 ![image-20231230152906851](./assets/7.png)
 
 * 示例：
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {2,7,12,17,21,37-42}
 import React, {PureComponent} from 'react'
@@ -641,7 +641,7 @@ export default App
 > * 目前，只能通过 `store.subscribe` 来监听 redux 中 state 的变化，后期会使用 [HOC](https://aexiar.github.io/web-design/notes/07_React18/06_xdx/) 来进行优化。
 > * 目前，为了实现 redux 中 state 变化，页面跟着刷新，当前的临时解决方案是：将数据放到组件内部的 state 中；后期也会使用 [HOC](https://aexiar.github.io/web-design/notes/07_React18/06_xdx/) 来进行优化。
 
-* store/index.js
+* 其中，store/index.js
 
 ```js {4,14,36}
 import {createStore} from "redux"
@@ -697,7 +697,7 @@ export default store
 ![image-20231230163021902](./assets/8.png)
 
 * 示例：
-* store/constant.js
+* 其中，store/constant.js
 
 ```js
 /* 该文件主要维护 Action 中 type 的名称 */
@@ -706,7 +706,7 @@ export const ADD_COUNTER = 'INCREMENT'
 export const SUB_COUNTER = 'DECREMENT'
 ```
 
-* store/actionCreator.js
+* 其中，store/actionCreator.js
 
 ```js {8,18}
 import * as ActionTypes from './constant'
@@ -732,7 +732,7 @@ export const subCountAction = (payload) => ({
 })
 ```
 
-* store/reducers.js
+* 其中，store/reducers.js
 
 ```js
 import * as ActionTypes from './constant'
@@ -768,7 +768,7 @@ export const reducer = (state = initialState, action) => {
 }
 ```
 
-* store/index.js
+* 其中，store/index.js
 
 ```js
 import {createStore} from "redux"
@@ -780,7 +780,7 @@ const store = createStore(reducer)
 export default store
 ```
 
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {2-3,8,12,16}
 import React, {PureComponent} from 'react'
@@ -843,7 +843,7 @@ export default App
 ![image-20231230222534974](./assets/10.png)
 
 * 示例：
-* components/Counter.jsx
+* 其中，components/Counter.jsx
 
 ```jsx
 import React, {PureComponent} from 'react'
@@ -897,7 +897,7 @@ class Counter extends PureComponent {
 export default Counter
 ```
 
-* store/constant.js
+* 其中，store/constant.js
 
 ```js
 /* 该文件主要维护 Action 中 type 的名称 */
@@ -906,7 +906,7 @@ export const ADD_COUNTER = 'INCREMENT'
 export const SUB_COUNTER = 'DECREMENT'
 ```
 
-* store/actionCreators.js
+* 其中，store/actionCreators.js
 
 ```js
 import * as ActionTypes from './constant'
@@ -932,7 +932,7 @@ export const subCountAction = (payload) => ({
 })
 ```
 
-* store/reducers.js
+* 其中，store/reducers.js
 
 ```js
 import * as ActionTypes from './constant'
@@ -968,7 +968,7 @@ export const reducer = (state = initialState, action) => {
 }
 ```
 
-* store/index.js
+* 其中，store/index.js
 
 ```js
 import {createStore} from "redux"
@@ -980,7 +980,7 @@ const store = createStore(reducer)
 export default store
 ```
 
-* App.jsx
+* 其中，App.jsx
 
 ```jsx
 import React, {PureComponent} from 'react'
@@ -1534,7 +1534,7 @@ export default App
 ![image-20231231142657818](./assets/17.png)
 
 * 示例：
-* store/constant.js
+* 其中，store/constant.js
 
 ```js {6}
 /* 该文件主要维护 Action 中 type 的名称 */
@@ -1545,7 +1545,7 @@ export const SUB_COUNTER = 'DECREMENT'
 export const ADD_BANNER = 'ADD_BANNER'
 ```
 
-* store/actionCreators.js
+* 其中，store/actionCreators.js
 
 ```js {28-31}
 import * as ActionTypes from './constant'
@@ -1581,7 +1581,7 @@ export const addBannerAction = (payload) => ({
 })
 ```
 
-* store/reducers.js
+* 其中，store/reducers.js
 
 ```js {5,27-31}
 import * as ActionTypes from './constant'
@@ -1622,7 +1622,7 @@ export const reducer = (state = initialState, action) => {
 }
 ```
 
-* store/index.js
+* 其中，store/index.js
 
 ```js
 import {createStore} from "redux"
@@ -1634,7 +1634,7 @@ const store = createStore(reducer)
 export default store
 ```
 
-* index.js
+* 其中，index.js
 
 ```js {4-5,9,13}
 import React from 'react'
@@ -1655,7 +1655,7 @@ root.render(
 
 > 注意：上述的代码很简单，就是用来定义 redux 中的 store、action、reducer 等。
 
-* components/Counter.jsx
+* 其中，components/Counter.jsx
 
 ```jsx
 import React, {PureComponent} from 'react'
@@ -1701,7 +1701,7 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(Counter)
 ```
 
-* components/Banner.jsx
+* 其中，components/Banner.jsx
 
 ```jsx {2-3,14,32-37,44-46,48-50}
 import React, {PureComponent} from 'react'
@@ -1763,7 +1763,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Banner)
 > * 代码实现很简单，但是不觉得，发送请求获取数据等操作还是在组件内部做的？
 > * 难道，不能让 redux 帮助我们完成；毕竟，Vue 中的 Pinia 是可以的。
 
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {3,14}
 import React, {PureComponent} from 'react'
@@ -1876,7 +1876,7 @@ function wrapper_function() {
 ![image-20231231210332180](./assets/21.png)
 
 * 示例：
-* index.js
+* 其中，index.js
 
 ```js {4-5,9,13}
 import React from 'react'
@@ -1895,7 +1895,7 @@ root.render(
 )
 ```
 
-* store/constant.js
+* 其中，store/constant.js
 
 ```js {6}
 /* 该文件主要维护 Action 中 type 的名称 */
@@ -1906,7 +1906,7 @@ export const SUB_COUNTER = 'DECREMENT'
 export const ADD_BANNER = 'ADD_BANNER'
 ```
 
-* store/actionCreators.js
+* 其中，store/actionCreators.js
 
 ```js {28-31,36-44}
 import * as ActionTypes from './constant'
@@ -1955,7 +1955,7 @@ export const addAsyncBannerAction = () => {
 }
 ```
 
-* store/reducers.js
+* 其中，store/reducers.js
 
 ```js {27-31}
 import * as ActionTypes from './constant'
@@ -1996,7 +1996,7 @@ export const reducer = (state = initialState, action) => {
 }
 ```
 
-* store/index.js
+* 其中，store/index.js
 
 ```js {2,6}
 import {applyMiddleware, createStore} from "redux"
@@ -2009,7 +2009,7 @@ const store = createStore(reducer, applyMiddleware(thunk))
 export default store
 ```
 
-* components/Counter.jsx
+* 其中，components/Counter.jsx
 
 ```jsx
 import React, {PureComponent} from 'react'
@@ -2055,7 +2055,7 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(Counter)
 ```
 
-* components/Banner.jsx
+* 其中，components/Banner.jsx
 
 ```jsx {32-35,46-48}
 import React, {PureComponent} from 'react'
@@ -2110,7 +2110,7 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(Banner)
 ```
 
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {14}
 import React, {PureComponent} from 'react'
@@ -2268,7 +2268,7 @@ function combineReducers(reducers) {
 ![image-20231231231129302](./assets/27.png)
 
 * 示例：
-* index.js
+* 其中，index.js
 
 ```js {4-5,9-13}
 import React from 'react'
@@ -2287,7 +2287,7 @@ root.render(
 )
 ```
 
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {2-3,11,14}
 import React, {PureComponent} from 'react'
@@ -2313,14 +2313,14 @@ class App extends PureComponent {
 export default App
 ```
 
-* store/banner/constant.js
+* 其中，store/banner/constant.js
 
 ```js
 /* 该文件主要维护 Action 中 type 的名称 */
 export const ADD_BANNER = 'ADD_BANNER'
 ```
 
-* store/banner/actionCreators.js
+* 其中，store/banner/actionCreators.js
 
 ```js
 import * as ActionTypes from './constant'
@@ -2349,7 +2349,7 @@ export const addAsyncBannerAction = () => {
 }
 ```
 
-* store/banner/reducer.js
+* 其中，store/banner/reducer.js
 
 ```js {14}
 import * as ActionTypes from './constant'
@@ -2381,7 +2381,7 @@ const reducer = (state = initialState, action) => {
 export default reducer
 ```
 
-* store/banner/index.js
+* 其中，store/banner/index.js
 
 ```js {1,4}
 import reducer from './reducer'
@@ -2390,7 +2390,7 @@ export * from './actionCreators'
 export default reducer
 ```
 
-* store/counter/constant.js
+* 其中，store/counter/constant.js
 
 ```js
 /* 该文件主要维护 Action 中 type 的名称 */
@@ -2399,7 +2399,7 @@ export const ADD_COUNTER = 'INCREMENT'
 export const SUB_COUNTER = 'DECREMENT'
 ```
 
-* store/counter/actionCreators.js
+* 其中，store/counter/actionCreators.js
 
 ```js
 import * as ActionTypes from './constant'
@@ -2425,7 +2425,7 @@ export const subCountAction = (payload) => ({
 })
 ```
 
-* store/counter/reducer.js
+* 其中，store/counter/reducer.js
 
 ```js {12}
 import * as ActionTypes from './constant'
@@ -2462,7 +2462,7 @@ const reducer = (state = initialState, action) => {
 export default reducer
 ```
 
-* store/counter/index.js
+* 其中，store/counter/index.js
 
 ```js {1,4}
 import reducer from './reducer'
@@ -2471,7 +2471,7 @@ export * from './actionCreators'
 export default reducer
 ```
 
-* store/reducers.js
+* 其中，store/reducers.js
 
 ```js {6-9}
 import bannerReducer from "@/store/banner"
@@ -2487,7 +2487,7 @@ const combination = combineReducers({
 export default combination
 ```
 
-* store/index.js
+* 其中，store/index.js
 
 ```js {4,11}
 import {applyMiddleware, createStore} from "redux"
@@ -2505,7 +2505,7 @@ const store = createStore(combination, composeEnhancers(applyMiddleware(thunk)))
 export default store
 ```
 
-* components/Banner.jsx
+* 其中，components/Banner.jsx
 
 ```jsx {43}
 import React, {PureComponent} from 'react'
@@ -2560,7 +2560,7 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(Banner)
 ```
 
-* components/Counter.jsx
+* 其中，components/Counter.jsx
 
 ```jsx {33}
 import React, {PureComponent} from 'react'

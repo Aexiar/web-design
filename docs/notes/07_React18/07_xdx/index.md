@@ -65,7 +65,7 @@ npm install react-transition-group
 
 
 * 示例：
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {35-37}
 import React from 'react'
@@ -113,7 +113,7 @@ class App extends React.PureComponent{
 export default App
 ```
 
-* App.css
+* 其中，App.css
 
 ```css
 .h2-appear {
@@ -168,7 +168,7 @@ export default App
 ![image-20231227144923973](./assets/4.png)
 
 * 示例：
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {20-26}
 import React, {createRef, PureComponent} from 'react'
@@ -205,7 +205,7 @@ class App extends PureComponent {
 export default App
 ```
 
-* App.css
+* 其中，App.css
 
 ```css
 .fade-enter{
@@ -230,7 +230,7 @@ export default App
 }
 ```
 
-* Login.jsx
+* 其中，Login.jsx
 
 ```jsx
 function Login() {
@@ -244,7 +244,7 @@ function Login() {
 export default Login
 ```
 
-* Register.jsx
+* 其中，Register.jsx
 
 ```jsx
 function Register() {
@@ -275,7 +275,7 @@ export default Register
 ![image-20231227154233846](./assets/6.png)
 
 * 示例：
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {8-15,33-43}
 import React, {createRef, PureComponent} from 'react'
@@ -330,7 +330,7 @@ class App extends PureComponent {
 export default App
 ```
 
-* App.css
+* 其中，App.css
 
 ```css
 .item-enter {
@@ -400,7 +400,6 @@ export default App
 ![image-20231228094153291](./assets/8.png)
 
 * 示例：
-* App.jsx
 
 ```jsx {6-7,18,24-25}
 import React, {PureComponent} from 'react'
@@ -460,7 +459,7 @@ export default App
 ![image-20231228095256503](./assets/10.png)
 
 * 示例：
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {2,17-18}
 import React, {PureComponent} from 'react'
@@ -489,7 +488,7 @@ class App extends PureComponent {
 export default App
 ```
 
-* App.css
+* 其中，App.css
 
 ```css
 .title {
@@ -497,7 +496,7 @@ export default App
 }
 ```
 
-* Home.jsx
+* 其中，Home.jsx
 
 ```jsx {2,16}
 import React, {PureComponent} from 'react'
@@ -524,7 +523,7 @@ class Home extends PureComponent {
 export default Home
 ```
 
-* Home.css
+* 其中，Home.css
 
 ```css
 .title{
@@ -579,7 +578,7 @@ module.exports = {
 ![image-20231228101521906](./assets/12.png)
 
 * 示例：
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {2-3,17-18}
 import React, {PureComponent} from 'react'
@@ -608,7 +607,7 @@ class App extends PureComponent {
 export default App
 ```
 
-* App.module.css
+* 其中，App.module.css
 
 ```css
 .title {
@@ -616,7 +615,7 @@ export default App
 }
 ```
 
-* Home.jsx
+* 其中，Home.jsx
 
 ```jsx {2,16}
 import React, {PureComponent} from 'react'
@@ -643,7 +642,7 @@ class Home extends PureComponent {
 export default Home
 ```
 
-* Home.module.css
+* 其中，Home.module.css
 
 ```css
 .title{
@@ -773,7 +772,7 @@ npm install randomcolor
 ![image-20231228154546267](./assets/15.png)
 
 * 示例：
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {2,14,15}
 import React, {PureComponent} from 'react'
@@ -799,7 +798,7 @@ class App extends PureComponent {
 export default App
 ```
 
-* App.css
+* 其中，App.css
 
 ```css
 .wrapper {
@@ -821,7 +820,7 @@ export default App
 ![image-20231228155009726](./assets/16.png)
 
 * 示例：
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {2,14-16}
 import React, {PureComponent} from 'react'
@@ -847,7 +846,7 @@ class App extends PureComponent {
 export default App
 ```
 
-* App.style.jsx
+* 其中，App.style.jsx
 
 ```jsx
 import styled from "styled-components";
@@ -943,7 +942,7 @@ export default App
 ![image-20231228161555249](./assets/19.png)
 
 * 示例：
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {2-3,10,20,23}
 import React, {PureComponent} from 'react'
@@ -978,7 +977,7 @@ class App extends PureComponent {
 export default App
 ```
 
-* App.style.jsx
+* 其中，App.style.jsx
 
 ```jsx {11}
 import styled from "styled-components";
@@ -1020,7 +1019,7 @@ export const Button = styled.button`
 ![image-20231228163408610](./assets/21.png)
 
 * 示例：
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {23-24}
 import React, {PureComponent} from 'react'
@@ -1056,7 +1055,7 @@ class App extends PureComponent {
 export default App
 ```
 
-* App.style.jsx
+* 其中，App.style.jsx
 
 ```jsx {11-12}
 import styled from "styled-components";
@@ -1103,7 +1102,7 @@ export const Button = styled.button`
 ![image-20231228164038749](./assets/23.png)
 
 * 示例：
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {16-17}
 import React, {PureComponent} from 'react'
@@ -1131,7 +1130,7 @@ class App extends PureComponent {
 export default App
 ```
 
-* App.style.jsx
+* 其中，App.style.jsx
 
 ```jsx {19}
 import styled from "styled-components";
@@ -1175,7 +1174,7 @@ export const NewButton = styled(Button)`
 ![image-20231228165325746](./assets/25.png)
 
 * 示例：
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {16-17}
 import React, {PureComponent} from 'react'
@@ -1204,7 +1203,7 @@ class App extends PureComponent {
 export default App
 ```
 
-* App.style.jsx
+* 其中，App.style.jsx
 
 ```jsx {19}
 import styled from "styled-components";
@@ -1250,7 +1249,7 @@ export const NewButton = styled(Button)`
 ![image-20231228171043846](./assets/27.png)
 
 * 示例：
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {14}
 import React, {PureComponent} from 'react'
@@ -1276,7 +1275,7 @@ class App extends PureComponent {
 export default App
 ```
 
-* App.style.jsx
+* 其中，App.style.jsx
 
 ```jsx {21-23}
 import styled from "styled-components";
@@ -1334,7 +1333,7 @@ const PasswordInput = styled.input.attrs(props => ({
 ![image-20231228172007251](./assets/29.png)
 
 * 示例：
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {15}
 import React, {PureComponent} from 'react'
@@ -1360,7 +1359,7 @@ class App extends PureComponent {
 export default App
 ```
 
-* App.style.jsx
+* 其中，App.style.jsx
 
 ```jsx {26-30}
 import styled from "styled-components";
@@ -1412,7 +1411,7 @@ export const NewButton = styled(Button).attrs(props => ({
 ![image-20231229094858378](./assets/31.png)
 
 * 示例：
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {2-4,24-26}
 import React, {PureComponent} from 'react'
@@ -1449,7 +1448,7 @@ class App extends PureComponent {
 export default App
 ```
 
-* App.style.jsx
+* 其中，App.style.jsx
 
 ```jsx
 import styled from "styled-components";
@@ -1473,7 +1472,7 @@ export const Button = styled.button`
 `
 ```
 
-* theme/index.js
+* 其中，theme/index.js
 
 ```js {3,6}
 // 主题相关

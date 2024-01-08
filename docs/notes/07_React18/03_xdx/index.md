@@ -452,14 +452,12 @@ export default App
 
 ![](./assets/11.gif)
 
-* 项目目录：
+* 项目结构：
 
 ![image-20231218150859625](./assets/12.png)
 
-
-
 * 示例：
-* HelloWorld.jsx
+* 其中，HelloWorld.jsx
 
 ```jsx {18}
 import React from "react"
@@ -487,7 +485,7 @@ class HelloWorld extends React.Component {
 export default HelloWorld
 ```
 
-* App.jsx
+* 其中，App.jsx
 
 ```jsx
 import React from 'react'
@@ -545,12 +543,12 @@ export default App
 
 > 注意：在组件销毁的时候，必须将定时器关闭；否则，随着时间的推移，用户电脑的 CPU 会越来越高。
 
-* 目录结构：
+* 项目结构：
 
 ![image-20231218152421525](./assets/14.png)
 
 * 示例：
-* Clock.jsx
+* 其中，Clock.jsx
 
 ```jsx {7-9,16,20-26,28-30}
 import React from "react"
@@ -589,7 +587,7 @@ class Clock extends React.Component {
 export default Clock
 ```
 
-* App.jsx
+* 其中，App.jsx
 
 ```jsx
 import React from 'react'
@@ -703,12 +701,12 @@ export default App
 
 ![image-20231219093627750](./assets/17.png)
 
-* 项目结构如下：
+* 项目结构：
 
 ![image-20231219093656456](./assets/18.png)
 
-* 对应的代码如下：
-* App.jsx
+* 示例：
+* 其中，App.jsx
 
 ```jsx {20-22}
 import React from 'react'
@@ -741,7 +739,7 @@ class App extends React.Component {
 export default App
 ```
 
-* Header.jsx
+* 其中，Header.jsx
 
 ```jsx
 import React from 'react'
@@ -768,7 +766,7 @@ class Header extends React.Component {
 export default Header
 ```
 
-* Main.jsx
+* 其中，Main.jsx
 
 ```jsx
 import React from 'react'
@@ -799,7 +797,7 @@ class Main extends React.Component {
 export default Main
 ```
 
-* Footer.jsx
+* 其中，Footer.jsx
 
 ```jsx
 import React from 'react'
@@ -826,7 +824,7 @@ class Footer extends React.Component {
 export default Footer
 ```
 
-* Banner.jsx
+* 其中，Banner.jsx
 
 ```jsx
 import React from 'react'
@@ -853,7 +851,7 @@ class Banner extends React.Component {
 export default Banner
 ```
 
-* ProductList.jsx
+* 其中，ProductList.jsx
 
 ```jsx
 import React from 'react'
@@ -1099,7 +1097,8 @@ export default App
 
 ![image-20231219101751223](./assets/20.png)
 
-* 示例：Main.jsx
+* 示例：
+* 其中，Main.jsx
 
 ```jsx {25,27}
 import React from 'react'
@@ -1137,7 +1136,7 @@ class Main extends React.Component {
 export default Main
 ```
 
-* 示例：Banner.jsx
+* 其中，Banner.jsx
 
 ```js {13}
 import React from 'react'
@@ -1170,7 +1169,7 @@ class Banner extends React.Component {
 export default Banner
 ```
 
-* 示例：ProductList.jsx
+* 其中，ProductList.jsx
 
 ```jsx {16}
 import React from 'react'
@@ -1638,7 +1637,7 @@ HelloWorld.propTypes = {
 
 ![](./assets/26.gif)
 
-* 项目结构如下：
+* 项目结构：
 
 ![image-20231219135007428](./assets/27.png)
 
@@ -2018,12 +2017,12 @@ export default App
 * 要求：
   * ① 数据在父组件中，通过 props 传递到子组件中，由子组件渲染数据。
   * ② 当点击 tab 的时候，在父组件中，显示对应的标题。
-* 项目结构如下：
+* 项目结构：
 
 ![image-20231219153127311](./assets/35.png)
 
 * 示例：
-* App.jsx
+* 其中，App.jsx
 
 ```jsx {6-9,11-15,21,22}
 import React from 'react'
@@ -2056,7 +2055,7 @@ class App extends React.Component {
 export default App
 ```
 
-* Tabs.jsx
+* 其中，Tabs.jsx
 
 ```jsx {6-8,10-17,26-27}
 import React from 'react'
@@ -2097,7 +2096,7 @@ class Tabs extends React.Component {
 export default Tabs
 ```
 
-* Tabs.css
+* 其中，Tabs.css
 
 ```css
 * {
@@ -2181,7 +2180,7 @@ class Welcome extends React.Component {
 ![image-20231220083808439](./assets/38.png)
 
 * 基础功能搭建：
-* ① App.jsx
+* 其中，App.jsx
 
 ```jsx
 import React from 'react'
@@ -2206,7 +2205,7 @@ class App extends React.Component {
 export default App
 ```
 
-* NavBar.jsx
+* 其中，NavBar.jsx
 
 ```jsx
 import React from 'react'
@@ -2233,7 +2232,7 @@ class Navbar extends React.Component {
 export default Navbar
 ```
 
-* Navbar.css
+* 其中，Navbar.css
 
 ```css
 * {
@@ -2263,7 +2262,6 @@ export default Navbar
 
 ![image-20231220084036410](./assets/39.png)
 
-* 示例：
 * 在 App.jsx 中，使用 NavBar 组件的时候传入内容：
 
 ```jsx {15-19}
@@ -2552,10 +2550,9 @@ export default Navbar
   * ① 数据保存在 App 组件内，通过 props 传递给 NavBar 组件，让其在内部渲染。
   * ② 到底显示什么元素，由 App 组件控制，可以是 `h2` 、`button` 或其它。
 
-
-
 * 示例：
-* App.jsx
+
+* 其中，App.jsx
 
 ```jsx {17}
 import React from 'react'
@@ -2583,7 +2580,7 @@ class App extends React.Component {
 export default App
 ```
 
-* NavBar.jsx
+* 其中，NavBar.jsx
 
 ```jsx {15-17}
 import React from 'react'
