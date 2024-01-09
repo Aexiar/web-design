@@ -660,7 +660,7 @@ export default reducer
 > 注意：
 >
 > * 我们只能在 Redux Toolkit 的 **`createSlice`** 和 **`createReducer`** 中编写 `“mutation”` 逻辑，因为它们在内部使用 Immer！
-> * 如果我们在没有 Immer 的 reducer 中编写 mutation 逻辑，它将`改变状态`并**`导致错误`**！
+> * 如果我们在没有 Immer 的 reducer 中编写 mutation 逻辑，它将`改变状态`并`导致错误！`
 
 
 

@@ -93,6 +93,7 @@ export const sidebar: DefaultTheme.Sidebar = {
         { text: 'React 的 CSS 解决方案', link: `/notes/07_React18/07_${commonDirectoryName}/` },
         { text: 'React 的状态管理（redux）', link: `/notes/07_React18/08_${commonDirectoryName}/` },
         { text: 'React 的状态管理二（redux）', link: `/notes/07_React18/09_${commonDirectoryName}/` },
+        { text: 'React Hooks', link: `/notes/07_React18/11_${commonDirectoryName}/` },
       ]
     }
   ],
