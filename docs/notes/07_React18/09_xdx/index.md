@@ -1190,7 +1190,7 @@ export default store
 
 * Redux Toolkit 等并不是唯一的选择，目前也有很多其他的状态管理方案：
   * ① 喜欢 Redux 单向数据流的，可以用 [zustand](https://github.com/pmndrs/zustand) 。
-  * ② 喜欢React Hook 函数式思维的，可以用 [jotai](https://github.com/pmndrs/jotai) 。
+  * ② 喜欢 React Hook 函数式思维的，可以用 [jotai](https://github.com/pmndrs/jotai) 。
   * ③ 喜欢 Vue3 Reactive 的，可以用 [valtio](https://github.com/pmndrs/valtio) 。
 
 > 注意⚠️：在实际开发中，看团队和个人喜欢，选择对应的组件状态库即可；换言之，你熟悉那个就用那个。
