@@ -19,13 +19,13 @@ foo(() => {
 })
 ```
 
-> 注意：
+> 注意⚠️：
 >
 > * 高阶函数可以将函数作为数据进行操作和传递，从而实现更灵活的编程。
 > * 高阶函数可以用来实现`函数的组合`、`柯里化`、`延迟执行`等功能。
 > * JavaScript 中数组的 `map()`、`forEach()`、`filter()` 、`reduce()` 等都是高阶函数。
 
-## 1.2 高阶组件的定义和使用
+## 1.2 高阶组件的定义和使用（⭐）
 
 * 高阶组件（HOC）是 React 中用于复用组件逻辑的一种高级技巧。
 * HOC 自身不是 React API 的一部分，它是一种基于 React 的组合特性而形成的设计模式。
@@ -35,7 +35,7 @@ foo(() => {
 const EnhancedComponent = higherOrderComponent(WrappedComponent);
 ```
 
-> 注意：
+> 注意⚠️：
 >
 > * 高阶组件不是组件，而是函数。
 > * 高阶组件通常在一些 React 第三方库中非常常见！！！
@@ -85,7 +85,7 @@ class App extends PureComponent{
 export default hoc(App)
 ```
 
-## 1.3 高阶组件的应用场景
+## 1.3 高阶组件的应用场景（⭐）
 
 ### 1.3.1 场景一
 
@@ -225,7 +225,7 @@ export default About
 
 ![](./assets/4.gif)
 
-> 注意：实际开发中，一般需要配合 localStorage 实现`登录鉴权`功能。
+> 注意⚠️：实际开发中，一般需要配合 localStorage 实现`登录鉴权`功能。
 
 * 项目结构：
 
@@ -449,7 +449,7 @@ class Cart extends PureComponent {
 export default withComputeTime(Cart)
 ```
 
-## 1.4 高阶组件的实际应用 -- 主题切换
+## 1.4 高阶组件的实际应用 -- 主题切换（⭐）
 
 ### 1.4.1 基本实现
 
@@ -655,19 +655,19 @@ export function withTheme(WrappedComponent) {
 }
 ```
 
-## 1.5 高阶组件的意义
+## 1.5 高阶组件的意义（⭐）
 
 * 我们会发现利用高阶组件可以针对某些 React 代码进行更加优雅的处理；但是，HOC 也有自己的缺点：
   * ① HOC 需要在`原组件上进行包裹或者嵌套`，如果`大量的使用 HOC`，将会产生`非常多的嵌套`，会让调试变得非常困难。
   * ② HOC 可以`劫持 props` ，`在不遵守决定的情况下可能会造成冲突`。
 
-> 注意：之前学习的 `React.memo()` 和 `React.forwardRef()` 就是高阶组件。
+> 注意⚠️：之前学习的 `React.memo()` 和 `React.forwardRef()` 就是高阶组件。
 
 * `Hooks` 的出现，是开创性的，解决了很多 React 之前存在的问题，如：this 指向问题，hoc 的嵌套复杂度问题，后续讲解！！！
 
 
 
-# 第二章：Portal
+# 第二章：Portal（⭐）
 
 ## 2.1 概述
 
@@ -678,7 +678,7 @@ export function withTheme(WrappedComponent) {
 ReactDOM.createPortal(child, container)
 ```
 
-> 注意：其实，和 Vue3.x 中的 `Teleport` 内置组件没什么区别。Teleport 的英文含义是`心灵传输`的意思。
+> 注意⚠️：其实，和 Vue3.x 中的 `Teleport` 内置组件没什么区别。Teleport 的英文含义是`心灵传输`的意思。
 
 * 简单理解：常规的组件渲染都是在 `public` 目录下 `index.html` 文件中的`<div id="root"></div>`节点下面；但是，通过 Portal 我们可以将组件渲染到任何节点，如：body 节点等。
 
@@ -812,7 +812,7 @@ export default Modal
 
 
 
-# 第三章：Fragment
+# 第三章：Fragment（⭐）
 
 ## 3.1 概述
 
@@ -933,7 +933,7 @@ root.render(
 * `StrictMode` 表示严格模式，并且 `StrictMode` 是一个用来突出显示应用程序中潜在问题的工具。
 * `StrictMode` 与 `Fragment` 一样，`StrictMode` 不会渲染任何可见的 UI。它为其后代元素触发额外的检查和警告。
 
-> 注意：严格模式检查仅在开发模式下运行；它们不会影响生产构建！！！
+> 注意⚠️：严格模式检查仅在开发模式下运行；它们不会影响生产构建！！！
 
 ## 4.2 严格模式检查什么？
 

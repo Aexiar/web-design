@@ -27,7 +27,7 @@
 - 在计算机科学中，也引入了`副作用`的概念，表示在`执行一个函数`时，除了`返回函数值`之外，还`对调用函数产生了附加的影响` ，如：对变量的修改、对数据结构的更改、对文件系统的操作、对网络的请求等。
 - 副作用会改变程序的状态，可能导致不可预测的行为，并增加代码的复杂性和难以调试；换言之，`副作用`往往是`产生 bug` 的 `“温床”` 。
 
-## 1.3 纯函数的案例
+## 1.3 纯函数的案例（⭐）
 
 ### 1.3.1 数组中的纯函数
 
@@ -120,14 +120,14 @@ printInfo(info)
   * 内部函数可以访问外部函数的变量，即使外部函数已经执行完毕，这些变量仍然可以被内部函数访问和使用。
   * 闭包的一个常见用途是创建私有变量和函数。通过使用闭包，可以将变量和函数封装在一个作用域内，防止它们被外部访问和修改。
 
-> 注意：
+> 注意⚠️：
 >
 > * 一个普通的函数 function ，如果它可以`访问外层作用域的自由变量`，那么这`个函数`和`周围环境`就是一个`闭包`。
 > * 从广义的角度来说：JavaScript 中的函数都是[闭包](https://aexiar.github.io/web-design/notes/03_javascript_advanced/04_xdx/#%E7%AC%AC%E4%BA%8C%E7%AB%A0-javascript-%E4%B8%AD%E7%9A%84%E9%97%AD%E5%8C%85-%E2%AD%90)。
 > * 从狭义的角度来说：JavaScript 中一个函数，如果访问了外层作用域的变量，那么它是一个闭包。
 > * 其实，`纯函数`的提出，某种意义上就是为了限制`闭包`的滥用。
 
-## 1.4 纯函数的优势
+## 1.4 纯函数的优势（⭐）
 
 * 为什么`纯函数`在`函数式编程`中非常重要？
   * 只要`写的时候`保证函数的`纯度`，只要`单纯的实现自己的业务逻辑`即可，不需要`关心传入的内容`如何获取或者`依赖其他的外部变量`是否发生修改。
@@ -138,13 +138,13 @@ printInfo(info)
 
 
 
-# 第二章：Redux 的基本概念
+# 第二章：Redux 的基本概念（⭐）
 
 ## 2.1 Redux 是什么？
 
 * Redux 是一个使用叫做 `“action”` 的事件来管理和更新应用状态的模式和工具库，它以集中式 Store（centralized store）的方式对整个应用中使用的状态进行集中管理，其规则确保状态只能以可预测的方式更新。
 
-> 注意：Redux 和 Vue 中的 vuex 以及 Pinia 等没什么区别，都是用来管理状态的。
+> 注意⚠️：Redux 和 Vue 中的 vuex 以及 Pinia 等没什么区别，都是用来管理状态的。
 
 ## 2.2 为什么需要使用 Redux ？
 
@@ -165,7 +165,7 @@ printInfo(info)
 
 ![image-20231213100244515](./assets/2.png)
 
-> 注意：上图中的 f 是函数的意思，对于 React 而言，就是 render() 函数了。
+> 注意⚠️：上图中的 f 是函数的意思，对于 React 而言，就是 render() 函数了。
 
 * `Redux` 就是一个帮助我们管理 `state` 的容器：Redux 是 JavaScript 的状态容器，提供了可预测的状态管理；
 * `Redux` 除了和 React 一起使用之外，它也可以和其他界面库一起来使用，如：Vue、React 等，并且它非常小。
@@ -180,7 +180,7 @@ printInfo(info)
   * ④ 中型和大型代码量的应用，很多人协同开发。
   * ⑤ ……
 
-> 注意：并非所有应用程序都需要 Redux。 可以花一些时间思正在构建的应用程序类型，并决定哪些工具最能帮助解决我们正在处理的问题。
+> 注意⚠️：并非所有应用程序都需要 Redux。 可以花一些时间思正在构建的应用程序类型，并决定哪些工具最能帮助解决我们正在处理的问题。
 
 ##   2.4 Redux 概念
 
@@ -232,7 +232,7 @@ export class Counter extends PureComponent {
 * 解决这个问题的一种方法是从`组件中提取共享 State`，并将其放入`组件树之外`的一个`集中位置`。这样，组件树就变成了一个大 `“View”`，任何组件都可以访问 State 或触发 Action，无论它们在树中的哪个位置！
 * 通过定义和分离 State 管理中涉及的概念并强制执行维护 View 和 State 之间独立性的规则，代码变得更结构化和易于维护。
 
-> 注意：这就是 Redux 背后的基本思想，即：应用中使用`集中式`的全局状态来管理，并明确更新状态的模式，以便让代码具有可预测性。
+> 注意⚠️：这就是 Redux 背后的基本思想，即：应用中使用`集中式`的全局状态来管理，并明确更新状态的模式，以便让代码具有可预测性。
 
 ### 2.4.2 不可变（Immutability）数据的力量
 
@@ -299,7 +299,7 @@ arr3.push('c')
 
 * Store 是用来集中保存 React 数据的地方，在 Redux 中，应用中的 state 都应该`集中`保存在名为 `store` 的对象中。
 
-> 注意：
+> 注意⚠️：
 >
 > * 前文提到了，Redux 背后的基本思想，即：应用中使用`集中式`的全局状态来管理，并明确更新状态的模式，以便让代码具有可预测性。
 > * 所以，对于 Redux 而言，一个项目有且仅有一个 `store` 对象。
@@ -373,7 +373,7 @@ export default store
   * ② 禁止直接修改 `state`，必须通过复制现有的 `state` 并对复制的值进行更改的方式来做 `不可变更新`。
   * ③ 禁止任何异步逻辑、依赖随机值或导致其他`“副作用”`的代码。
 
-> 注意：其实，上面就是要求 reducer 是一个纯函数而已。
+> 注意⚠️：其实，上面就是要求 reducer 是一个纯函数而已。
 
 * 并且，`reducer` 函数内部的逻辑通常遵循以下的步骤：
   * ① 检查 reducer 是否匹配到 action：
@@ -422,7 +422,7 @@ const store = createStore(reducer)
 export default store
 ```
 
-> 注意： reduer() 函数内部可以使用任何类型的逻辑来决定新状态是什么，如：if-else、switch、循环等。
+> 注意⚠️： reduer() 函数内部可以使用任何类型的逻辑来决定新状态是什么，如：if-else、switch、循环等。
 
 * `reduer()` 来源于 JavaScript 中的 `Array.reduce()` ，通常我们是这么使用的：
 
@@ -564,7 +564,7 @@ export default App
 
 
 
-# 第三章：Redux 的快速入门
+# 第三章：Redux 的快速入门（⭐）
 
 ## 3.1 Redux 的快速入门
 
@@ -636,7 +636,7 @@ class App extends PureComponent {
 export default App
 ```
 
-> 注意：
+> 注意⚠️：
 >
 > * 目前，只能通过 `store.subscribe` 来监听 redux 中 state 的变化，后期会使用 [HOC](https://aexiar.github.io/web-design/notes/07_React18/06_xdx/) 来进行优化。
 > * 目前，为了实现 redux 中 state 变化，页面跟着刷新，当前的临时解决方案是：将数据放到组件内部的 state 中；后期也会使用 [HOC](https://aexiar.github.io/web-design/notes/07_React18/06_xdx/) 来进行优化。
@@ -1004,7 +1004,7 @@ export default App
 
 
 
-# 第四章：React-Redux 的使用
+# 第四章：React-Redux 的使用（⭐）
 
 ## 4.1 概述
 
@@ -1064,7 +1064,7 @@ export default Counter
 
 * 那么，我们可以使用 `HOC（高阶组件）`和 `React 内置的 Context` 来解决这个问题；但是，在实际开发中，我们会使用 redux 官方提供的 `react-redux` 库，其实现更为严谨和高效。
 
-> 注意：react-redux 库的原理还是通过 `HOC（高阶组件）`和 `React 内置的 Context` 来解决上述的问题。
+> 注意⚠️：react-redux 库的原理还是通过 `HOC（高阶组件）`和 `React 内置的 Context` 来解决上述的问题。
 
 * 安装 react-redux ：
 
@@ -1125,7 +1125,7 @@ root.render(
 </CounterContext.Provider>
 ```
 
-* 其实，`React-Redux` 提供了 connect() 函数供我们在组件中使用；需要注意的是，`connect() 函数的返回值才是高阶组件`，所以 Home 组件，就应该这么写：
+* 其实，`React-Redux` 提供了 connect() 函数供我们在组件中使用；需要`注意⚠️`的是，`connect() 函数的返回值才是高阶组件`，所以 Home 组件，就应该这么写：
 
 ```jsx {2,22-23}
 import React, {PureComponent} from 'react'
@@ -1518,7 +1518,7 @@ export default App
 * 在上面的案例中，redux 中保存的数据是一个本地的数据；所以，我们可以通过 `dispatch` 分发一个 action，那么 redux 中 store 保存的 state 数据就会立即更新。
 
 * 但是，在实际开发中，很多时候 `redux` 中`保存的数据`往往`来自服务器`，我们需要进行`异步的请求`，再`将数据保存到 redux` 中。
-* 需要`注意`的是:`dispatch action 是一个同步操作`，即 redux 中的 reducer 默认是不能处理异步的请求的，那咋办？其实，对于 React 中的类式组件而言，我们可以通过 `componentDidMount` 发送异步请求，然后将数据保存到 redux 中不就可以了。
+* 需要`注意⚠️`的是:`dispatch action 是一个同步操作`，即 redux 中的 reducer 默认是不能处理异步的请求的，那咋办？其实，对于 React 中的类式组件而言，我们可以通过 `componentDidMount` 发送异步请求，然后将数据保存到 redux 中不就可以了。
 * 对应的流程图如下：
 
 ![image-20231231075040691](./assets/15.png)
@@ -1653,7 +1653,7 @@ root.render(
 )
 ```
 
-> 注意：上述的代码很简单，就是用来定义 redux 中的 store、action、reducer 等。
+> 注意⚠️：上述的代码很简单，就是用来定义 redux 中的 store、action、reducer 等。
 
 * 其中，components/Counter.jsx
 
@@ -1758,7 +1758,7 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(Banner)
 ```
 
-> 注意：
+> 注意⚠️：
 >
 > * 代码实现很简单，但是不觉得，发送请求获取数据等操作还是在组件内部做的？
 > * 难道，不能让 redux 帮助我们完成；毕竟，Vue 中的 Pinia 是可以的。
@@ -1817,7 +1817,7 @@ export default App
 npm install redux-thunk
 ```
 
-* 值得注意的是：`thunk` 在英文中的含义是 `一段做延迟工作的代码`。但是，在 redux-thunk 中，它是函数的另一种说法，即一种特殊的名称，用于由另外一个函数返回：
+* 值得`注意⚠️`的是：`thunk` 在英文中的含义是 `一段做延迟工作的代码`。但是，在 redux-thunk 中，它是函数的另一种说法，即一种特殊的名称，用于由另外一个函数返回：
 
 ```js
 function wrapper_function() {
@@ -1847,7 +1847,7 @@ function wrapper_function() {
   declare function createStore<S, A extends Action, Ext extends {} = {}, StateExt extends {} = {}>(reducer: Reducer<S, A>, enhancer?: StoreEnhancer<Ext, StateExt>): Store<S, A, UnknownIfNonSpecific<StateExt>> & Ext;
   ```
   
-  > 注意：enhancer 就是通过 applyMiddleware 结合多个 Middleware 的返回值。
+  > 注意⚠️：enhancer 就是通过 applyMiddleware 结合多个 Middleware 的返回值。
   
   * 应用 redux-thunk 的示例：
   
@@ -2145,7 +2145,7 @@ export default App
 npm install @redux-devtools/extension
 ```
 
-> 注意：需要配合浏览器插件，可以去 `Chrome 应用商店`安装 `redux-devtools` 、`React Developer Tools`、`React Context DevTool` 插件。
+> 注意⚠️：需要配合浏览器插件，可以去 `Chrome 应用商店`安装 `redux-devtools` 、`React Developer Tools`、`React Context DevTool` 插件。
 
 * 配置：
 
@@ -2198,7 +2198,7 @@ export default store
 * 对于之前的案例而言，我们仅仅使用了两个组件，所有的对于 redux 的操作都保存在这些文件中没什么关系；但是，一旦项目中，组件越来越多，还是这么管理，就会显得非常臃肿，并且会难以维护，所以必须进行拆分。
 * 那么，该怎么进行拆分呢？当然，是根据`组件`或`功能`等进行拆分。
 
-> 注意：本人目前是按照`组件`进行拆分的。
+> 注意⚠️：本人目前是按照`组件`进行拆分的。
 
 * 其实，`redux` 给我们提供了 `combineReducers()` 函数可以很方便的让我们对 reducer 进行合并：
   * `combineReducers()` 需要我们插入一个对象，最终返回一个 `combination()` 函数；相当于之前我们的 reducer() 函数。

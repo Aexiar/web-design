@@ -62,7 +62,7 @@
 
 * 上文提到的`脚手架`（其实，就是 Vite 官方文档中提到的`模板`）的作用都是帮助我们生成一个通用的目录结构，并且已经将我们所需的工程环境配置好。
 
->  注意：使用这些脚手架需要我们电脑上配置有 Node.js 环境。
+>  注意⚠️：使用这些脚手架需要我们电脑上配置有 Node.js 环境。
 
 
 
@@ -119,7 +119,7 @@ npx cowsay wow
 * 因为我们有的时候只是想使用一些 CLI 工具，但我们不想为了测试它们而在全局安装它们。
 * 这意味着我们可以节省一些磁盘空间，只在需要时才运行它们。这也意味着我们的全局变量将受到更少的污染。
 
-## 2.2 创建 React 项目
+## 2.2 创建 React 项目（⭐）
 
 * 命令：
 
@@ -127,7 +127,7 @@ npx cowsay wow
 npx create-react-app 项目名 [--template template-name]
 ```
 
-> 注意：
+> 注意⚠️：
 >
 > * 项目名必须是英文的，且不能大写。
 > * `--template template-name` 是可选参数，`template-name` 默认提供两个 `cra-template` 和  `cra-template-typescript` 。如果不写，则是 `cra-template`。也可以通过 [这里](https://www.npmjs.com/search?q=cra-template-*) 搜索其他的社区模板。
@@ -142,7 +142,7 @@ npx create-react-app react-app-demo
 
 ![](./assets/3.gif)
 
-## 2.3 目录结构分析
+## 2.3 目录结构分析（⭐）
 
 * 默认生成的目录结构，如下所示：
 
@@ -152,7 +152,7 @@ npx create-react-app react-app-demo
 
 ![image-20231216231518823](./assets/5.png)
 
-> 注意：源码在[这里](/assets/notes/07_React18/02_xdx/react-app-demo.zip)。
+> 注意⚠️：源码在[这里](/assets/notes/07_React18/02_xdx/react-app-demo.zip)。
 
 * 解释下其中的含义：
 
@@ -216,7 +216,7 @@ function App() {
 export default App;
 ```
 
-> 注意：React 支持`类式组件`和`函数式组件`；目前，官方`推荐`函数式组件。但是，我们还是`以`类式组件为例。
+> 注意⚠️：React 支持`类式组件`和`函数式组件`；目前，官方`推荐`函数式组件。但是，我们还是`以`类式组件为例。
 
 * index.html 生成的代码，如下所示：
 
@@ -241,11 +241,11 @@ export default App;
 </html>
 ```
 
-## 2.4 开始编写代码
+## 2.4 开始编写代码（⭐）
 
 * 需求：在脚手架项目中显示 `"Hello React"` 的功能。
 
-> 注意：我们需要在 src 目录下，将 App.js 删除，并新建 App.jsx 文件，以便获取更好的 IDE 支持。
+> 注意⚠️：我们需要在 src 目录下，将 App.js 删除，并新建 App.jsx 文件，以便获取更好的 IDE 支持。
 
 * 项目结构：
 
@@ -269,7 +269,7 @@ class App extends React.Component{
 export default App
 ```
 
-## 2.5 优化项目
+## 2.5 优化项目（⭐）
 
 * 对于 index.js 中的代码：
 

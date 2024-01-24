@@ -23,7 +23,7 @@
 
 * 类似于 Vue 中，React 也提供了这样的编程方式，称为 Context ；React 中的 Context 提供了一种在组件之间共享值的方式，而不必显示的通过组件树逐层传递 props 。
 
-## 1.3 React 非父子组件的通信 --- Context
+## 1.3 React 非父子组件的通信 --- Context（⭐）
 
 ### 1.3.1 概述
 

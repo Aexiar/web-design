@@ -56,7 +56,7 @@
 
 ![image-20231213100850354](./assets/7.png)
 
-## 2.2 React 入门
+## 2.2 React 入门（⭐）
 
 ### 2.2.1 React 的开发依赖
 
@@ -69,7 +69,7 @@
 
 ![image-20231213105501661](./assets/8.png)
 
-> 注意：
+> 注意⚠️：
 >
 > * 我们会发现有 umd 和 cjs 的版本。
 > * 其中，umd 全称是 Universal Module Definition，可以在前端和后端通用。
@@ -196,7 +196,7 @@ const app = ReactDOM.createRoot(document.querySelector('.app'))
 app.render(vDOM)
 ```
 
-## 2.3 组件化开发
+## 2.3 组件化开发（⭐）
 
 ### 2.3.1 引入
 
@@ -276,7 +276,7 @@ app.render(vDOM)
 
 ![image-20231213161554404](./assets/11.png)
 
-> 注意：React 中支持`类组件`和`函数式组件`，我们以`类组件`为`切入点`讲解，`函数式组件`后面再讲解。。
+> 注意⚠️：React 中支持`类组件`和`函数式组件`，我们以`类组件`为`切入点`讲解，`函数式组件`后面再讲解。。
 
 ### 2.3.3 React 中的类组件
 
@@ -684,7 +684,7 @@ app.render(vDOM)
 </html>
 ```
 
-## 2.4 React 案例
+## 2.4 React 案例（⭐）
 
 ### 2.4.1 数组列表案例
 
@@ -692,7 +692,7 @@ app.render(vDOM)
 
 ![image-20231214102502634](./assets/20.png)
 
-> 注意：
+> 注意⚠️：
 >
 > * 在 React 中，没有 Vue 的差值语法；React 中的 jsx 语法很简单，都是 `{}` 。
 > * React 中 `{}` 可以插入数组，会自动遍历数组中的元素并渲染到页面上；但是，不支持对象。
@@ -974,7 +974,7 @@ app.render(vDOM)
 
 # 第三章：JSX 语法
 
-## 3.1 初识 JSX 语法
+## 3.1 初识 JSX 语法（⭐）
 
 * 像下面的一段代码：
 
@@ -988,7 +988,7 @@ const element = <h1>Hello, world!</h1>
 * JSX 不同于 Vue 中的模板语法；因此，我们不再需要专门学习模板语法中的各种指令，如：`v-if`、`v-else`、`v-for` 等。
 * `JSX 拥有 JavaScript 的一切功能！！！`
 
-## 3.2 为什么 React 选择了 JSX ？
+## 3.2 为什么 React 选择了 JSX ？（⭐）
 
 * React 认为`渲染逻辑`本质上与`其他 UI 逻辑`存在内在耦合，如：
   * 在 UI 中需要绑定处理事件。
@@ -1005,7 +1005,7 @@ const element = <h1>Hello, world!</h1>
 * React`不强制要求`使用 JSX，但是大多数人发现，在 JavaScript 代码中将 JSX 和 UI 放在一起时，会在视觉上有辅助作用。
 * `JSX` 还可以使 React `显示`更多`有用`的错误和警告消息。
 
-## 3.3 JSX 的基本使用
+## 3.3 JSX 的基本使用（⭐）
 
 ### 3.3.1 JSX 的基本语法
 
@@ -1014,7 +1014,7 @@ const element = <h1>Hello, world!</h1>
   * ② 为了方便阅读，我们通常会在 JSX 的外层包裹一个 `()`。
   * ③ 在 JSX 中，`标签`可以是`单标签`，也可以是`双标签`；但是，如果是单标签，必须以 `<标签 />` 结尾（这点，很像 XML 语法）。
 
-> 注意：JSX 是在`类式组件`中 `render()` 方法的 `return`  后面书写，`函数式组件`且听后文讲解。
+> 注意⚠️：JSX 是在`类式组件`中 `render()` 方法的 `return`  后面书写，`函数式组件`且听后文讲解。
 
 
 
@@ -1249,7 +1249,7 @@ const element = <h1>Hello, world!</h1>
 * 情况①：当`变量`是 `Number`、`String`、`Array` 类型的时候，可以`直接显示`；当然，Array 类型会帮助我们遍历数组中的元素并显示到界面上。
 * 情况②：当`变量`是 `null`、`undefined` 、`Boolean` 的时候，`显示的内容为空`。
 
-> 注意：如果依然希望可以显示  `null`、`undefined` 、`Boolean` ，需要转换为 `String`（实际开发中，一般不需要）。
+> 注意⚠️：如果依然希望可以显示  `null`、`undefined` 、`Boolean` ，需要转换为 `String`（实际开发中，一般不需要）。
 
 * 情况③：当`变量`是 `Object 对象类型`的时候，会`直接报错`（not valid as a React child）。
 
@@ -1496,7 +1496,7 @@ const element = <h1>Hello, world!</h1>
 </html>
 ```
 
-## 3.4 JSX 绑定属性
+## 3.4 JSX 绑定属性（⭐）
 
 ### 3.4.1 JSX 绑定基本属性
 
@@ -1613,7 +1613,7 @@ const element = <h1>Hello, world!</h1>
 
 * 在 React 中，依然是使用 `{}` 来绑定基本属性；但是，`{}` 中是通过  JavaScript 的`对象值`来实现的。
 
-> 注意：
+> 注意⚠️：
 >
 > * 在原生 CSS 中，一些属性是通过 `-` 连接的，如：background-color 等；
 > * 在 Vue 和 React 中，都需要使用小驼峰的命名规则，如：backgroundColor 。
@@ -1710,7 +1710,7 @@ const element = <h1>Hello, world!</h1>
 
 * 在 React 中，和 Vue 有点不同，需要使用 `className` 来完成 class 的绑定。
 
-> 注意：在 React 中，如果想要实现类似 Vue 中对象动态切换 class 的那种效果，需要使用第三方库 classnames 。
+> 注意⚠️：在 React 中，如果想要实现类似 Vue 中对象动态切换 class 的那种效果，需要使用第三方库 classnames 。
 
 
 
@@ -1900,7 +1900,7 @@ const element = <h1>Hello, world!</h1>
 </html>
 ```
 
-## 3.5 JSX 的事件绑定
+## 3.5 JSX 的事件绑定（⭐）
 
 ### 3.5.1 概述
 
@@ -2248,7 +2248,7 @@ sayName();  // this 为 undefined，会报错
 
 * 我们也可以通过在`事件监听`中传入`箭头函数`的方式来解决 this 绑定问题（`强烈推荐`）。
 
-> 注意：`() => {}` 箭头函数也是表达式，所以 `{}` 中就可以插入`箭头函数`。 
+> 注意⚠️：`() => {}` 箭头函数也是表达式，所以 `{}` 中就可以插入`箭头函数`。 
 
 
 
@@ -2502,7 +2502,7 @@ boxEl.addEventListener('click',function(event){
 
 * 有的时候，我们除了要在类方法中获取 event 事件对象参数之外，还需要传递额外的参数；此时，就推荐在`事件监听`中传入`箭头函数`的方式了。
 
-> 注意：这种方式传递参数的`个数`和`位置`是很直观的的，而其他两种方式不是很直观（因为 event 参数最后一个，增加了记忆成本）。
+> 注意⚠️：这种方式传递参数的`个数`和`位置`是很直观的的，而其他两种方式不是很直观（因为 event 参数最后一个，增加了记忆成本）。
 
 
 
@@ -2648,7 +2648,7 @@ boxEl.addEventListener('click',function(event){
 </html>
 ```
 
-## 3.6 JSX 的条件渲染
+## 3.6 JSX 的条件渲染（⭐）
 
 ### 3.6.1 概述
 
@@ -2723,7 +2723,7 @@ boxEl.addEventListener('click',function(event){
 
 * 我们可以通过变量来存储元素，这样可以帮助我们有条件的渲染组件的一部分，而其他的渲染部分并不会因此而改变。
 
-> 注意：元素变量是 if 条件判断的一种变种而已。
+> 注意⚠️：元素变量是 if 条件判断的一种变种而已。
 
 
 
@@ -3047,11 +3047,11 @@ boxEl.addEventListener('click',function(event){
 </html>
 ```
 
-## 3.7 JSX 本质
+## 3.7 JSX 本质（⭐）
 
 * 其实，JSX 仅仅只是 `createElement(type, config, children)` 函数的语法糖；换言之，所有的 JSX 都会被转换为 `createElement(type, config, children)` 函数调用。
 
-> 注意：在 React 18 之前，是使用 `React.createElement(component, props, ...children)` ；但是，目前该 API 已经过时。
+> 注意⚠️：在 React 18 之前，是使用 `React.createElement(component, props, ...children)` ；但是，目前该 API 已经过时。
 
 * 其中，`type` 参数表示的是当前 ReactElement 的`类型`：
   * 如果是`标签`元素，则使用字符串来表示，如：`"div"`。
@@ -3173,7 +3173,7 @@ boxEl.addEventListener('click',function(event){
 
 ![image-20231215154859498](./assets/32.png)
 
-## 3.9 声明式编程
+## 3.9 声明式编程（⭐）
 
 * `虚拟 DOM 的出现`将开发者的`编程模式`从`命令式编程`转变到`声明式编程`。
 * `虚拟 DOM` 是一种`编程概念`。在这个概念里， UI 以一种理想化的，或者说`“虚拟的”`表现形式被保存于内存中，并通过如 ReactDOM 等类库使之与`“真实的”` DOM 同步。这一过程叫做`协调`。
@@ -3181,7 +3181,7 @@ boxEl.addEventListener('click',function(event){
   * 我们告诉 React 希望让 UI 是什么状态，React 就确保 DOM 匹配该状态。
   * 这使我们可以从`属性操作`、`事件处理`和`手动 DOM 更新`这些在构建应用程序时必要的操作中解放出来。
 
-## 3.10 购物车案例
+## 3.10 购物车案例（⭐）
 
 * 需求：展示购物车。
 

@@ -252,7 +252,7 @@ shouldComponentUpdate?(nextProps: Readonly<P>, nextState: Readonly<S>, nextConte
   * 如果为 true，就会调用 render 方法（默认值）。
   * 如果为 false，就不会调用 render 方法。
 
-> 注意：在React中，默认情况下，当父组件的 `shouldComponentUpdate` 返回 `true` 时，即使子组件的状态（`state`）没有变化，子组件仍然会重新执行 `render` 方法。
+> 注意⚠️：在React中，默认情况下，当父组件的 `shouldComponentUpdate` 返回 `true` 时，即使子组件的状态（`state`）没有变化，子组件仍然会重新执行 `render` 方法。
 >
 > * 这是因为 React 默认情况下无法确定子组件的状态是否发生了变化。即使子组件的`state`没有直接变化，但是父组件的 `render` 方法可能会导致子组件的 `props` 发生变化，从而触发子组件的重新渲染。
 > * 为了避免不必要的渲染，可以在子组件中使用 `shouldComponentUpdate` 方法来进行优化。在 `shouldComponentUpdate` 中，可以根据具体的业务逻辑判断是否需要重新渲染子组件。如果确定子组件的 `state` 没有变化，可以返回 `false` ，以避免不必要的渲染。
@@ -754,7 +754,7 @@ export default ProductList
 
 ![](./assets/9.gif)
 
-> 注意：类式组件是可以继承 PureComponent 类的，函数式组件可不能继承 PureComponent 类的；此时，函数式组件就需要使用 `React.memo()` 高阶组件了。
+> 注意⚠️：类式组件是可以继承 PureComponent 类的，函数式组件可不能继承 PureComponent 类的；此时，函数式组件就需要使用 `React.memo()` 高阶组件了。
 
 * 改造其中一个子组件，是其变为函数式组件，并使用 `React.memo()`高阶组件包装使其进行浅层比较：
 
@@ -783,7 +783,7 @@ export default Footer
 
 ![](./assets/10.gif)
 
-## 1.5 不可变数据的力量
+## 1.5 不可变数据的力量（⭐）
 
 ### 1.5.1 概述
 
@@ -1400,7 +1400,7 @@ export default App
 
 * 数据是删除了，但是界面却没有更新？出现 bug 了，那是因为 PureComponent 就是进行浅层比较；上述案例中的 state 中 books 属性所指向的数组是同一个，当然不会更新了。
 
-> 注意：在实际开发中，React 建议我们不要在原有的 state 或 props 去更新数据，以避免 bug 的产生。
+> 注意⚠️：在实际开发中，React 建议我们不要在原有的 state 或 props 去更新数据，以避免 bug 的产生。
 
 ### 1.5.2 其他设置 state 或 props 的方式
 
@@ -1434,7 +1434,7 @@ handleClick() {
 };
 ```
 
-> 注意：在处理深层嵌套对象的时候，可以使用 [immutability-helper](https://github.com/kolodny/immutability-helper) 库。
+> 注意⚠️：在处理深层嵌套对象的时候，可以使用 [immutability-helper](https://github.com/kolodny/immutability-helper) 库。
 
 
 
@@ -1448,9 +1448,9 @@ handleClick() {
   * ③ 集成第三方 DOM 库。
   * ④ ……
 
-> 注意：React 建议我们尽量避免使用 refs 来做任何可以通过声明式实现来完成的事情。
+> 注意⚠️：React 建议我们尽量避免使用 refs 来做任何可以通过声明式实现来完成的事情。
 
-## 2.2 如何使用 ref
+## 2.2 如何使用 ref（⭐）
 
 ### 2.2.1 概述
 
@@ -1466,7 +1466,7 @@ handleClick() {
     * 该函数会在 DOM 被挂载的时候进行回调，并且会传入一个元素对象，我们可以自己保存。
     * 使用的时候，直接拿到之前保存的元素对象即可。
 
-> 注意：
+> 注意⚠️：
 >
 > * 第一种方式已经废弃。
 > * 函数式组件是没有 this 的，就需要使用 `React.forwardRef()` 高阶组件或 `useRef()` 这样的 hooks ，后续讲解。
@@ -1600,7 +1600,7 @@ class App extends React.Component {
 export default App
 ```
 
-## 2.3 ref 访问组件
+## 2.3 ref 访问组件（⭐）
 
 ### 2.3.1 ref 访问类式组件
 
@@ -1727,7 +1727,7 @@ class App extends React.PureComponent {
 export default App
 ```
 
-> 注意：上述的这种形式，React 官方称为 refs 转发，其流程如下：
+> 注意⚠️：上述的这种形式，React 官方称为 refs 转发，其流程如下：
 >
 > * ① 通过调用 `React.createRef` 创建了一个 `React ref`并将其赋值给 `ref` 变量（App 组件）。
 > * ② 通过指定的 ref 为 JSX 属性，将其向下传递给 `<HelloWorld ref={this.helloWorldRef}/>`（App 组件）。
@@ -1737,7 +1737,7 @@ export default App
 
 
 
-# 第三章：受控组件和非受控组件
+# 第三章：受控组件和非受控组件（⭐）
 
 ## 3.1 概述
 
@@ -1869,7 +1869,7 @@ export default App
 
 * 但是，上述的方案有弊端，就是会产生页面的刷新；所以，现在的前后端数据的交互大多数采用 Ajax 来进行交互了，即开发者手动去收集表单的数据，然后通过 Ajax 和服务器交互。
 
-> 注意：form 表单有 onSubmit 事件，我们可以通过 `event.preventDefault()` 的方式阻止表单自动提交。 
+> 注意⚠️：form 表单有 onSubmit 事件，我们可以通过 `event.preventDefault()` 的方式阻止表单自动提交。 
 
 ![image-20231222133112116](./assets/22.png)
 
@@ -2470,7 +2470,7 @@ export default App
 * React 推荐在绝大多数情况下使用 `受控组件` 来处理表单数据；换言之，在`受控组件`中，表单的数据由 React 组件中的 state 来维护和管理。
 * 但是，有的时候，使用受控组件非常麻烦，因为我们需要为数据变化的每种方式编写事件处理函数，并将数据维护在 React 中的 state 中；这个时候 `非受控组件` 可能是另一种选择，即我们需要使用 ref 来从 DOM 节点上获取表单数据。
 
-> 注意：
+> 注意⚠️：
 >
 > * ① 在非受控组件中，通常使用 `defaultValue`、`defaultChecked` 来设置默认值；
 > * ② 不能使用 `value` 等来设置，如果使用 value 等来设置，就是受控组件了。

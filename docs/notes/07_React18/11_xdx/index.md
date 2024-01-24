@@ -1,4 +1,4 @@
-# 第一章：认识和体验 Hooks
+# 第一章：认识和体验 Hooks（⭐）
 
 ## 1.1 为什么需要 Hook ？
 
@@ -18,7 +18,7 @@ function HelloWorld(props) {
 }
 ```
 
-> 注意：函数式组件存在如下的问题：
+> 注意⚠️：函数式组件存在如下的问题：
 >
 > * ① 组件不会被重新渲染，即修改 message 之后，组件并不知道自己需要重新渲染；而类式组件可以通过 `this.setState()` 通知组件让其调用 render() 方法，进行重新渲染页面。
 > * ② 即使组件能重新渲染，但是函数会被重新执行，第二次执行的时候，还会将 message 设置为 `"Hello World"` 。
@@ -33,7 +33,7 @@ function HelloWorld(props) {
   * ⑤ 更好的性能优化：类式组件在某些情况下可以更好地进行性能优化。例如，使用 `shouldComponentUpdate` 方法可以手动控制组件的更新，避免不必要的渲染。
   * ⑥ 适用于复杂的业务逻辑：对于包含复杂业务逻辑的组件，类式组件通常更适合。类式组件可以更好地组织和管理复杂的状态和方法。
 
-> 注意：在 Hook 出现之前，类式组件是我们在开发 React 项目中的首选。
+> 注意⚠️：在 Hook 出现之前，类式组件是我们在开发 React 项目中的首选。
 
 * 但是，随着 React Hooks 的引入，函数式组件也获得了许多优势，并且在许多情况下已经成为首选的组件类型。函数式组件的优势包括简洁性、可读性、更好的性能和更好的测试性。因此，在新的项目中，建议优先选择函数式组件和 Hooks 来开发。
 
@@ -160,7 +160,7 @@ export default App
 
 ![image-20240108100055280](./assets/3.png)
 
-> 注意：
+> 注意⚠️：
 >
 > * ① 难道没有发现，函数式组件结合 Hooks ，整个代码变得更为简洁?
 > * ② 难道没有发现，函数式组件结合 Hooks ，我们再也没有考虑 this 相关的问题？
@@ -204,7 +204,7 @@ export default memo(CounterFunction)
   * 我们可以 `在 React 的函数组件中调用 Hook`，
   * 我们可以`在自定义 Hook 中调用其他 Hook`。
 
-> 注意：
+> 注意⚠️：
 >
 > * 自定义 Hook 是一个函数，其名称以 “`use`” 开头，函数内部可以调用其他的 Hook。
 > * 通常而言，`Hook` 指的是类似于 useState() 、useEffect() 之类的`函数`。
@@ -212,7 +212,7 @@ export default memo(CounterFunction)
 
 
 
-# 第二章：useState 和 useEffect
+# 第二章：useState 和 useEffect（⭐）
 
 ## 2.1 useState 
 
@@ -223,7 +223,7 @@ export default memo(CounterFunction)
     * 我们可以在事件处理函数（onClick 等）或其他一些合适的地方通过`更新状态的函数`来`更改`当前的`状态`。
     * `更新状态的函数`类似于类式组件中的 `this.setState()` ，但是它不会将新的 state 和旧的 state 进行合并。
 
-> 注意：之所以叫 useState ，而不是 `createState` 的原因在于：
+> 注意⚠️：之所以叫 useState ，而不是 `createState` 的原因在于：
 >
 > * `create` 单词的语义不是很准确，因为 state 只会在组件首次渲染的时候被创建，在下次重新渲染的时候，`useState`  返回给我们的是当前的 state 。
 > * 如果每次调用，都创建新的 state ，就和 React 内部保存的 state 语义冲突了。
@@ -362,7 +362,7 @@ export default App
 * useEffect `要求我们传入一个回调函数`，在 React `执行完更新 DOM 操作之后`，就`会回调这个函数`。
 * 默认情况下，无论是`首次渲染`，还是之后的`每次更新`操作，`都会执行这个回调函数`。
 
-> 注意：
+> 注意⚠️：
 >
 > * 默认情况下，我们可以将 `useEffect` 看成是 `componentDidMount`，`componentDidUpdate` 和 `componentWillUnmount` 这三个函数的组合。
 > * 换言之，如果 state 更新了 8 次，那么 `useEffect` 会更新 1 + 8 + 1 = 10 次；调用太频繁了，此处暂时不处理，下面会给出优化方案。
@@ -410,7 +410,7 @@ class CounterClass extends PureComponent {
 export default CounterClass
 ```
 
-> 注意：
+> 注意⚠️：
 >
 > * 在类式组件中，我们需要在两个生命周期函数中编写重复的代码。
 > * 这是因为很多情况下，我们希望在组件加载和更新执行同样的操作。从概念上说，我们希望它们在每次渲染之后执行，但是 React 的类式组件并没有提供这样的方法，即使我们提取一个方法，我们还需要在两个生命周期函数中调用这个方法。
@@ -439,7 +439,7 @@ function CounterFunction() {
 export default memo(CounterFunction)
 ```
 
-> 注意：
+> 注意⚠️：
 >
 > * 对于函数式组件而言，默认情况下，useEffect() 会在第一次渲染之后立即执行，之后每次更新的时候都会再次执行。这样，React 保证了每次运行 Effect 的同时，DOM 已经更新完毕了。
 > * 我们可以发现 useEffect() 要求传递的是回调函数，这意味着每次渲染的时候，在 Effect 中都是获取的最新的 state ，不用担心 state 过期。
@@ -460,7 +460,7 @@ function useEffect(effect: EffectCallback, deps?: DependencyList): void;
 
 ![](./assets/6.gif)
 
-> 注意：在组件销毁的时候，必须将定时器关闭；否则，随着时间的推移，用户电脑的 CPU 会越来越高。
+> 注意⚠️：在组件销毁的时候，必须将定时器关闭；否则，随着时间的推移，用户电脑的 CPU 会越来越高。
 
 * 项目结构：
 
@@ -506,7 +506,7 @@ class ClockClass extends React.PureComponent {
 export default ClockClass
 ```
 
-> 注意：
+> 注意⚠️：
 >
 > * 其实，从技术实现角度来讲，类式组件完全没问题；但是，使用生命周期函数强迫我们拆分这些逻辑代码，即使这些代码都作用于相同的副作用。
 > * 换言之，React 认为这些副作用的代码完全可以写到一起。
@@ -540,7 +540,7 @@ function ClockFunction() {
 export default memo(ClockFunction)
 ```
 
-> 注意：
+> 注意⚠️：
 >
 > * React 的 useEffect 认为`添加定时器`或`删除定时器`的逻辑是做同样的副作用；换言之，这些代码之间内部`具有紧密性`，所以 useEffect  的设计是在同一个地方执行，即`如果 effect 返回一个函数，`React 将会在执行清除操作时候调用它。
 > * React 会在组件重新渲染或组件携带的时候清除 Effect ；换言之，就是调用返回的回调函数。因为默认情况下，useEffect 会在每次渲染的时候都执行 Effect ，这样就可以对当前 Effect 之前的上一个 Effect 进行清除；但是，这样的性能依然还是很低，下文将会再次优化。
@@ -643,7 +643,7 @@ class ClockClass extends React.PureComponent {
 export default ClockClass
 ```
 
-> 注意：
+> 注意⚠️：
 >
 > * 我们不难发现，对于设置 document.title 而言，代码被分割到 componentDidMount 和 componentDidUpdate 中；
 > * 而对于设置定时器而言，代码被分割到 componentDidMount 和 componentWillUnmount 中。
@@ -683,7 +683,7 @@ function ClockFunction() {
 export default memo(ClockFunction)
 ```
 
-> 注意：
+> 注意⚠️：
 >
 > * `Hook 允许我们按照代码的用途分离他们`，而不是像生命周期函数那样。
 > * React 将按照 Effect 声明的顺序依次调用组件中的每一个 Effect 。
@@ -701,7 +701,7 @@ componentDidUpdate(prevProps, prevState) {
 }
 ```
 
-> 注意：
+> 注意⚠️：
 >
 > * 像一些`网络请求`、`订阅`或`取消订阅`之类的操作，我们在类式组件中，也可以通过`componentDidUpdate` 中添加对 `prevProps` 或 `prevState` 的比较逻辑解决。
 > * 有的时候，`多次执行`会`导致`一定的`性能`问题。
@@ -743,7 +743,7 @@ function ClockFunction() {
 export default memo(ClockFunction)
 ```
 
-> 注意：
+> 注意⚠️：
 >
 > * 之前应该学过，`React.memo()` 函数，就是一个高阶组件。但是，该函数`仅仅`检查 `props` 的变更。
 > * 换言之，如果函数式组件被 `React.memo()` 函数包裹，其内部实现中有 useState()、useReducer() 或 useContext() 之类的 Hook 的时候，当 state 或 context 发生变化的时候，组件依然会重新渲染。
@@ -891,7 +891,7 @@ function Content() {
 const value = useContext(context对象);
 ```
 
-> 注意：
+> 注意⚠️：
 >
 > * useContext(context对象) 只能读取 context 的值以及订阅 context 的变化。
 > * 换言之，我们依然需要在上层组件树中通过 `<XXXContext.Provider value={xxxx}>` 来为下层组件提供 context 。
@@ -1055,7 +1055,7 @@ export default memo(App)
 
 
 
-# 第四章：useCallBack 和 useMemo
+# 第四章：useCallBack 和 useMemo（⭐）
 
 ## 4.1 useCallBack
 
@@ -1127,7 +1127,7 @@ export default memo(App)
 
 ![image-20240109142738518](./assets/12.png)
 
-> 注意：
+> 注意⚠️：
 >
 > * 根据 GC 的可达性算法而言，如果函数对象没有引用，最终还是会被 GC 回收的；
 > * 但是，在频繁点击的过程中，难道不觉得创建的 increment 函数（对象）实在是太多了吗？
@@ -1394,7 +1394,7 @@ export default memo(App)
 
 ![](./assets/17.gif)
 
-> 注意：
+> 注意⚠️：
 >
 > * useMemo 返回值的是`缓存的值`（如果是普通的值，其实没什么意义；但是对于对象，函数等，就有意义了），而 useCallback 返回的是`缓存的函数`。
 > * useMemo 的用法是这样的：`useMemo(() => fn|xxx , [])`。
@@ -1402,7 +1402,7 @@ export default memo(App)
 
 
 
-# 第五章：useRef
+# 第五章：useRef（⭐）
 
 ## 5.1 概述
 
@@ -1828,14 +1828,14 @@ useImperativeHandle(ref, createHandle, dependencies?)
   * createHandle：是一个函数，没有参数，可以返回任何想要暴露的句柄，可以是任何类型。但是，通常是一个包含想要暴露方法的对象。
   * `dependencies` 就是更新 `fn` 的所有响应式值的一个列表（数组）。响应式值包括 props、state，和所有在组件内部直接声明的变量和函数。React 使用 [`Object.is`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/is) 比较每一个依赖和它的之前的值。
 
-> 注意：
+> 注意⚠️：
 >
 > * 在计算机领域中，句柄（handle）通常指的是一个标识符或引用，用于标识或引用某个资源或对象。句柄可以是一个整数、指针或其他数据结构，用于表示操作系统或应用程序中的各种资源，如：文件、内存块、窗口、进程、线程等。
 > * 句柄的作用是充当对资源的引用，使得应用程序可以通过句柄来访问和操作相应的资源。通过句柄，应用程序可以请求操作系统分配或释放资源，或者对资源进行读取、写入、修改等操作。
 > * 句柄的具体含义和用法可能因操作系统、编程语言或上下文而异。在不同的环境中，句柄可能有不同的命名，如句柄、指针、引用、描述符等。
 > * 总之，句柄在计算机中是一种常见的概念，用于标识和引用各种资源，以便应用程序可以对其进行操作和管理。
 
-> 注意：
+> 注意⚠️：
 >
 > * 在 React 中，句柄（handler）通常指的是处理事件的函数。句柄函数用于响应用户的交互操作，例如：点击按钮、输入文本等。
 >
@@ -1873,7 +1873,7 @@ export default memo(App)
 
 * 针对这种情况，我们就可以通过 useImperativeHandle 来解决这样的问题了。
 
-> 注意：
+> 注意⚠️：
 >
 > * **不要滥用 ref。** 你应当仅在你没法通过 prop 来表达 `命令式`行为的时候才使用 ref：例如，滚动到指定节点、聚焦某个节点、触发一次动画，以及选择文本等等。
 > * **如果可以通过 prop 实现，那就不应该使用 ref**。例如，你不应该从一个 `Model` 组件暴露出 `{open, close}` 这样的命令式句柄，最好是像 `<Modal isOpen={isOpen} />` 这样，将 `isOpen` 作为一个 prop。`副作用` 可以帮你通过 prop 来暴露一些命令式的行为。

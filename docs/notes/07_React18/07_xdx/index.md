@@ -151,7 +151,7 @@ export default App
   *  in-out：表示新组件先进入，旧组件再移除；
   * `out-in`：表示就组件先移除，新组建再进入
 
-> 注意：通常使用 `out-in` 模式，并且该模式也是默认模式。
+> 注意⚠️：通常使用 `out-in` 模式，并且该模式也是默认模式。
 
 * `SwitchTransition`组件的使用方式：
   * 在 `SwitchTransition`组件中包裹  `CSSTransition` 组件。
@@ -346,7 +346,7 @@ export default App
 
 
 
-# 第二章：React 中 CSS 的方案
+# 第二章：React 中 CSS 的方案（⭐）
 
 ## 2.1 概述
 
@@ -368,7 +368,7 @@ export default App
   * 可以通过内联样式的风格来根据最新状态设置和改变 CSS 。
   * ……
 
-> 注意：Vue 给出的 CSS 解决方案虽然不是最完美，但是简洁、统一，非常方便协调开发。
+> 注意⚠️：Vue 给出的 CSS 解决方案虽然不是最完美，但是简洁、统一，非常方便协调开发。
 
 * 但是，React 官方一直没有给出在 React 中统一的 CSS 风格；导致，在 React 中就 CSS 方案就有太多太多种。
 
@@ -441,7 +441,7 @@ export default App
 
 * 有的时候，我们会将 css 代码写到 CSS 文件中，然后再导入。
 
-> 注意：React 中是通过 className 属性来实现。
+> 注意⚠️：React 中是通过 className 属性来实现。
 
 * 这种的编写方法和在普通的网页开发中没什么区别：
   * 但是，在组件化开发中，我们希望组件是一个独立的模块，即样式只能在组件内部生效，不会相互影响。
@@ -557,7 +557,7 @@ module.exports = {
   * ① 将 `*.less`、`*.css` 或 `*.scss` 等文件修改为 `*.module.less` 、`*.module.css`、`*.module.scss` 等。
   * ② 在 `*.jsx` 文件中通过默认导入即可。
 
-> 注意：React 脚手架中的 css modules ，将 `*.less`、`*.css` 或 `*.scss` 导出的是默认导出，所以在导入的时候需要使用默认导入。
+> 注意⚠️：React 脚手架中的 css modules ，将 `*.less`、`*.css` 或 `*.scss` 导出的是默认导出，所以在导入的时候需要使用默认导入。
 
 * React 脚手架中的 css modules 确实解决了 css 模块化的问题，也是很多人喜欢在 React 中使用的一种解决方案。
 * 但是，该方案也有自己的缺陷：
@@ -657,7 +657,7 @@ export default Home
 * 在传统的前端开发中，我们通常会将 `结构（HTML）`、`表现（CSS）`、`行为（JavaScript）`进行分离。并且，Vue 也是这么做的。
 * 但是，React 认为`逻辑本身和 UI 是无法分离`的，所以才有了 JSX 语法。并且，`样式也是 UI 的一部分`，所以也有`将 CSS 写入到 JavaScript 中的方式`，并且可以很方便的使用 JavaScript 的状态。
 
-> 注意：React 也被人称为 `All In JS`，是因为 `HTML`、`CSS`、`JS` 都可以写到 `JavaScript` 中。
+> 注意⚠️：React 也被人称为 `All In JS`，是因为 `HTML`、`CSS`、`JS` 都可以写到 `JavaScript` 中。
 
 ### 2.4.2 CSS In JS 方案的实现
 
@@ -665,7 +665,7 @@ export default Home
   * ① 这种方案可以`通过 JavaScript 为 CSS 赋予一些能力`，包括类似于 CSS 预处理器一样的`样式嵌套`、`函数定义`、`逻辑复用`、`动态修改状态`等等；
   * ② 虽然 CSS 预处理器也具备这些能力，但是`获取动态 state 依然不是很好处理`。
 
-> 注意：也有人认为 CSS In JS 有缺点，不可否认；但是，在 React 中，CSS In JS 不失为一种解决方案。
+> 注意⚠️：也有人认为 CSS In JS 有缺点，不可否认；但是，在 React 中，CSS In JS 不失为一种解决方案。
 
 * 目前，比较流行的 CSS In JS 的库有：
   * styled-components。
@@ -728,7 +728,7 @@ const str = foo`我的名字是 ${name}，我今年 ${age} 岁`
 console.log(str)
 ```
 
-> 注意：
+> 注意⚠️：
 >
 > * 此时的 `foo` 函数也称为`标签`，而 `str` 的值就是`标签模板字符串`了。
 > * `标签模板字符串`是`模板字面量`的一种高级使用方式，它允许我们使用`函数`解析`模板字面量`。标签函数的第一个参数包含一个字符串数组，其余的参数和`表达式`（如：`${name}`）相关。
@@ -1012,7 +1012,7 @@ export const Button = styled.button`
 
 ![image-20231228163107842](./assets/20.png)
 
-> 注意：如果没有传递 props ，就使用默认值。
+> 注意⚠️：如果没有传递 props ，就使用默认值。
 
 * 项目结构：
 
@@ -1326,7 +1326,7 @@ const PasswordInput = styled.input.attrs(props => ({
 
 ![image-20231228171917473](./assets/28.png)
 
-> 注意：如果没有传递 `background` ，就使用默认值。
+> 注意⚠️：如果没有传递 `background` ，就使用默认值。
 
 * 项目结构：
 

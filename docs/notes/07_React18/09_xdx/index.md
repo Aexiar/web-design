@@ -1,4 +1,4 @@
-# 第一章：Redux Toolkit
+# 第一章：Redux Toolkit（⭐）
 
 ## 1.1 概述
 
@@ -7,7 +7,7 @@
   * ② 必须添加很多软件包才能让 Redux 做任何有用的事情。
   * ③ Redux 需要太多样板代码。
 
-> 注意：
+> 注意⚠️：
 >
 > * 很多人为了简化称呼，也将 Redux Toolkit 称为 `RTK`。
 > * Redux Toolkit `仅`涵盖了 Redux 逻辑 —— 仍然需要使用 React-Redux 使得 React 组件与 Redux store 进行交互。
@@ -40,7 +40,7 @@ npx create-react-app my-app --template redux
 npx create-react-app my-app --template redux-typescript
 ```
 
-> 注意：`my-app` 是项目名，随便命名。
+> 注意⚠️：`my-app` 是项目名，随便命名。
 
 * Redux Toolkit 的核心 API，主要有如下的几个：
   * `configureStore()` ：包装 `createStore()` 以提供简化的配置选项和良好的默认值。它可以自动组合我们的 slice reducer，添加我们提供的任何 Redux 中间件，默认包含 `“redux-thunk”` ，并允许使用 Redux DevTools 扩展。
@@ -70,7 +70,7 @@ npx create-react-app my-app --template redux-typescript
 
 ![Redux的工作流程.png](./assets/2.png)
 
-> 注意：上面的示意图，完全没毛病，就是根据官方对于 action 的定义；可以将 action 写成 `{type: '',data: ''}`、`{type: '',text: ''}` 或 `{type: '',payload: ''}`。
+> 注意⚠️：上面的示意图，完全没毛病，就是根据官方对于 action 的定义；可以将 action 写成 `{type: '',data: ''}`、`{type: '',text: ''}` 或 `{type: '',payload: ''}`。
 
 * 但是，对于 `Redux Toolkit` 而言，action `必须`是包含 type 属性和 payload 属性的 JavaScript 对象，如：
 
@@ -81,7 +81,7 @@ const addTodoAction = {
 }
 ```
 
-> 注意：
+> 注意⚠️：
 >
 > * 在普通的 redux 项目中，type 只要是字符串就可以了；
 > * 但是，在 `Redux Toolkit` 中，type 必须写成 `"域/事件名称"` 的格式，其中第一部分是这个 action 所属的`特征`或`类别`，第二部分是`发生的具体事情`（了解即可，因为 `Redux Toolkit` 会在底层帮助我们生成）。
@@ -157,7 +157,7 @@ const incrementAction = createAction(INCREMENT, text => {
 const action = incrementAction(10) // 相当于 {type: 'counter/increment',payload:{text: 10,id: '4AJvwMSWEHCchcWYga3dj',createdAt: '2019-10-03T07:53:36.581Z'}}
 ```
 
-> 注意：如果传入的是回调函数，那么必须返回一个带有 payload 字段的对象。
+> 注意⚠️：如果传入的是回调函数，那么必须返回一个带有 payload 字段的对象。
 
 ### 1.3.3 reducer
 
@@ -297,7 +297,7 @@ console.log(currentValue)
   * ① 在 slice 文件中，与 reducer 逻辑一起。
   * ② 在组件文件中，在组件外部，或在 useSelector 中直接定义。
 
-> 注意：通常而言，selector 函数是和函数式组件配合使用的；对于类式组件而言，通常使用 connect() 高阶函数。
+> 注意⚠️：通常而言，selector 函数是和函数式组件配合使用的；对于类式组件而言，通常使用 connect() 高阶函数。
 
 ## 1.4 重构代码
 
@@ -327,7 +327,7 @@ const store = configureStore({
 export default store
 ```
 
-* 需要注意的是，上述代码中的 reducer 配置选项，就相当于 redux 中提供的 combineReducers() 函数，即：
+* 需要`注意⚠️`的是，上述代码中的 reducer 配置选项，就相当于 redux 中提供的 combineReducers() 函数，即：
 
 ```js {6-9}
 import bannerReducer from "@/store/banner"
@@ -393,7 +393,7 @@ export const {increment, decrement} = counterSlice.actions // 导出 action
 export default counterSlice.reducer // 导出 reducer
 ```
 
-> 注意：
+> 注意⚠️：
 >
 > * `createSlice()` 函数用来帮助我们生成 action 类型字符串、action creator 函数和 action 对象。
 > * 上面之所以能使用 `state.count = state.count + action.payload`，是因为 Redux Toolkit 允许我们在 reducer 中编写“突变”逻辑。它实际上并没有改变状态，因为它使用了 Immer 库，检测对“草稿状态”的更改，并生成全新的基于这些更改的不可变状态。
@@ -561,7 +561,7 @@ export const {addBanner} = bannerSlice.actions
 export default bannerSlice.reducer
 ```
 
-> 注意：
+> 注意⚠️：
 >
 > * ① 和之前原生的 redux 逻辑一样，diapath(action) 中的 action 是一个函数，返回 action 可以是一个函数，并且该函数会被调用，并传递给这个函数一个 dispatch 函数和一个 getState 函数的参数，以便我们编写异步操作。
 > * ② createSlice() 中默认没有提供对异步的任何支持，所以我们应该将它们作为单独的函数编写在同一个 slice 文件中，这样我们就可以访问该 slice 中普通的 action 了。
@@ -614,7 +614,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Banner)
 
 * 其实，上述的演示仅仅是 Redux Toolkit 中的`冰山一角`而已，如：Ajax 的请求通常会使用 Promise （Pending、Fulfilled、Rejected）来进行开发，那么如何在 Redux 获取异步数据的时候，直接获取到请求的状态？
 
-> 注意：对于 Redux Toolkit 的其它知识，将会在 React Hooks 之后，统一讲解！！！
+> 注意⚠️：对于 Redux Toolkit 的其它知识，将会在 React Hooks 之后，统一讲解！！！
 
 
 
@@ -657,7 +657,7 @@ export default reducer
 
 * 为了解决这些问题，Redux Toolkit 在底层使用了 [immerjs](https://github.com/immerjs/immer) 的库，来保证数据的不可变。
 
-> 注意：
+> 注意⚠️：
 >
 > * 我们只能在 Redux Toolkit 的 **`createSlice`** 和 **`createReducer`** 中编写 `“mutation”` 逻辑，因为它们在内部使用 Immer！
 > * 如果我们在没有 Immer 的 reducer 中编写 mutation 逻辑，它将`改变状态`并`导致错误！`
@@ -1141,7 +1141,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Banner)
   - 动态地修改现有的类或对象的行为，以满足特定需求。
   - 在测试环境中模拟或替换某些功能，以方便测试。
 
-> 注意：
+> 注意⚠️：
 >
 > * 猴补丁虽然可以灵活地修改现有代码，但也可能引入一些潜在的问题，如：不可预测的行为、代码可读性降低、与其他代码的兼容性问题等。
 > * 因此，在使用猴补丁时，需要谨慎考虑其影响，并确保代码的可维护性和稳定性。
@@ -1186,12 +1186,12 @@ export default store
 
 
 
-# 第五章：状态组件库如何选择
+# 第五章：状态组件库如何选择（⭐）
 
 * Redux Toolkit 等并不是唯一的选择，目前也有很多其他的状态管理方案：
   * ① 喜欢 Redux 单向数据流的，可以用 [zustand](https://github.com/pmndrs/zustand) 。
   * ② 喜欢React Hook 函数式思维的，可以用 [jotai](https://github.com/pmndrs/jotai) 。
   * ③ 喜欢 Vue3 Reactive 的，可以用 [valtio](https://github.com/pmndrs/valtio) 。
 
-> 注意：在实际开发中，看团队和个人喜欢，选择对应的组件状态库即可；换言之，你熟悉那个就用那个。
+> 注意⚠️：在实际开发中，看团队和个人喜欢，选择对应的组件状态库即可；换言之，你熟悉那个就用那个。
 
