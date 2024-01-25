@@ -81,6 +81,14 @@ export const sidebar: DefaultTheme.Sidebar = {
       ]
     },
     {
+      text: 'TypeScript',
+      collapsed: true,
+      items: [
+        { text: '初识 TypeScript', link: '/notes/06_TypeScript/01_${commonDirectoryName}/' },
+        { text: 'Two', link: '/guide/two' }
+      ]
+    },
+    {
       text: 'React18全家桶',
       collapsed: true,
       items: [
