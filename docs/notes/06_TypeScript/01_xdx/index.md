@@ -371,6 +371,18 @@ export { }
       return num1 + num2;
   }
   ```
+  
+  * ③ 匿名函数的参数：
+  
+  ```ts {3}
+  const nums: number[] = [1, 2, 3, 4]
+  
+  nums.forEach(item => { // 匿名函数的参数无需设置类型注解
+    console.log(item)
+  })
+  
+  export {}
+  ```
 
 > 注意⚠️：
 >
@@ -508,7 +520,7 @@ function foo(name: string) {
 ```
 
 > 注意⚠️：
->
+> 
 > * ① 如果`没有`明确的给`函数的参数`设置类型注解，默认是 `any` 类型。
 > * ② 实际开发中，我们一般都会给函数的参数设置类型注解。
 
@@ -546,8 +558,8 @@ function foo(name: string) : string{
 ```
 
 > 注意⚠️：
->
-> * ① 如果一个函数没有 return 语句，那么 TS 将会将函数的返回值推断为 void 。
+> 
+> * ① 如果一个函数没有 return 语句或者 `return ;`，那么 TS 将会将函数的返回值推断为 void 。
 > * ② 如果某些函数返回的是 Promise 类型，就可以将函数的返回值类型设置为 `Promise<?>`，也可以让 TS 自动推断 。
 
 
@@ -599,17 +611,222 @@ export { }
 
 * 示例：
 
-```ts {4}
-
+```ts {3}
 const nums: number[] = [1, 2, 3, 4]
 
 nums.forEach(item => { // 匿名函数的参数无需设置类型注解
   console.log(item)
 })
 
-
 export {}
 ```
 
 ![image-20240125150956558](./assets/19.png)
 
+## 3.7 对象类型
+
+* 在实际开发中，我们最常见的类型可能就是对象类型了，要定义对象类型，我们只需要列出其属性及其类型即可，如：
+
+```ts
+const obj: { name: string,age: number} = { name: '', age: 18 }
+```
+
+> 注意⚠️：
+>
+> * ① 在对象类型中，我们可以使用 `,` 或 `;` 来分隔，并且最后一个分隔符是可选的。
+> * ② 在对象类型中，如果某个属性是可选的，只需要在属性名称后面添加 `?` 即可。
+> * ③ 在对象类型中，我们可以对属性和值进行换行，这样就可以省略 `,` 或 `;`分隔符。
+
+
+
+* 示例：
+
+```ts {1-5}
+const obj: { // 对象类型
+  name: string
+  age: number
+  height?: number
+}
+  = { name: '许大仙', age: 18 }
+
+console.log(obj.name, obj.age, obj.height) // 许大仙 18 undefined
+
+export { }
+```
+
+
+
+* 示例：
+
+```ts
+function printCoord(pt: { x: number; y: number }) {
+  console.log("The coordinate's x value is " + pt.x);
+  console.log("The coordinate's y value is " + pt.y);
+}
+printCoord({ x: 3, y: 7 })
+
+export { }
+```
+
+
+
+* 示例：
+
+```ts {6-8,10}
+function printName(obj: { firstName: string, lastName?: string }) {
+  console.log(obj.firstName, obj.lastName)
+
+  // undefined.xxx() 方法会直接报错，可以只用 if 语句判断或 ?
+
+  if (obj.lastName) {
+    console.log(obj.lastName?.toUpperCase())
+  }
+
+  console.log(obj.lastName?.toUpperCase())
+}
+
+printName({ firstName: 'a', lastName: 'bb' })
+printName({ firstName: 'a' })  
+
+export {}
+```
+
+## 3.8 any 类型
+
+* 在某些情况下，我们`无法确定一个变量的类型`，并且`它可能会发生变化`，此时我们就可以使用 `any` 类型。
+* any 类型的出现，让 TS 回到了 JS：
+  * `我们可以对 any 类型的变量进行任意的操作，如：获取不存在的属性或方法的`。
+  * `我们也可以给一个 any 类型的变量赋值任何的值，如：数字、布尔等`。
+
+> 注意⚠️：
+>
+> * ① 某些情况，在 TS 中处理类型的时候，过于繁琐，我们就可以使用 any 类型。
+> * ② 在使用一些第三方库的时候，缺失类型注解，我们也可以使用 any 类型；甚至，Vue 源码中，也会使用 any 类型来进行某些类型的适配。
+
+
+
+* 示例：
+
+```ts {1}
+let n: any = "abc"
+
+n = 1 
+n = true
+n = {}
+
+console.log(n)
+
+export {}
+```
+
+
+
+* 示例：
+
+```ts {1}
+const arr: any[] = [1, null, true, {}]
+
+console.log(arr.length)
+
+export {}
+```
+
+## 3.9 unknown 类型
+
+* 类型 `unknown` 表示任何值。这与类型 `any` 类似，但更安全，因为对 `unknown` 值执行任何操作都是不合法的。
+* `unknown` 类型可以被赋值为任何具体类型的值，但是不能被用于任何操作，`除非我们明确地对其进行类型检查或类型断言`。
+* `unknown` 类型通常用于以下场景：
+  - ① 当我们不知道一个变量的类型时，或者当我们想让一个变量能够存储任何类型的值时。
+  - ② 当我们从一个不安全的源（例如，用户输入）获取数据时，或者当我们处理来自第三方库或 API 的数据时。
+  - ③ 当我们想在运行时检查一个变量的类型并根据其类型执行不同的操作时。
+* 通常而言，`unknown` 类型用来描述函数的`参数类型`，即：
+
+```ts
+function bar(args: unknown) {
+  if (typeof args === "string") { // 类型缩小
+    console.log(args.length)
+  } else if (typeof args === "number") {
+    console.log(args.toFixed(2))
+  } else if (typeof args === "boolean") {
+    console.log(args)
+  }
+}
+```
+
+* 当然，我们也可以用来描述函数的返回值（未知类型），即：
+
+```ts
+function safeParse(s: string): unknown {
+  return JSON.parse(s);
+}
+
+const obj = safeParse("{name: \"John\", age: 30}");
+```
+
+
+
+* 示例：
+
+```ts {8,11-17}
+// `unknown` 类型可以被赋值为任何具体类型的值，但是不能被用于任何操作，除非我们明确地对其进行类型检查或类型断言。
+let foo: unknown = "bar"
+
+foo = 1
+
+foo = true
+
+console.log(foo.length)
+
+// 除非我们明确地对其进行类型检查或类型断言。
+if (typeof foo === "string") { // 类型缩小
+  console.log(foo.length)
+} else if (typeof foo === "number") {
+  console.log(foo.toFixed(2))
+} else if (typeof foo === "boolean") {
+  console.log(foo)
+} 
+
+export { }
+```
+
+![image-20240125164355899](./assets/20.png)
+
+## 3.10 void 类型
+
+* `void` 表示不返回值的函数的返回值。
+* 每当函数没有任何语句，或者不从这些返回 `return` 语句中返回任何显式值时，TS 将推断为 `void` 类型。
+
+
+
+* 示例：
+
+```ts
+function sum(num1: number, num2: number) {
+  console.log(num1 + num2)
+}
+
+sum(1, 2)
+
+export { }
+```
+
+![image-20240125165147997](./assets/21.png)
+
+
+
+* 示例：
+
+```ts {3}
+function sum(num1: number, num2: number) {
+  if (num2 == 0) {
+    return
+  }
+  console.log(num1 + num2)
+}
+
+sum(1, 2)
+
+export { }
+```
+
+![image-20240125165252108](./assets/22.png)
