@@ -965,7 +965,7 @@ export { }
 ```ts {1}
 const person: [string, number, () => void] = ["许大仙", 18, () => { console.log("吃饭") }];
 
-const [age, name, eat] = person
+const [name, age, eat] = person
 
 console.log(name, age)
 
@@ -974,4 +974,4 @@ eat()
 export { }
 ```
 
-![image-20240126105342836](./assets/27.png)
+![image-20240126110409949](./assets/27.png)
