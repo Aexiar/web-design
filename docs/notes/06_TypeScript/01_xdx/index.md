@@ -963,13 +963,15 @@ export { }
 * 示例：
 
 ```ts {1}
-const nums: [number, string, () => void] = [1, "2", () => { console.log("3") }];
+const person: [string, number, () => void] = ["许大仙", 18, () => { console.log("吃饭") }];
 
-console.log(nums[0], nums[1]);
+const [age, name, eat] = person
 
-nums[2]()
+console.log(name, age)
+
+eat()
 
 export { }
 ```
 
-![image-20240126104212073](./assets/27.png)
+![image-20240126105342836](./assets/27.png)
