@@ -304,7 +304,7 @@ export {}
 * 当然，还有其它的`类型注解`，如：
   * `unknown`：顶部类型。
   * `never`：底部类型。
-  * `object literal` ，如：`{ property: Type }`
+  * `object literal` ，如：`{ property: Type }`。
   * `void`：没有记录返回值的函数。
   * `T[]`：可变数组，也写成 `Array<T>`。
   * `[T, T]`：元组，长度固定但可变。
@@ -793,8 +793,14 @@ export { }
 
 ## 3.10 void 类型
 
-* `void` 表示不返回值的函数的返回值。
-* 每当函数没有任何语句，或者不从这些返回 `return` 语句中返回任何显式值时，TS 将推断为 `void` 类型。
+### 3.10.1 概述
+
+* 在 TS 中，如果一个函数`没有任何`返回值，那么该函数的返回值类型就是 `void` 。
+
+> 注意⚠️：如何理解一个函数没有任何返回值？
+>
+> * ① 一个函数中没有任何 `return` 语句。
+> * ② 一个函数的返回值只有 `return;` 或 `return undefined;` 。
 
 
 
@@ -830,3 +836,140 @@ export { }
 ```
 
 ![image-20240125165252108](./assets/22.png)
+
+### 3.10.2 应用场景
+
+* 其实，`void` 最为常用的就是用来表示函数本身的类型。
+
+> 注意⚠️：
+>
+> * ① 在 JavaScript 中，函数除了用来封装功能外，函数还有一个最为重要的特点：函数本身也是对象，并且对象本身是有类型的，所以函数本身也是有类型的。
+> * ② 前面都是使用的 `function` 关键字来声明函数的，实际开发中，我们也经常使用函数表达式的写法。
+
+
+
+* 示例：
+
+```ts {2}
+// 定义函数表达式
+const add = (num1: number, num2: number) => { console.log(num1 + num2) }
+
+// 调用函数
+add(1, 2)
+
+export { }
+```
+
+![image-20240126091721466](./assets/23.png)
+
+
+
+* 示例：
+
+```ts {5}
+/**
+ * 延迟执行某个回调函数
+ * @param fn 回调函数
+ */
+function delayExecFn(fn: () => void) {
+  setTimeout(() => {
+    if (fn) {
+      fn()
+    }
+  }, 1000)
+}
+
+
+delayExecFn(() => {
+  console.log('hello')
+})
+
+export { }
+```
+
+![image-20240126092137757](./assets/24.png)
+
+## 3.11 never 类型
+
+* never 类型表示永不会发生值的类型，如：一个函数是一个死循环或者抛出了一个异常，如果使用 void 类型或者其它类型作为返回值类型都不合适；此时，就可以使用 never 类型。
+
+> 注意⚠️：
+>
+> * ① 在实际开发中，很少会使用 never 类型；某些情况下，TS 会自动推断出 never 类型。
+> * ② 一般在开发框架或第三方包的时候，为了程序的严谨，可能会使用到 never 类型。
+
+
+
+* 示例：
+
+```ts {1}
+function fail(msg: string): never { // TS 会自动推断为 void，但是程序会引发异常，而且是我们手动抛出异常，所以定义为 never 最为合适，其实学过 Java 的应该明白，在 Java 中，我们通常会使用 throws 来告诉其它人一定要处理异常
+  throw new Error(msg)
+}
+
+try {
+  fail("abc")
+} catch (error: any) { // 注意：默认情况下，catch 语句中的 error 的类型是 unknown 而不是 any ，并且只能是 unknow 或 any 类型
+  console.log(error.message)
+}
+
+
+try {
+  fail("abc");
+} catch (error: unknown) { // 注意：默认情况下，catch 语句中的 error 的类型是 unknown 而不是 any ，并且只能是 unknow 或 any 类型
+  console.log((error as Error).message);
+}
+
+export { }
+```
+
+![image-20240126101100629](./assets/25.png)
+
+
+
+* 示例：
+
+```ts
+function fn(x: string | number) { // 联合类型
+  if (typeof x === "string") {
+    return x.length;
+  }else if (typeof x === "number") {
+    return x.toFixed(2);
+  } else {
+    // 当 TS 确定联合类型中没有任何剩余的内容的时候，如：已经处理了 string 和 number 类型的情况，那么 x 就是 never 类型
+    return x
+  }
+  
+}
+
+export { }
+```
+
+![image-20240126101820054](./assets/26.png)
+
+## 3.12 tuple 类型
+
+* 元组（tuple）是一种有序的数据结构，它可以存储不同类型的值。元组中的每个元素都有自己的类型，并且元组的长度是固定的。
+* 元组的类型可以用 `[type1, type2, ..., typeN]` 来表示，其中 `type1`、`type2`、...、`typeN` 是元组中各个元素的类型。
+
+> 温馨提示ℹ️：其实，在 React 中的 useState Hook 中，就使用到了元组 ，如：
+>
+> ```ts
+> function useState<S>(initialState: S | (() => S)): [S, Dispatch<SetStateAction<S>>];
+> ```
+
+
+
+* 示例：
+
+```ts {1}
+const nums: [number, string, () => void] = [1, "2", () => { console.log("3") }];
+
+console.log(nums[0], nums[1]);
+
+nums[2]()
+
+export { }
+```
+
+![image-20240126104212073](./assets/27.png)
