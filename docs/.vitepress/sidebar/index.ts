@@ -85,10 +85,10 @@ export const sidebar: DefaultTheme.Sidebar = {
       collapsed: true,
       items: [
         { text: '初识 TypeScript', link: `/notes/06_TypeScript/01_${commonDirectoryName}/` },
-        { text: 'TypeScript 语法细节', link: '/guide/two' },
-        { text: 'TypeScript 面向对象', link: '/guide/two' },
-        { text: 'TypeScript 泛型编程', link: '/guide/two' },
-        { text: 'TypeScript 语法扩展', link: '/guide/two' },
+        { text: 'TypeScript 语法细节', link: `/notes/06_TypeScript/02_${commonDirectoryName}/` },
+        { text: 'TypeScript 面向对象', link: `/notes/06_TypeScript/03_${commonDirectoryName}/` },
+        { text: 'TypeScript 泛型编程', link: `/notes/06_TypeScript/04_${commonDirectoryName}/` },
+        { text: 'TypeScript 语法扩展', link: `/notes/06_TypeScript/05_${commonDirectoryName}/` },
       ]
     },
     {
