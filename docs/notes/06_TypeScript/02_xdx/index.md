@@ -382,7 +382,7 @@ export {}
 * `注意`⚠️：TypeScript  只允许转换为`更具体`或者`更不具体的类型版本`的类型断言，此规则是为了防止不可能的强制转换（慎用！！！）。
 
 ```ts {3}
-const num:number = 12 
+const num: number = 12 
   
 const age = num as string // 报错
 
@@ -500,7 +500,7 @@ export { }
 
 # 第四章：字面量类型和类型缩小
 
-## 4.1 字面量类型
+## 4.1 字面量类型（文本类型）
 
 ### 4.1.1 回顾字面量
 
@@ -541,23 +541,388 @@ const c = true
 // 字面量类型的基本使用
 let d: "abc" = "abc"
 let e: 1 = 1
-let g:true = true
+let g: true = true
 
 export { }
 ```
 
 ![image-20240126171752451](./assets/12.png)
 
-* 普通的`字面量类型`没有任何价值，但是一旦和`联合类型`结合，就可以模拟出`枚举`的作用，即：
+* 就其本身而言，普通的`字面量类型`用处不是很大，但是一旦和`联合类型`结合，就可以模拟出`枚举`的作用，即：
 
 ```ts
+// 字面量类型配合联合类型可以模拟出枚举的作用
+type Direction = 'left' | 'right' | 'up' | 'down'
+
+function move(direction: Direction) {
+  switch (direction) {
+    case 'left':
+      console.log('left')
+      break
+    case 'right':
+      console.log('right')
+      break
+    case 'up':
+      console.log('up')
+      break
+    case 'down':
+      console.log('down')
+      break
+  }
+}
+
+move('left') // 参数只能是 'left' | 'right' | 'up' | 'down' 中的一个
+
+export { }
+```
+
+![image-20240129094559529](./assets/13.png)
+
+* 当然，字面量类型也可以和其它类型结合使用，即：
+
+```ts {9}
+interface Options {
+  width: number;
+}
+function configure(x: Options | "auto") {
+  // ...
+}
+configure({ width: 100 });
+configure("auto");
+configure("automatic"); // 报错
+
+export {}
+```
+
+![image-20240129101007759](./assets/14.png)
+
+### 4.1.3 字面量类型推理（推断）
+
+* 当我们使用对象初始化变量的时候，TS 假设该对象的属性稍后可能会变化，如：
+
+```ts {7}
+const obj = {
+  name: '许大仙',
+  age: 18
+}
+
+if (true) { 
+  obj.age = 19 
+}
+
+export { }
+```
+
+![image-20240129100308090](./assets/15.png)
+
+> `注意`⚠️：TS 不会假设 age 赋值为 `19` 是错误的，因为 TS 推断出 obj 的类型是 `{name:string , age: number}`，所以 age 赋值为什么数值都是可以的。
+
+* 这个规则同样适用于字面量类型，如：
+
+```ts {10}
+function request(url: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD') {
+  // ...
+}
+
+const req = {
+  url: 'http://localhost:3000/api/v1/users/1',
+  method: 'GET'
+}
+
+request(req.url, req.method) // 报错
+
+export { }
+```
+
+![image-20240129101149656](./assets/16.png)
+
+> `注意`⚠️：之所以报错的原因就在于 TS 将 req 对象推断为 `{url: string,method:string}`类型，而 method 要求是 `'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD'` 这些字面量类型，因为你可能会将 method 设置为 `'A'`，就不是`'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD'` 这些字面量类型中的一种了。
+
+* 解决方案一：使用 as 类型断言，即：
+
+```ts {10}
+function request(url: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD') {
+  // ...
+}
+
+const req = {
+  url: 'http://localhost:3000/api/v1/users/1',
+  method: 'GET'
+}
+
+request(req.url, req.method as 'GET') // 使用 as 类型断言，解决报错问题。
+
+export { }
+```
+
+![image-20240129101520861](./assets/17.png)
+
+* 解决方式二：使用 `as const` 将对象转换为字面量类型，即：
+
+```ts {8}
+function request(url: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD') {
+  // ...
+}
+
+const req = {
+  url: 'http://localhost:3000/api/v1/users/1',
+  method: 'GET'
+} as const // 使用 `as const` 将对象转换为字面量类型，解决报错问题
+
+request(req.url, req.method ) 
+
+export { }
+```
+
+![image-20240129101646267](./assets/18.png)
+
+## 4.2 类型缩小（Type Narrowing ）
+
+### 4.2.1 概述
+
+* 对于下面的函数，即：
+
+```ts
+/**
+ * 
+ * @param padding 如果 padding 是 number 类型，则将 padding 作为 input 要预留的空格数；
+ *                如果 padding 是 string 类型，则将 padding 前面加上 input 
+ * @param input 
+ */
+function padLeft(padding: number | string, input: string): string {
+  throw new Error("Not implemented yet!");
+}
+
+export {}
+```
+
+* 如果我们这么实现，即：
+
+```ts {8}
+/**
+ * 
+ * @param padding 如果 padding 是 number 类型，则将 padding 作为 input 要预留的空格数；
+ *                如果 padding 是 string 类型，则将 padding 前面加上 input 
+ * @param input 
+ */
+function padLeft(padding: number | string, input: string): string {
+  return "".repeat(padding) + input; // 报错
+}
+
+export {}
+```
+
+![image-20240129105941177](./assets/19.png)
+
+> `注意`⚠️：之所以报错的原因很简单，repeat() 函数只接受 number ，而 padding 参数可能是 number 或 string  类型，当然会报错！！！
+
+* 在 JS 中，我们为了代码的健壮性以及正确性，通常会使用 typeof 来判断函数参数的类型，在 TS 中也不例外，如：
+
+```ts {8}
+/**
+ * 
+ * @param padding 如果 padding 是 number 类型，则将 padding 作为 input 要预留的空格数；
+ *                如果 padding 是 string 类型，则将 padding 前面加上 input 
+ * @param input 
+ */
+function padLeft(padding: number | string, input: string): string {
+  if (typeof padding === 'number') { // 使用 typeof 类型缩小，将类型由 number | string 变为 number
+    return " ".repeat(padding) + input;
+  }
+  return padding + input;
+}
+
+export {}
+```
+
+![image-20240129110333896](./assets/20.png)
+
+### 4.2.2 typeof 类型防护（Type Guards）
+
+* JavaScript 中支持 typeof 运算符，它可以提供运行时值的类型；当然，TS 中也支持，并返回一组特定的字符串：
+  * `"string"`
+  * `"number"`
+  * `"bigint"`
+  * `"boolean"`
+  * `"symbol"`
+  * `"undefined"`
+  * `"object"`
+  * `"function"`
+
+> `注意`⚠️：
+>
+> * `typeof xxx` 不返回字符串 null ；`typeof null` 返回的是 `"object"`，这绝对是 JS 语言的 Bug；TS 为了兼容 JS，也保留下来了。
+> * 换言之，对于 null 的处理，需要单独判断，后面讲解！！！
+
+
+
+* 示例：
+
+```ts {4}
+type IDType = string | number
+
+function printID(id: IDType) {
+  if (typeof id === 'string') {
+    console.log(id.length, id.toUpperCase())
+  } else {
+    console.log(id, id.toFixed(2))
+  }
+}
+
+printID(123)
+printID('123')
+
+export { }
+```
+
+![image-20240129111558931](./assets/21.png)
+
+
+
+* 示例：
+
+```ts {3}
+function printAll(strs: string | string[] | null) {
+  if (typeof strs === "object") {
+    for (const s of strs) { // 报错，因为 typeof null 也是 'object'
+      console.log(s);
+    }
+  } else if (typeof strs === "string") {
+    console.log(strs);
+  } else {
+    // do nothing
+  }
+}
+
+export { }
+```
+
+![image-20240129111742716](./assets/22.png)
+
+### 4.2.3 平等缩小（Equality Narrowing）
+
+* 在 TS 中，我们可以使用`if` 语句、`switch` 语句和相等检查（如：`===` `!==`, `==`, and `!=`）来缩小类型范围。
+
+
+
+* 示例：
+
+```ts {5}
+// 字面量类型配合联合类型可以模拟出枚举的作用
+type Direction = 'left' | 'right' | 'up' | 'down'
+
+function move(direction: Direction) {
+  switch (direction) {
+    case 'left':
+      console.log('left')
+      break
+    case 'right':
+      console.log('right')
+      break
+    case 'up':
+      console.log('up')
+      break
+    case 'down':
+      console.log('down')
+      break
+  }
+}
+
+move('left') // 参数只能是 'left' | 'right' | 'up' | 'down' 中的一个
+
+export {}
 ```
 
 
 
-## 4.2 类型缩小
+* 示例：
+
+```ts
+function printAll(strs: string | string[] | null) {
+    if (Array.isArray(strs)) {
+      for (const s of strs) {
+                       
+        console.log(s);
+      }
+    } else if (typeof strs === "string") {
+      console.log(strs);
+                   
+    }
+}
+
+printAll(null);
+
+export {}
+```
+
+### 4.2.4 in 操作符
+
+* JavaScript 有一个运算符 `in` ，如果指定的`属性`在指定的`对象`或其`原型链`中，则 `in` 运算符返回 `true`；
+* 当然，TS 也支持 `in` 运算符。
 
 
+
+* 示例：
+
+```ts {11,13}
+type ISwim = {
+  swim: () => void
+}
+
+type IRun = {
+  run: () => void
+}
+
+
+function move(animal: ISwim | IRun) {
+  if ('swim' in animal) {
+    animal.swim()
+  } else if ('run' in animal) {
+    animal.run()
+  }
+}
+
+
+const fish = {
+  swim: () => console.log('fish swim')
+}
+
+
+const dog = {
+  run: () => console.log('Dog run')
+}
+
+
+move(fish)
+move(dog)
+
+
+export { }
+```
+
+### 4.2.5 instanceof 运算符
+
+* JavaScript 有一个运算符 `instanceof ` ，用来判断某个对象是否是某个类的实例。
+* 当然，TS 也支持 `instanceof` 运算符。
+
+
+
+* 示例：
+
+```ts {2}
+function print(x: Date | string) {
+  if (x instanceof Date) {
+    console.log(x.toLocaleString())
+  } else {
+    console.log(x.toUpperCase())
+  }
+}
+
+print(new Date())
+print('x')
+
+export { }
+```
 
 
 
@@ -565,13 +930,365 @@ export { }
 
 ## 5.1 函数的类型
 
+### 5.1.1 函数类型表达式（Function Type Expressions）
+
+* 在 JavaScript 中，[函数是头等公民](https://aexiar.github.io/web-design/notes/02_javascript_basic/04_xdx/#%E7%AC%AC%E5%85%AD%E7%AB%A0-%E5%87%BD%E6%95%B0%E6%98%AF%E5%A4%B4%E7%AD%89%E5%85%AC%E6%B0%91-%E2%AD%90)；换言之，函数可以写到任意位置。
+* 对于函数而言，我们经常使用 `function` 关键字来声明函数，并在函数体内部封装功能实现，即：
+
+```ts {6}
+/**
+ * 函数最主要的目的就是封装功能
+ * @param num number 类型
+ * @returns number 类型
+ */
+function getNum(num: number): number {
+  return num
+}
+
+const res = getNum(10)
+console.log(res)
+
+export { }
+```
+
+![image-20240129133208618](./assets/23.png)
+
+* 但是，函数还有`函数表达式`以及`箭头函数`的写法，即：
+
+```ts {6}
+/**
+ * 函数最主要的目的就是封装功能
+ * @param num number 类型
+ * @returns number 类型
+ */
+const getNum = (num: number): number => {
+  return num
+}
+
+const res = getNum(10)
+console.log(res)
+
+export { }
+```
+
+![image-20240129133332502](./assets/24.png)
+
+> `注意`⚠️：
+>
+> * ① 在 JS 中，函数也是对象，即函数也是有类型的；根据 TS 的提示，我们知道，上述示例中，`getNum` 的类型是 `(num: number) => number`，这就是函数的类型，官方文档称为`函数类型表达式`。
+> * ② 函数类型表达式的语法：`(参数列表) => 返回值`，如果返回值没有，就使用 void ，如：`(a: string,b: number) => void`，类似于`箭头函数`的语法。
+> * ③ 函数类型表示式中的 `参数` 必须写，如果没有写，就是 any ，即：`(string,number) => void` 表示的就是 `(string: any,number: any)=> void`。
+
+* 此时，我们也可以`手动标注`函数的`类型注解`（函数类型表达式），即
+
+```ts {6}
+/**
+ * 函数最主要的目的就是封装功能
+ * @param num number 类型
+ * @returns number 类型
+ */
+const getNum: (num: number) => number = (num: number): number => {
+  return num
+}
+
+const res = getNum(10)
+console.log(res)
+
+export { }
+```
+
+![image-20240129133754358](./assets/25.png)
+
+* 但是，不觉得这样看起来很不直观吗？可以使用 `type` 类型注解来简化，即：
+
+```ts {1,7}
+type getNumType = (num: number) => number
+/**
+ * 函数最主要的目的就是封装功能
+ * @param num number 类型
+ * @returns number 类型
+ */
+const getNum: getNumType = (num: number): number => {
+  return num
+}
+
+const res = getNum(10)
+console.log(res)
+
+export { }
+```
+
+![image-20240129133944764](./assets/26.png)
+
+* 在函数表达式的写法中，如果`标注了`函数的`类型注解`（函数类型表达式），函数的参数类型和返回值类型可以省略，由 TS 自动推断，即：
+
+```ts {5}
+type getNumType = (num: number) => number
+/**
+ * 函数最主要的目的就是封装功能
+ */
+const getNum: getNumType = (num) => {
+  return num 
+}
+
+const res = getNum(10)
+console.log(res)
+
+export { }
+```
+
+![image-20240129135609520](./assets/27.png)
+
+### 5.1.2 函数类型表达式的应用
+
+* 需求：通过`回调函数`实现计算器功能。
 
 
 
+* 示例：
+
+```js {2}
+function calc(num1, num2, callbackFn) {
+  return callbackFn(num1, num2);
+}
+
+const num1 = 1
+const num2 = 2
+
+let result = calc(num1, num2, (x, y) => x + y)
+console.log('加法', result);
+
+result = calc(num1, num2, (x, y) => x - y)
+console.log('减法', result);
+
+result = calc(num1, num2, (x, y) => x * y)
+console.log('乘法', result);
+
+result = calc(num1, num2, (x, y) => x / y)
+console.log('除法', result);
+```
 
 
+
+* 示例：
+
+```ts {1}
+function calc(num1: number, num2: number, callbackFn: (num1: number, num2: number) => number) {
+  return callbackFn(num1, num2);
+}
+
+const num1 = 1
+const num2 = 2
+
+let result = calc(num1, num2, (x, y) => x + y)
+console.log('加法', result);
+
+result = calc(num1, num2, (x, y) => x - y)
+console.log('减法', result);
+
+result = calc(num1, num2, (x, y) => x * y)
+console.log('乘法', result);
+
+result = calc(num1, num2, (x, y) => x / y)
+console.log('除法', result);
+
+export { }
+```
+
+
+
+* 示例：
+
+```ts {1,3}
+type CallbackFnType = (num1: number, num2: number) => number
+
+function calc(num1: number, num2: number, callbackFn: CallbackFnType) {
+  return callbackFn(num1, num2);
+}
+
+const num1 = 1
+const num2 = 2
+
+let result = calc(num1, num2, (x, y) => x + y)
+console.log('加法', result);
+
+result = calc(num1, num2, (x, y) => x - y)
+console.log('减法', result);
+
+result = calc(num1, num2, (x, y) => x * y)
+console.log('乘法', result);
+
+result = calc(num1, num2, (x, y) => x / y)
+console.log('除法', result);
+
+export { }
+```
 
 ## 5.2 函数签名
+
+### 5.2.1 调用签名（Call Signatures）
+
+* 在 JS 中，[函数即对象](https://aexiar.github.io/web-design/notes/02_javascript_basic/05_xdx/#_4-4-%E5%87%BD%E6%95%B0%E4%B9%9F%E6%98%AF%E5%AF%B9%E8%B1%A1)，所以函数也可以添加`属性`和`方法`，即：
+
+```js
+function person(){
+    
+}
+person.country = "中国"
+person.study = function () {
+    console.log("学生学习")
+}
+
+console.log(person.country)
+person.study()
+```
+
+* 当然，在 ES5 中，我们也会使用`函数`作为`构造函数`来模拟类，即：
+
+```js
+function Student(name, age) {
+    this.name = name
+    this.age = age
+    this.eating = function () {
+        console.log(`${this.name}正在吃饭~`)
+    }
+}
+
+// 函数是对象，也是可以添加属性和方法；并且，在面向对象编程中，通过函数名添加的属性和方法，称之为静态属性和静态方法
+Student.country = "中国"
+Student.study = function () {
+    console.log("学生学习")
+}
+
+// 调用静态属性和静态方法
+console.log(Student.country)
+Student.study()
+
+// 实例化对象
+var stu = new Student("许大仙", 18)
+// 对象调用属性和方法
+console.log(stu.name)
+console.log(stu.age)
+stu.eating()
+```
+
+* 在 TS 中，函数除了可以`调用`（功能）以外还具有`属性`；此时，函数表达式语法就不行了，函数表达式语法只能体现函数的功能，不能体现函数的属性。
+* 如果我们要体现函数的属性，就需要使用`对象类型`来描述函数，即：
+
+```ts {2-6,8,13-14}
+// 调用签名
+type IBar = { // 对象类型
+  description: string // 属性描述，不要使用 name 来测试，因为对象函数而言 name 是 readonly 属性
+  age?: number // 属性描述
+  (num1: number, num2: number): number // 自身功能描述，即函数本身的功能，用来封装功能~
+}
+
+const bar: IBar = (num1, num2) => {
+  return num1 + num2
+}
+
+// 设置属性
+bar.description = "许大仙"
+bar.age = 18
+
+// 获取属性
+console.log(bar.description)
+console.log(bar?.age)
+
+// 调用函数(函数本身的功能不就是封装功能吗)
+const result = bar(1, 2)
+console.log(result)
+
+export { }
+```
+
+> `注意`⚠️：
+>
+> * ① `调用签名`与`函数类型表达式`相比，语法略有不同：在参数列表和返回类型之间使用，而不是 `=>` 在 `:` 。
+> * ② 很好理解，毕竟是用`对象类型`来描述调用签名。
+> * ③ `调用签名`语法和`函数类型表达式`语法最大的区别就在于：`调用签名可以用来描述带属性的函数`。
+
+* 当然，`调用签名`中也可以添加`方法`的，即：
+
+```ts {2-7,9,16}
+// 调用签名
+type IBar = { // 对象类型
+  description: string // 属性描述
+  age?: number // 属性描述
+  eat: (food: string) => void // 属性描述
+  (num1: number, num2: number): number // 自身功能描述，即函数本身的功能，用来封装功能~
+}
+
+const bar: IBar = (num1, num2) => {
+  return num1 + num2
+}
+
+// 设置属性
+bar.description = "许大仙"
+bar.age = 18
+bar.eat = (food: string) => {
+  console.log(`吃${food}`)
+}
+
+// 获取属性
+console.log(bar.description)
+console.log(bar?.age)
+bar.eat("苹果")
+
+// 调用函数(函数本身的功能不就是封装功能吗)
+const result = bar(1, 2)
+console.log(result)
+
+export { }
+```
+
+> 温馨提示ℹ️：实际开发中，如何使用？
+>
+> * ① 如果`只是描述函数类型本身`（体现函数的封装功能），即函数可以被调用，就使用`函数类型表达式`。
+> * ② 如果在描述`函数`作为`对象`被调用，并且还有`其它属性`或`其它方法`的时候，就使用`调用签名`。
+
+### 5.2.2 构造签名（Construct Signatures）
+
+* 前面，我们也解释下，在 `ES5` 中，`函数`还可以作为`构造函数`（用于模拟`类`）来创建`对象`；对于 TS 而言，此时就需要使用`构造签名`来描述这类函数了。
+
+> 注意⚠️：
+>
+> * ① 在 TS 中，构造签名本身并不能用于创建对象实例，而是用来描述`构造函数`应该`接受`的`参数类型`和`返回的实例类型`。
+> * ② 换言之，在 TS 中，构造函数通常配合工厂函数来创建对象使用。
+
+
+
+* 示例：
+
+```ts {6-8}
+interface Point {
+  x: number;
+  y: number;
+}
+
+type PointConstructor = {
+  new (x: number, y: number): Point // 构造签名
+}
+
+class Point2D implements Point {
+  constructor(public x: number, public y: number) {}
+}
+
+function createPoint(ctor: PointConstructor, x: number, y: number): Point { // 工厂函数
+  return new ctor(x, y);
+}
+
+let point: Point = createPoint(Point2D, 3, 4);
+console.log(point); 
+
+export { }
+```
+
+###  5.2.3 可选参数（Optional Parameters）
+
+
+
+
 
 
 
