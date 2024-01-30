@@ -1455,7 +1455,7 @@ export {}
 
 
 
-# 第六章：函数的重载和 this 类型
+# 第六章：函数的重载和函数中 this 类型
 
 ## 6.1 函数的重载（Function Overloads）
 
@@ -1510,5 +1510,355 @@ export { }
 
 ![image-20240130112049719](./assets/32.png)
 
-## 6.2 this 类型
+## 6.2 函数中 this 类型（this in a Function）
+
+### 6.2.1 概述
+
+* 默认情况下，如果没有对 TS 进行任何配置，那么函数的 this 可以会被 TS 推断为 `any` 类型，即：
+
+```ts {7,16}
+// ① 对象中的函数的 this
+const obj = {
+  name: '许大仙',
+  age: 18,
+  studing: function () {
+    // 默认情况下，是 any 类型
+    console.log(this.name + '正在学习...')
+  }
+}
+
+obj.studing()
+
+// ② 普通的函数
+function foo() {
+  // 默认情况下，是 any 类型
+  console.log(this)
+}
+
+foo()
+
+export { }
+```
+
+![image-20240130135144087](./assets/33.png)
+
+* 但是，使用 any 往往会破坏使用 TS 的目的，因为使用 any 只是让 TS 回到了普通的 JavaScript 体验，即：
+
+```ts {}
+// ① 对象中的函数的 this
+const obj = {
+  name: '许大仙',
+  age: 18,
+  studing: function () {
+    // 默认情况下，是 any 类型
+    console.log(this.name + '正在学习...')
+  }
+}
+
+obj.studing()
+obj.studing.call({}) // 这里的 this 就不应该是 any 类型，而应该是 {}，存在安全隐患！！！
+
+// ② 普通的函数
+function foo() {
+  // 默认情况下，是 any 类型
+  console.log(this)
+}
+
+foo()
+
+export { }
+```
+
+![image-20240130135824644](./assets/34.png)
+
+> 注意⚠️：
+>
+> * 之所以这样设计，有因为有些人希望有一种非常宽松的选择可以将 TS 加入到项目中，并且仅仅帮助他们来验证程序的某些部分，这也是 TS 的默认体验，即推断往往采用最宽松的类型，并且不检查潜在的 null 或 undefined 。
+> * 但是，如果我们希望 TS 尽可能的帮助我们严格，那么就需要开启严格模式了，这样 TS 会帮助我们对类型隐式推断为 any 的任何变量发出警告，或者对潜在的忘记处理的 null 或 undefined 发出警告。
+> * 了解即可，因为 Vue 3.x 的 Composition API 和 React 18 的 Hook API 已经很少使用 this 了。
+
+### 6.2.2 this 的编译选项
+
+* 我们可以通过 `tsconfig.json` 文件来开启严格模式，即：
+
+```shell
+tsc --init
+```
+
+![](./assets/35.gif)
+
+* 其中，`tsconfg.json` 的文件内容，如下所示：
+
+```json
+{
+  "compilerOptions": {
+    /* Visit https://aka.ms/tsconfig to read more about this file */
+
+    /* Projects */
+    // "incremental": true,                              /* Save .tsbuildinfo files to allow for incremental compilation of projects. */
+    // "composite": true,                                /* Enable constraints that allow a TypeScript project to be used with project references. */
+    // "tsBuildInfoFile": "./.tsbuildinfo",              /* Specify the path to .tsbuildinfo incremental compilation file. */
+    // "disableSourceOfProjectReferenceRedirect": true,  /* Disable preferring source files instead of declaration files when referencing composite projects. */
+    // "disableSolutionSearching": true,                 /* Opt a project out of multi-project reference checking when editing. */
+    // "disableReferencedProjectLoad": true,             /* Reduce the number of projects loaded automatically by TypeScript. */
+
+    /* Language and Environment */
+    "target": "es2016",                                  /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+    // "lib": [],                                        /* Specify a set of bundled library declaration files that describe the target runtime environment. */
+    // "jsx": "preserve",                                /* Specify what JSX code is generated. */
+    // "experimentalDecorators": true,                   /* Enable experimental support for legacy experimental decorators. */
+    // "emitDecoratorMetadata": true,                    /* Emit design-type metadata for decorated declarations in source files. */
+    // "jsxFactory": "",                                 /* Specify the JSX factory function used when targeting React JSX emit, e.g. 'React.createElement' or 'h'. */
+    // "jsxFragmentFactory": "",                         /* Specify the JSX Fragment reference used for fragments when targeting React JSX emit e.g. 'React.Fragment' or 'Fragment'. */
+    // "jsxImportSource": "",                            /* Specify module specifier used to import the JSX factory functions when using 'jsx: react-jsx*'. */
+    // "reactNamespace": "",                             /* Specify the object invoked for 'createElement'. This only applies when targeting 'react' JSX emit. */
+    // "noLib": true,                                    /* Disable including any library files, including the default lib.d.ts. */
+    // "useDefineForClassFields": true,                  /* Emit ECMAScript-standard-compliant class fields. */
+    // "moduleDetection": "auto",                        /* Control what method is used to detect module-format JS files. */
+
+    /* Modules */
+    "module": "commonjs",                                /* Specify what module code is generated. */
+    // "rootDir": "./",                                  /* Specify the root folder within your source files. */
+    // "moduleResolution": "node10",                     /* Specify how TypeScript looks up a file from a given module specifier. */
+    // "baseUrl": "./",                                  /* Specify the base directory to resolve non-relative module names. */
+    // "paths": {},                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
+    // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
+    // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */
+    // "types": [],                                      /* Specify type package names to be included without being referenced in a source file. */
+    // "allowUmdGlobalAccess": true,                     /* Allow accessing UMD globals from modules. */
+    // "moduleSuffixes": [],                             /* List of file name suffixes to search when resolving a module. */
+    // "allowImportingTsExtensions": true,               /* Allow imports to include TypeScript file extensions. Requires '--moduleResolution bundler' and either '--noEmit' or '--emitDeclarationOnly' to be set. */
+    // "resolvePackageJsonExports": true,                /* Use the package.json 'exports' field when resolving package imports. */
+    // "resolvePackageJsonImports": true,                /* Use the package.json 'imports' field when resolving imports. */
+    // "customConditions": [],                           /* Conditions to set in addition to the resolver-specific defaults when resolving imports. */
+    // "resolveJsonModule": true,                        /* Enable importing .json files. */
+    // "allowArbitraryExtensions": true,                 /* Enable importing files with any extension, provided a declaration file is present. */
+    // "noResolve": true,                                /* Disallow 'import's, 'require's or '<reference>'s from expanding the number of files TypeScript should add to a project. */
+
+    /* JavaScript Support */
+    // "allowJs": true,                                  /* Allow JavaScript files to be a part of your program. Use the 'checkJS' option to get errors from these files. */
+    // "checkJs": true,                                  /* Enable error reporting in type-checked JavaScript files. */
+    // "maxNodeModuleJsDepth": 1,                        /* Specify the maximum folder depth used for checking JavaScript files from 'node_modules'. Only applicable with 'allowJs'. */
+
+    /* Emit */
+    // "declaration": true,                              /* Generate .d.ts files from TypeScript and JavaScript files in your project. */
+    // "declarationMap": true,                           /* Create sourcemaps for d.ts files. */
+    // "emitDeclarationOnly": true,                      /* Only output d.ts files and not JavaScript files. */
+    // "sourceMap": true,                                /* Create source map files for emitted JavaScript files. */
+    // "inlineSourceMap": true,                          /* Include sourcemap files inside the emitted JavaScript. */
+    // "outFile": "./",                                  /* Specify a file that bundles all outputs into one JavaScript file. If 'declaration' is true, also designates a file that bundles all .d.ts output. */
+    // "outDir": "./",                                   /* Specify an output folder for all emitted files. */
+    // "removeComments": true,                           /* Disable emitting comments. */
+    // "noEmit": true,                                   /* Disable emitting files from a compilation. */
+    // "importHelpers": true,                            /* Allow importing helper functions from tslib once per project, instead of including them per-file. */
+    // "importsNotUsedAsValues": "remove",               /* Specify emit/checking behavior for imports that are only used for types. */
+    // "downlevelIteration": true,                       /* Emit more compliant, but verbose and less performant JavaScript for iteration. */
+    // "sourceRoot": "",                                 /* Specify the root path for debuggers to find the reference source code. */
+    // "mapRoot": "",                                    /* Specify the location where debugger should locate map files instead of generated locations. */
+    // "inlineSources": true,                            /* Include source code in the sourcemaps inside the emitted JavaScript. */
+    // "emitBOM": true,                                  /* Emit a UTF-8 Byte Order Mark (BOM) in the beginning of output files. */
+    // "newLine": "crlf",                                /* Set the newline character for emitting files. */
+    // "stripInternal": true,                            /* Disable emitting declarations that have '@internal' in their JSDoc comments. */
+    // "noEmitHelpers": true,                            /* Disable generating custom helper functions like '__extends' in compiled output. */
+    // "noEmitOnError": true,                            /* Disable emitting files if any type checking errors are reported. */
+    // "preserveConstEnums": true,                       /* Disable erasing 'const enum' declarations in generated code. */
+    // "declarationDir": "./",                           /* Specify the output directory for generated declaration files. */
+    // "preserveValueImports": true,                     /* Preserve unused imported values in the JavaScript output that would otherwise be removed. */
+
+    /* Interop Constraints */
+    // "isolatedModules": true,                          /* Ensure that each file can be safely transpiled without relying on other imports. */
+    // "verbatimModuleSyntax": true,                     /* Do not transform or elide any imports or exports not marked as type-only, ensuring they are written in the output file's format based on the 'module' setting. */
+    // "allowSyntheticDefaultImports": true,             /* Allow 'import x from y' when a module doesn't have a default export. */
+    "esModuleInterop": true,                             /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
+    // "preserveSymlinks": true,                         /* Disable resolving symlinks to their realpath. This correlates to the same flag in node. */
+    "forceConsistentCasingInFileNames": true,            /* Ensure that casing is correct in imports. */
+
+    /* Type Checking */
+    "strict": true,                                      /* Enable all strict type-checking options. */
+    // "noImplicitAny": true,                            /* Enable error reporting for expressions and declarations with an implied 'any' type. */
+    // "strictNullChecks": true,                         /* When type checking, take into account 'null' and 'undefined'. */
+    // "strictFunctionTypes": true,                      /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
+    // "strictBindCallApply": true,                      /* Check that the arguments for 'bind', 'call', and 'apply' methods match the original function. */
+    // "strictPropertyInitialization": true,             /* Check for class properties that are declared but not set in the constructor. */
+    "noImplicitThis": true, /* 注意打开此处 */                          /* Enable error reporting when 'this' is given the type 'any'. */
+    // "useUnknownInCatchVariables": true,               /* Default catch clause variables as 'unknown' instead of 'any'. */
+    // "alwaysStrict": true,                             /* Ensure 'use strict' is always emitted. */
+    // "noUnusedLocals": true,                           /* Enable error reporting when local variables aren't read. */
+    // "noUnusedParameters": true,                       /* Raise an error when a function parameter isn't read. */
+    // "exactOptionalPropertyTypes": true,               /* Interpret optional property types as written, rather than adding 'undefined'. */
+    // "noImplicitReturns": true,                        /* Enable error reporting for codepaths that do not explicitly return in a function. */
+    // "noFallthroughCasesInSwitch": true,               /* Enable error reporting for fallthrough cases in switch statements. */
+    // "noUncheckedIndexedAccess": true,                 /* Add 'undefined' to a type when accessed using an index. */
+    // "noImplicitOverride": true,                       /* Ensure overriding members in derived classes are marked with an override modifier. */
+    // "noPropertyAccessFromIndexSignature": true,       /* Enforces using indexed accessors for keys declared using an indexed type. */
+    // "allowUnusedLabels": true,                        /* Disable error reporting for unused labels. */
+    // "allowUnreachableCode": true,                     /* Disable error reporting for unreachable code. */
+
+    /* Completeness */
+    // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
+    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
+  }
+}
+
+```
+
+> 注意⚠️：
+>
+> * ①`Implicit` 翻译为中文是`隐藏`、`隐式`的意思。 
+> * ② 默认情况下，`"noImplicitThis": true`是注释掉的，即 TS 允许 this 推断为 any 类型。
+> * ③ 一旦打开 `"noImplicitThis": true`选项，则表示项目中的 `this 不允许出现隐式的 any 类型`，即 TS 会根据上下文环境推导 this ，如果不能正确的推导，就报错；此时，就需要我们明确的指定 this 的类型。
+> * ④ 开启`"noImplicitAny": true`选项，则表示项目中`不允许隐式的 any 出现`， 即 TS 会根据上下文环境推导变量的类型，如果推导出是 any 类型，就报错。
+> * ⑤  开启`"strictNullChecks": true`选项，是用来`对潜在的、忘记处理的 null 或 undefined 发出警告`。
+
+* 此时，我们可以通过 VSCode 查看：
+
+```ts
+// ① 对象中的函数的 this
+const obj = {
+  name: '许大仙',
+  age: 18,
+  studing: function () {
+    // 默认情况下，是 any 类型；但是，开启 "noImplicitAny": true 之后，TS 会推断为 obj 对象
+    console.log(this.name + '正在学习...')
+  }
+}
+
+obj.studing()
+// obj.studing.call({}) // 这里的 this 就不应该是 any 类型，而应该是 {}，存在安全隐患！！！
+
+// ② 普通的函数
+function foo() {
+  // 默认情况下，是 any 类型
+  console.log(this)
+}
+
+foo()
+
+export { }
+```
+
+![image-20240130144140102](./assets/36.png)
+
+### 6.2.3 指定 this 的类型
+
+* 在开启 `"noImplicitThis": true`选项之后，我们需要指定 this 的类型。
+* 如何指定？此时将 `this` 作为函数的`第一个参数类型`：
+  * 函数的第一个参数，可以根据函数被调用的情况，用来声明 this 的类型（this 名称的固定的）；
+  * 在后续调用函数传入参数的时候，从第二个参数开始传递，并且 this 参数会在编译后被擦除；
+* 此时，可以这么修改：
+
+```ts {15}
+// ① 对象中的函数的 this
+const obj = {
+  name: '许大仙',
+  age: 18,
+  studing: function () {
+    // 默认情况下，是 any 类型；但是，开启 "noImplicitThis": true 之后，TS 会推断为 obj 对象
+    console.log(this.name + '正在学习...')
+  }
+}
+
+obj.studing()
+// obj.studing.call({}) // 这里的 this 就不应该是 any 类型，而应该是 {}，存在安全隐患！！！
+
+// ② 普通的函数
+function foo(this: typeof globalThis, name: string) { // 第一个参数必须是 this ，并且用来声明 this 的类型
+  console.log(this, name)
+}
+
+foo.call(globalThis, "许大仙") // 之所以需要这么写，是因为 TS 会转换为 JS 的严格模式，严格模式中是不能这么写 window.xxx()
+
+export { }
+```
+
+![image-20240130150245794](./assets/37.png)
+
+* 当然，对于 TS 根据上下文推导 this 类型（并不一定推导正确），为了程序的正确性，我们也需要自己手动指定，即：
+
+```ts {5,12}
+// ① 对象中的函数的 this
+const obj = {
+  name: '许大仙',
+  age: 18,
+  studing: function (this: {}) {
+    // 默认情况下，是 any 类型；但是，开启 "noImplicitThis": true 之后，TS 会推断为 obj 对象
+    console.log(this + '正在学习...')
+  }
+}
+
+// obj.studing()
+obj.studing.call({}) // 这里的 this 就不应该是 any 类型，而应该是 {}，存在安全隐患！！！
+
+// ② 普通的函数
+function foo(this: typeof globalThis, name: string) { // 第一个参数必须是 this ，并且用来声明 this 的类型
+  console.log(this, name)
+}
+
+foo.call(globalThis, "许大仙")
+
+export { }
+```
+
+### 6.2.4 this 类型相关内置工具
+
+* 在 JavaScript 中，`typeof 函数`的值是 `function` ，表示函数对象，即：
+
+```ts {5}
+function foo() {
+
+}
+
+let res = typeof foo // 注意，使用 let 接受，意味着获取的是 foo 的值类型 
+
+console.log(res) // function
+
+export { }
+```
+
+![image-20240130152259087](./assets/38.png)
+
+* 但是，在 TS 中，我们也可以通过 `type` 来表明获取的是`函数的类型`（函数也是一种对象，即函数也有自己的类型），即：
+
+```ts {5}
+function foo(name: string,age: number): void  {
+
+}
+
+type res = typeof foo // 通过 type 来声明获取的是 foo 函数的类型，而不是 foo 函数的值类型，因为 type 会在编译的时候擦除
+
+export { }
+```
+
+![image-20240130152939097](./assets/39.png)
+
+* 但是，有的时候我们只关心函数的 this 类型，此时就需要使用 `ThisParameterType<Type>` 泛型工具了，即：提取函数类型的 this 参数的类型，如果函数类型没有 `this` 参数，则提取 unknown
+
+```ts {5}
+function foo(this: typeof globalThis, name: string, age: number): void {
+
+}
+
+type thisType = ThisParameterType<typeof foo>
+
+
+export { }
+```
+
+![image-20240130153519254](./assets/40.png)
+
+* 但是，有的时候，我们需要从 Type 中删除 this 参数类型，就可以使用 `OmitThisParameter<Type>`泛型工具，即：
+
+```ts
+function foo(this: typeof globalThis, name: string, age: number): void {
+
+}
+
+type thisType = ThisParameterType<typeof foo>
+
+type x = OmitThisParameter<typeof foo>
+
+export { }
+```
+
+![image-20240130161317143](./assets/41.png)
 
