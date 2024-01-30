@@ -1249,12 +1249,13 @@ export { }
 
 ### 5.2.2 构造签名（Construct Signatures）
 
-* 前面，我们也解释下，在 `ES5` 中，`函数`还可以作为`构造函数`（用于模拟`类`）来创建`对象`；对于 TS 而言，此时就需要使用`构造签名`来描述这类函数了。
+* 前面，我们也解释下，在 `ES5` 中，`函数`还可以作为`构造函数`（用于模拟`类`）来创建`对象`；
+* 但是，在 TS 中，如果需要创建对象，必须通过 `class` 关键字，也可以使用`构造签名`来描述 `constructor` 构造器`接受`的`参数类型`和`返回的类型（类）`。
 
 > 注意⚠️：
 >
-> * ① 在 TS 中，构造签名本身并不能用于创建对象实例，而是用来描述`构造函数`应该`接受`的`参数类型`和`返回的实例类型`。
-> * ② 换言之，在 TS 中，构造函数通常配合工厂函数来创建对象使用。
+> * ① 在 TS 中，构造签名本身并不能用于创建对象实例，而是用来描述`constructor`构造器应该`接受`的`参数类型`和`返回的类型（类）`。
+> * ② 换言之，在 TS 中，`构造签名`通常配合`工厂函数`来`创建对象`。
 
 
 
@@ -1286,23 +1287,228 @@ export { }
 
 ###  5.2.3 可选参数（Optional Parameters）
 
+* 在 JavaScript 中的`函数`通常采用`可变数量`的`参数`，如：
 
+```js {2-3}
+function bar(n: number) {
+  console.log(n.toFixed()) // toFixed() 没有参数，即 0 个参数
+  console.log(n.toFixed(2)) // toFixed(2) 2 个参数
+}
 
+bar(2)
 
+export {}
+```
 
+* 在 TS 中也是类似的，我们可以使用 `?` 将参数标记为可选，即：
 
+```ts {1}
+function bar(n?: number) { // 可选参数
+  console.log(n && n.toFixed()) 
+  console.log(n && n.toFixed(2)) 
+}
+
+bar(2)
+
+export {}
+```
+
+> 注意⚠️：在 TS 中的`可选参数`必须在`必选参数`之后的`位置`；否则，将会编译报错！！！
+
+* 其实，上述示例虽然将 `n` 指定为 `number` 类型，其实是 `number | undefined` 联合类型，即如果不传递参数就会取值为 `undefined`，即：
+
+![image-20240130094447808](./assets/28.png)
+
+> 注意⚠️：既然上述示例中的可选参数 `n` 的类型是 `number | undefined`联合类型，那么在使用的时候，就需要使用`类型缩小`，否则将会编译报错！！！
+
+### 5.2.4 默认参数（Default Parameters）
+
+* 在 JavaScript 中，`函数的默认参数`允许在`没有值`或 `undefined` 被传入的时候`使用默认形参`，即：
+
+```js {1}
+function multiply(a, b = 1) {
+  return a * b;
+}
+
+console.log(multiply(5, 2));
+// Expected output: 10
+
+console.log(multiply(5));
+// Expected output: 5
+```
+
+* 同理，在 TS 也是支持默认参数的，即：
+
+```ts {1}
+function multiply(a: number, b = 1) { // 默认参数没有必要编写类型注解，因为可以根据默认参数的值自动推断
+  return a * b;
+}
+
+console.log(multiply(5, 2));
+// Expected output: 10
+
+console.log(multiply(5));
+// Expected output: 5
+
+export { }
+```
+
+### 5.2.5 回调函数中的可选参数（Optional Parameters in Callbacks）
+
+* 在 JavaScript 中，我们经常会使用高阶函数（回调函数），如：
+
+```js
+const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+nums.forEach((item) => {
+  console.log(item)
+})
+
+nums.forEach((item, index) => {
+  console.log(item, index)
+})
+
+nums.forEach((item, index, arr) => {
+  console.log(item, index, arr)
+})
+```
+
+* 了解了可选参数和函数类型表达式之后，我们可能会这么编写，即：
+
+```ts {3}
+const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+nums.forEach((item: number, index: number, arr?: number[]) => {
+  console.log(item, index, arr)
+})
+
+export { }
+```
+
+* 其实，是没有必要的，因为如果强制加上类型，反而引发 TS 发出实际上不可能的错误，即：
+
+```ts {3,4}
+const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+nums.forEach((item: number, index: number, arr?: number[]) => {
+  console.log(item, index, arr[0])
+})
+
+export { }
+```
+
+![image-20240130100035250](./assets/29.png)
+
+* 所以，在 TS 中的`回调函数`中的`形参`没有必要加上`类型注解`(包括可选参数)，因为 TS 会自动推断形参的类型，即：
+
+```ts {3,4}
+const nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+nums.forEach((item, index, arr) => {
+  console.log(item, index, arr[0])
+})
+
+export { }
+```
+
+![image-20240130100349938](./assets/30.png)
+
+### 5.2.6 剩余参数（Rest Parameters ）
+
+* 在 JavaScript 中，`剩余参数`语法允许我们将一个`不定量的参数`表示为`一个数组`，即：
+
+```js {1}
+function sum(...theArgs) {
+  let total = 0;
+  for (const arg of theArgs) {
+    total += arg;
+  }
+  return total;
+}
+
+console.log(sum(1, 2, 3));
+// Expected output: 6
+
+console.log(sum(1, 2, 3, 4));
+// Expected output: 10
+```
+
+* 当然，在 TS 中也支持剩余参数，即：
+
+```ts {1}
+function sum(...theArgs: number[]) {
+  let total = 0;
+  for (const arg of theArgs) {
+    total += arg;
+  }
+  return total;
+}
+
+console.log(sum(1, 2, 3));
+// Expected output: 6
+
+console.log(sum(1, 2, 3, 4));
+// Expected output: 10
+
+export {}
+```
 
 
 
 # 第六章：函数的重载和 this 类型
 
-## 6.1 函数的重载
+## 6.1 函数的重载（Function Overloads）
+
+* 需求：要求编写一个函数，希望可以对`参数类型`是`字符串`或`数字类型`进行相加。
+
+> 注意⚠️：参数的类型要么都是字符串，要么都是数字类型。
+
+* 我们可能会想到联合类型，即：
+
+```ts {1}
+function add(a: number | string, b: number | string) {
+  if (typeof a === 'string' && typeof b === 'string') {
+    return a + b
+  }
+  if (typeof a === 'number' && typeof b === 'number') {
+    return a + b
+  }
+}
+
+export { }
+```
+
+* 即使我们使用了`类型缩小`来处理，但是还是有问题的，因为返回值的类型可能为 `undefined` ，即：
+
+![image-20240130111504435](./assets/31.png)
+
+* 此时，就可以使用函数重载来解决，如何编写？
+  * ① 可以先编写`不同的重载签名`来表示函数可以`以不同的方式进行调用`。
+  * ② 再编写`实现签名`，其实就是`编写一个通用的函数实现`。
+
+> 注意⚠️：实现签名必须和重载签名兼容。
+
+* 所以，对应的功能实现如下：
+
+```ts
+function add(a: number, b: number): number // 重载签名 
+function add(a: string, b: string): string // 重载签名 
+
+function add(a: any, b: any): any { // 实现签名
+  return a + b
+}
+
+let result1 = add(1, 2)
+console.log(result1)
+
+let result2 = add('1', '2')
+console.log(result2)
 
 
+export { }
+```
 
-
-
-
+![image-20240130112049719](./assets/32.png)
 
 ## 6.2 this 类型
 
