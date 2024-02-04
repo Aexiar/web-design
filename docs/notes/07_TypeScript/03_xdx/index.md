@@ -1085,20 +1085,21 @@ enum ColorEnum {
 * 但是，我们也可以赋值其他数值，即：
 
 ```ts
-enum ColorEnum {
+enum HttpStatusEnum {
   A = 200, 
   B = 203,
-  C = 2,
+  C = 404,
 }
 ```
 
 * 我们也可以赋值为字符串，即：
 
 ```ts
-enum ColorEnum {
-  A = ‘1’, 
-  B = ‘2’,
-  C = ‘3’,
+enum SmileEnum {
+  A = '哈哈', 
+  B = '呵呵',
+  C = '嘻嘻',
+  D = '哼哼',   
 }
 ```
 
