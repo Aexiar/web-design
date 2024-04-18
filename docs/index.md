@@ -25,7 +25,10 @@ hero:
   actions:
     - theme: brand
       text: "首页"
-      link: "https://aexiar.github.io"  
+      link: "https://aexiar.github.io"
+    - theme: alt
+      text: "计组4件套"
+      link: "https://aexiar.github.io/coa4/"        
     - theme: alt
       text: "前端"
       link: "/notes/"
