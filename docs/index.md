@@ -28,7 +28,7 @@ hero:
       link: "https://aexiar.github.io"
     - theme: alt
       text: "计组4件套"
-      link: "https://aexiar.github.io/coa4/"        
+      link: "https://aexiar.github.io/coa4/notes/"        
     - theme: alt
       text: "前端"
       link: "/notes/"
