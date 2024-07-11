@@ -4,7 +4,7 @@ import sidebar from './sidebar'
 import dayjs from 'dayjs'
 
 import { loadEnv } from 'vitepress'
-const { VITE_BASE_URL } = loadEnv(process.env.NODE_ENV, process.cwd())
+const { VITE_BASE_URL } = loadEnv(process.env.NODE_ENV == undefined ? "" : process.env.NODE_ENV, process.cwd())
 
 console.log('VITE_BASE_URL', process.env.NODE_ENV, VITE_BASE_URL)
 
@@ -15,7 +15,7 @@ export default defineConfig({
   titleTemplate: "Hi，终于等到你",
   description: "许大仙前端、Java、大数据、云原生",
   head: [ // favicon.ico 图标等
-    ['link', { rel: "shortcut icon", href: `${VITE_BASE_URL}/favicon.ico` }],
+    ['link', { rel: "shortcut icon", href: `${VITE_BASE_URL}/logo.svg` }],
     ['meta', { name: "viewport", content: "width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no,shrink-to-fit=no" }],
     ['meta', { name: "keywords", content: "许大仙,许大仙的博客" }],
   ],
