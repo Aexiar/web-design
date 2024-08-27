@@ -18,6 +18,10 @@ export default defineConfig({
     ['link', { rel: "shortcut icon", href: `${VITE_BASE_URL}/logo.svg` }],
     ['link', { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' }],
     [
+      'link',
+      { href: 'https://fonts.googleapis.com/css2?family=Roboto&display=swap', rel: 'stylesheet' }
+    ],
+    [
       'script',
       { id: 'register-sw' },
       `;(() => {
